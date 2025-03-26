@@ -7,4 +7,4 @@ router.post('/users', createUser);
 router.get('/users', getUsers);
 router.get('/users/:id', getUser)
 
-export default router;
+module.exports = router
