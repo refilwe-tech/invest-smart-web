@@ -6,6 +6,10 @@ export interface User {
   email: string;
 }
 
+export type Users = {
+  users: User[]
+}
+
 export const createUserModel = async (user: User): Promise<User> => {
   const { name, email } = user;
   const result = await pool.query(
@@ -15,7 +19,12 @@ export const createUserModel = async (user: User): Promise<User> => {
   return result.rows[0];
 };
 
-export const getUsersModel = async (): Promise<User[]> => {
+export const getUsersModel = async (): Promise<Users> => {
   const result = await pool.query('SELECT * FROM users');
-  return result.rows;
+  return {users:result.rows};
+};
+
+export const getUserModel = async  (id:string): Promise<User> => {
+  const result = await pool.query('SELECT * FROM users WHERE user_id = $1',[id]);
+  return result.rows[0];
 };
