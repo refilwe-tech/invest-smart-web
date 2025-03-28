@@ -7,8 +7,8 @@ BEGIN
     FROM
       pg_database
     WHERE
-      datname = 'invest_smart_db') THEN
-  CREATE DATABASE invest_smart_db;
+      datname = 'invest_smart_database') THEN
+  CREATE DATABASE invest_smart_database;
 END IF;
 END
 $$;
@@ -57,7 +57,6 @@ CREATE TABLE Counts(
 ------------------------------ END OF CREATE TABLES ------------------------------
 ------------------------------ INSERT INTO TABLES ------------------------------
 -- Insert into Users Table
-
 ALTER TABLE Users
   ALTER COLUMN PASSWORD SET DEFAULT 'p@ssw0rd';
 
