@@ -1,8 +1,9 @@
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { IoHomeOutline } from "react-icons/io5";
+import { HiOutlineUsers } from "react-icons/hi2";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Line } from "./line";
 import Logo from '../../assets/logo.png';
+
 export const NavBar = () => {
 
   const { pathname } = useLocation();
@@ -11,9 +12,15 @@ export const NavBar = () => {
 
   const ROUTES = [
     {
-      path: '/',
-      icon: <IoHomeOutline/>,
-      name: 'Home'
+      path: '/users',
+      icon: <HiOutlineUsers/>,
+      name: 'Users'
+
+    },
+    {
+      path: '/investments',
+      icon: <HiOutlineUsers/>,
+      name: 'Investments'
 
     }
   ]
@@ -21,7 +28,7 @@ export const NavBar = () => {
   const logout = ()=>void 0;
 
   return (
-    <div className="bg-[#0EA5E9] text-white h-full w-56 flex-shrink-0 p-4">
+    <div className="bg-[#1E3A8A] text-white h-full w-56 flex-shrink-0 p-4">
       <ul className="flex flex-col gap-4">
         <li key={0}>
           <Link

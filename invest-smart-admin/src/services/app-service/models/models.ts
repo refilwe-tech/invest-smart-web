@@ -1,8 +1,8 @@
 export type CountsData = {
-  total_investment: number;
+  total_investments: number;
   total_users: number;
 };
 export const countsModel = (data: CountsData) => ({
-  totalInvestments: data?.total_investment ?? 0,
+  totalInvestments: data?.total_investments ?? 0,
   totalUsers: data?.total_users ?? 0,
 });

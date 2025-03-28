@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { dashboardService } from "../services";
 import { TfiStatsUp } from "react-icons/tfi";
 import { HiUsers } from "react-icons/hi";
+import { ClipLoader } from "react-spinners";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -17,7 +18,9 @@ function Index() {
   return (
     <section className="flex flex-col gap-2">
       <h3>Welcome {"Admin"}</h3>
-      {!isLoading && <section className="flex gap-4 w-full">
+      {isLoading ? <section className="flex justify-center gap-2">
+          <ClipLoader className=" text-primary" /> Loading...
+        </section>: <section className="flex gap-4 w-full">
         <Container>
           <>
             <section className="flex justify-between items-center">

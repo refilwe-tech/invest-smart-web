@@ -11,7 +11,7 @@ export type Investments={
 }
 
 export const getInvestmentsModel = async (): Promise<Investments>=>{
-  console.log('Start')
+  console.log('Here')
   try {const result = await pool.query('SELECT * FROM investment');
     console.log(result)
     return {investments:result.rows};
