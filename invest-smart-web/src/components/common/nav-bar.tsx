@@ -1,5 +1,5 @@
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { HiOutlineUsers } from "react-icons/hi2";
+import { HiOutlineUsers, HiDocument } from "react-icons/hi2";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Line } from "./line";
 import Logo from '../../assets/logo.png';
@@ -22,6 +22,12 @@ export const NavBar = () => {
       icon: <HiOutlineUsers/>,
       name: 'Investments'
 
+    },
+    {
+      path: '/reports',
+      icon: <HiDocument/>,
+      name: 'Reports'
+
     }
   ]
 
@@ -30,14 +36,13 @@ export const NavBar = () => {
   return (
     <div className="bg-[#1E3A8A] text-white h-full w-56 flex-shrink-0 p-4">
       <ul className="flex flex-col gap-4">
-        <li key={0}>
+        <li key={0} className="pb-5">
           <Link
             to="/"
             className="flex items-center gap-2 hover:text-blue-500 pb-1"
           >
             <img src={Logo}/>
           </Link>
-          {isActive("/") && <Line />}
         </li>
         {ROUTES?.map(({path,icon,name}, index) => (
           <li key={index + 1}>
@@ -56,7 +61,7 @@ export const NavBar = () => {
       <Link
         onClick={logout}
         to="/"
-        className="flex items-center absolute bottom-0 mb-6 hover:text-blue-500"
+        className="flex items-center  gap-2 absolute bottom-0 mb-6 hover:text-blue-500"
       >
        <RiLogoutCircleRLine  />
         Logout
