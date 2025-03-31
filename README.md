@@ -1,6 +1,10 @@
-# Prerequisites
+# Invest Smart Frontend Web
 
-- install node 
+## Prerequisites
+
+- Node [Node (LTS)](https://nodejs.org/en/download/)
+- VS Code is Preferable
+- Git bash is also preferable
 
 ## To Run
 
@@ -10,3 +14,8 @@
 - NB! Use **ngrok url** if you're not the one running the server.
 - In your terminal: run `npm run web` or `yarn web`.
 - Open your browser to the running port: [localhost login screen](http://localhost:5173/login)
+
+### How to setup git
+
+Download Git Bash here [Git Bash Windows](https://git-scm.com/downloads/win) NB! Change to the OS you're using
+Read more on this article on how to setup: [Installing and Configuring Git for the First Time](https://syllabus.africacode.net/topics/git/setting-up-git/)
