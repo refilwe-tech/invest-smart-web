@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
 import { Route as InvestmentsImport } from './routes/investments'
+import { Route as AdminsImport } from './routes/admins'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
@@ -27,6 +28,12 @@ const UsersRoute = UsersImport.update({
 const InvestmentsRoute = InvestmentsImport.update({
   id: '/investments',
   path: '/investments',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminsRoute = AdminsImport.update({
+  id: '/admins',
+  path: '/admins',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/admins': {
+      id: '/admins'
+      path: '/admins'
+      fullPath: '/admins'
+      preLoaderRoute: typeof AdminsImport
+      parentRoute: typeof rootRoute
+    }
     '/investments': {
       id: '/investments'
       path: '/investments'
@@ -82,6 +96,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admins': typeof AdminsRoute
   '/investments': typeof InvestmentsRoute
   '/users': typeof UsersRoute
 }
@@ -89,6 +104,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admins': typeof AdminsRoute
   '/investments': typeof InvestmentsRoute
   '/users': typeof UsersRoute
 }
@@ -97,22 +113,24 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admins': typeof AdminsRoute
   '/investments': typeof InvestmentsRoute
   '/users': typeof UsersRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/investments' | '/users'
+  fullPaths: '/' | '/about' | '/admins' | '/investments' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/investments' | '/users'
-  id: '__root__' | '/' | '/about' | '/investments' | '/users'
+  to: '/' | '/about' | '/admins' | '/investments' | '/users'
+  id: '__root__' | '/' | '/about' | '/admins' | '/investments' | '/users'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminsRoute: typeof AdminsRoute
   InvestmentsRoute: typeof InvestmentsRoute
   UsersRoute: typeof UsersRoute
 }
@@ -120,6 +138,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminsRoute: AdminsRoute,
   InvestmentsRoute: InvestmentsRoute,
   UsersRoute: UsersRoute,
 }
@@ -136,6 +155,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/admins",
         "/investments",
         "/users"
       ]
@@ -145,6 +165,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/admins": {
+      "filePath": "admins.tsx"
     },
     "/investments": {
       "filePath": "investments.tsx"

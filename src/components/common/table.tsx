@@ -12,7 +12,7 @@ export type TableProps<Value> = {
   dataCy?: string;
   pageCount?: number;
   loading?: boolean;
-  columns: ColumnDef<Value, any>[];
+  columns: ColumnDef<Value, unknown>[];
 }
 export const Table = <T extends Record<string, unknown>>({ data, columns, loading }:TableProps<T>) => {
   const table = useReactTable({

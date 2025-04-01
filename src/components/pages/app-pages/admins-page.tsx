@@ -4,14 +4,21 @@ import { userService } from "../../../services";
 import { Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 
-export const UsersPage = () => {
+export type userApiType = {
+  user_id:string;
+  first_name:string;
+  last_name:string
+  phone_number:string;
+  email:string
+}
+export const AdminUsersPage = () => {
 
  const { data, isLoading } = useQuery({
-     queryKey: ["users"],
-     queryFn: userService.getUsers,
+     queryKey: ["admins"],
+     queryFn: userService.getAdminUsers,
    });
 
-   const columnHelper = createColumnHelper();
+   const columnHelper = createColumnHelper<userApiType>();
    const columns = [
     columnHelper.accessor("user_id", {
       header: "ID",
@@ -32,13 +39,13 @@ export const UsersPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
-        <Heading heading="Users" />
+        <Heading heading="Admins" />
       <section className="flex justify-end items-center">
         <button
           onClick={()=>void 0}
           className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
         >
-          Add User
+          Add Admin
         </button>
       </section>
       <Container>

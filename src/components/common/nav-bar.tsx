@@ -1,5 +1,5 @@
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { HiOutlineUsers, HiDocument } from "react-icons/hi2";
+import { HiOutlineUsers, HiDocument, HiOutlineUserGroup } from "react-icons/hi2";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Line } from "./line";
 import Logo from '../../assets/logo.png';
@@ -11,6 +11,12 @@ export const NavBar = () => {
   const isActive = (path:string) => pathname === path;
 
   const ROUTES = [
+    {
+      path: '/admins',
+      icon: <HiOutlineUserGroup/>,
+      name: 'Admins'
+
+    },
     {
       path: '/users',
       icon: <HiOutlineUsers/>,
