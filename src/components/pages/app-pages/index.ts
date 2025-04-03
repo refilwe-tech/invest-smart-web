@@ -1,3 +1,4 @@
 export * from './admins-page'
 export * from './users-page'
 export * from './investments-page'
+export * from './home-page'

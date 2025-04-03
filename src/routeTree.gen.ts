@@ -12,9 +12,13 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
+import { Route as ReportsImport } from './routes/reports'
+import { Route as RegisterImport } from './routes/register'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as LoginImport } from './routes/login'
 import { Route as InvestmentsImport } from './routes/investments'
+import { Route as HomeImport } from './routes/home'
 import { Route as AdminsImport } from './routes/admins'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -25,21 +29,45 @@ const UsersRoute = UsersImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ReportsRoute = ReportsImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterRoute = RegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const InvestmentsRoute = InvestmentsImport.update({
   id: '/investments',
   path: '/investments',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminsRoute = AdminsImport.update({
-  id: '/admins',
-  path: '/admins',
+const HomeRoute = HomeImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const AdminsRoute = AdminsImport.update({
+  id: '/admins',
+  path: '/admins',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,13 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/admins': {
       id: '/admins'
       path: '/admins'
@@ -74,11 +95,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminsImport
       parentRoute: typeof rootRoute
     }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeImport
+      parentRoute: typeof rootRoute
+    }
     '/investments': {
       id: '/investments'
       path: '/investments'
       fullPath: '/investments'
       preLoaderRoute: typeof InvestmentsImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsImport
       parentRoute: typeof rootRoute
     }
     '/users': {
@@ -95,51 +151,99 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/admins': typeof AdminsRoute
+  '/home': typeof HomeRoute
   '/investments': typeof InvestmentsRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/reports': typeof ReportsRoute
   '/users': typeof UsersRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/admins': typeof AdminsRoute
+  '/home': typeof HomeRoute
   '/investments': typeof InvestmentsRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/reports': typeof ReportsRoute
   '/users': typeof UsersRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/admins': typeof AdminsRoute
+  '/home': typeof HomeRoute
   '/investments': typeof InvestmentsRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/reports': typeof ReportsRoute
   '/users': typeof UsersRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/admins' | '/investments' | '/users'
+  fullPaths:
+    | '/'
+    | '/admins'
+    | '/home'
+    | '/investments'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/reports'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/admins' | '/investments' | '/users'
-  id: '__root__' | '/' | '/about' | '/admins' | '/investments' | '/users'
+  to:
+    | '/'
+    | '/admins'
+    | '/home'
+    | '/investments'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/reports'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/admins'
+    | '/home'
+    | '/investments'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/reports'
+    | '/users'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   AdminsRoute: typeof AdminsRoute
+  HomeRoute: typeof HomeRoute
   InvestmentsRoute: typeof InvestmentsRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  RegisterRoute: typeof RegisterRoute
+  ReportsRoute: typeof ReportsRoute
   UsersRoute: typeof UsersRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   AdminsRoute: AdminsRoute,
+  HomeRoute: HomeRoute,
   InvestmentsRoute: InvestmentsRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  RegisterRoute: RegisterRoute,
+  ReportsRoute: ReportsRoute,
   UsersRoute: UsersRoute,
 }
 
@@ -154,23 +258,39 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
         "/admins",
+        "/home",
         "/investments",
+        "/login",
+        "/profile",
+        "/register",
+        "/reports",
         "/users"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
-    },
     "/admins": {
       "filePath": "admins.tsx"
     },
+    "/home": {
+      "filePath": "home.tsx"
+    },
     "/investments": {
       "filePath": "investments.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
+    },
+    "/register": {
+      "filePath": "register.tsx"
+    },
+    "/reports": {
+      "filePath": "reports.tsx"
     },
     "/users": {
       "filePath": "users.tsx"

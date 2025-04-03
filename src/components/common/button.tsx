@@ -1,11 +1,37 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from "react"
+import { ButtonHTMLAttributes, FC, ReactNode } from "react";
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLBaseElement> & {
-  children: ReactNode
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: "outline" | "clear" | "solid" | "gradient" | "circle";
 }
-export const Button:FC<ButtonProps> = ({children})=>( <button
-  onClick={()=>void 0}
-  className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
->
- {children}
-</button>)
+
+export const Button: FC<ButtonProps> = ({
+  children,
+  onClick,
+  variant = "outline",
+}) => {
+  let btnVariantStyle = "";
+  switch (variant) {
+    case 'outline':
+      btnVariantStyle='bg-gradient-to-r from-secondary-2 to-primary-dark';
+      break;
+      case 'clear':
+        btnVariantStyle='bg-transparent text-white';
+        break;
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      className="relative p-[2px] overflow-hidden rounded-lg group max-w-sm"
+    >
+      <div className={`absolute inset-0 ${btnVariantStyle} rounded-lg`}></div>
+
+      <div className="relative px-6 py-2  dark:bg-tertiary rounded-md group-hover:bg-white transition-all duration-300">
+        <span className={`font-medium text-transparent bg-clip-text ${btnVariantStyle}`}>
+          {children}
+        </span>
+      </div>
+    </button>
+  );
+};

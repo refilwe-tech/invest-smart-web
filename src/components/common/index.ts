@@ -1,4 +1,6 @@
 export * from './nav-bar'
+export * from './button'
+export * from './auth-nav-bar'
 export * from './line'
 export * from './heading'
 export * from './table'

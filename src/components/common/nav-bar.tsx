@@ -1,77 +1,91 @@
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { HiOutlineUsers, HiDocument, HiOutlineUserGroup } from "react-icons/hi2";
-import { Link, useLocation } from "@tanstack/react-router";
+import {
+  HiOutlineUsers,
+  HiDocument,
+  HiOutlineUserGroup,
+} from "react-icons/hi2";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { Line } from "./line";
-import Logo from '../../assets/logo.png';
+import Logo from "../../assets/logo.png";
 
 export const NavBar = () => {
-
+  const navigate = useNavigate()
   const { pathname } = useLocation();
 
-  const isActive = (path:string) => pathname === path;
+  const isActive = (path: string) => pathname === path;
 
   const ROUTES = [
     {
-      path: '/admins',
-      icon: <HiOutlineUserGroup/>,
-      name: 'Admins'
-
+      path: "/admins",
+      icon: <HiOutlineUserGroup />,
+      name: "Admins",
     },
     {
-      path: '/users',
-      icon: <HiOutlineUsers/>,
-      name: 'Users'
-
+      path: "/users",
+      icon: <HiOutlineUsers />,
+      name: "Users",
     },
     {
-      path: '/investments',
-      icon: <HiOutlineUsers/>,
-      name: 'Investments'
-
+      path: "/investments",
+      icon: <HiOutlineUsers />,
+      name: "Investments",
     },
     {
-      path: '/reports',
-      icon: <HiDocument/>,
-      name: 'Reports'
+      path: "/reports",
+      icon: <HiDocument />,
+      name: "Reports",
+    },
+  ];
 
-    }
-  ]
-
-  const logout = ()=>void 0;
+  //const logout = (() => void 0)();
 
   return (
-    <div className="bg-[#1E3A8A] text-white h-full w-56 flex-shrink-0 p-4">
+    <div className="bg-gradient-to-br to-[#812DE2] from-[#423EE0] text-white h-full w-56 flex-shrink-0 p-4">
       <ul className="flex flex-col gap-4">
         <li key={0} className="pb-5">
           <Link
             to="/"
-            className="flex items-center gap-2 hover:text-blue-500 pb-1"
+            className="border-b-2 flex items-center gap-2 hover:text-blue-500 pb-1"
           >
-            <img src={Logo}/>
+            <img src={Logo} />
           </Link>
         </li>
-        {ROUTES?.map(({path,icon,name}, index) => (
+
+        {ROUTES?.map(({ path, icon, name }, index) => (
           <li key={index + 1}>
             <Link
               to={path}
               className="flex items-center gap-2 hover:text-blue-500 pb-1"
             >
-            {icon}
+              {icon}
               {name}
             </Link>
             {isActive(path) && <Line />}
           </li>
         ))}
       </ul>
-
-      <Link
-        onClick={logout}
-        to="/"
-        className="flex items-center  gap-2 absolute bottom-0 mb-6 hover:text-blue-500"
-      >
-       <RiLogoutCircleRLine  />
-        Logout
-      </Link>
+      <section className="absolute bottom-0 mb-6 flex flex-col gap-6">
+     
+          <Link
+            to="/profile"
+            className="flex gap-2 items-center hover:text-blue-500"
+          >
+            <img
+              src={`https://eu.ui-avatars.com/api/?name=${"firstName"}+${"lastName"}&background=1E2D40&color=fff`}
+              alt="profile"
+              className="w-8 h-8 rounded-full"
+            />
+            Profile
+          </Link>
+       
+        <Link
+          to="/login"
+          className="flex items-center  gap-2  hover:text-blue-500"
+        >
+          <RiLogoutCircleRLine className="w-8 h-8" />
+          Logout
+        </Link>
+      </section>
     </div>
   );
 };
