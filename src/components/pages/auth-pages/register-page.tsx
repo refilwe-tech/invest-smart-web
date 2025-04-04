@@ -1,10 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
 
 import { Button, GradientHeading } from "../../common";
-import { LoginForm, RegisterForm } from "../../forms";
+import { RegisterForm } from "../../forms";
 
-export const LoginPage = () => {
-  const navigate = useNavigate({from:'/login'});
+export const RegisterPage = () => {
+  const navigate = useNavigate({from:'/register'});
   const learnMore = ()=> navigate({to:'/'})
 
   return (
@@ -25,16 +25,16 @@ export const LoginPage = () => {
         <section className="grid gap-1">
           <h1 className="font-bold text-black text-xl">Hello!</h1>
           <p className="text-sm text-gray-500">
-          Welcome, would you like to access your account?
+          Create an account to get started.
         </p>
         </section>
 
        
-        <LoginForm />
+        <RegisterForm />
         <section className="flex gap-1">
-          <p className="text-sm text-gray-500">Don't have an account?</p>
-          <a href="/register" className="text-primary text-sm font-semibold">
-            Register
+          <p className="text-sm text-gray-500">Already have an account?</p>
+          <a href="/login" className="text-primary text-sm font-semibold">
+            Login
           </a>
         </section>
       </section>

@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "../../common";
+import { Button, GradientHeading } from "../../common";
 import { LineGraphImage } from "../../../assets";
 
 export const LandingPage = () => {
@@ -10,9 +10,9 @@ export const LandingPage = () => {
     <section className="bg-tertiary px-10 grid gap-10 grid-cols-2 min-h-screen place-items-center p-2">
       <section className="flex flex-col gap-5">
         <section className="flex flex-col gap-1">
-          <h1 className="font-extrabold text-8xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+          <GradientHeading>
             Invest Smart
-          </h1>
+          </GradientHeading>
           <h2 className="text-white font-bold text-6xl">Grow your money</h2>
         </section>
         <p className="text-white text-base text-left">
