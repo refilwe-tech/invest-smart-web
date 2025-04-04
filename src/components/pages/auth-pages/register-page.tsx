@@ -13,11 +13,12 @@ export const RegisterPage = () => {
       <section className="grid gap-3">
         <section className="flex flex-col gap-1">
           <GradientHeading>Smart Invest</GradientHeading>
-          <p className="text-base text-white">
+          <p className="text-base text-center text-white">
             Grow your money with confidence. Smart investing starts here.
           </p>
         </section>
-        <Button onClick={learnMore}>Learn More</Button>
+        <section className="text-center"> <Button onClick={learnMore}>Learn More</Button></section>
+       
       </section>
     </section>
     <section className="w-[40%] h-full bg-white grid place-items-center">
