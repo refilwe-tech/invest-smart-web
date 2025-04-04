@@ -5,6 +5,11 @@ export type NewUser = {
   lastName: string;
 };
 
+export type LoginUser = {
+  email: string;
+  password: string;
+};
+
 export const registerDto = ({email,password,firstName,lastName}:NewUser) => ({
   first_name: firstName,
   last_name: lastName,  

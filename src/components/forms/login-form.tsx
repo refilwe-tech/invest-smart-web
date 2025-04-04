@@ -1,26 +1,45 @@
-import { AnyFieldApi, useForm } from "@tanstack/react-form";
-import { Button, InputField } from "../common";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
-function FieldInfo({ field }: { field: AnyFieldApi }) {
-  return (
-    <>
-      {field.state.meta.isTouched && field.state.meta.errors.length ? (
-        <em>{field.state.meta.errors.join(",")}</em>
-      ) : null}
-      {field.state.meta.isValidating ? "Validating..." : null}
-    </>
-  );
-}
+import { Button, InputField } from "../common";
+import { authService, LoginUser } from "../../services";
+import { useAuthStore } from "../../store";
 
 export const LoginForm = () => {
+  const queryClient = useQueryClient();
+  const { setToken, setIsAuthenticated } = useAuthStore();
+  const navigate = useNavigate({ from: "/login" });
+  const goToHome = () => navigate({ to: "/home" });
+
+  const { mutateAsync } = useMutation(
+    {
+      mutationFn: authService.login,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+        const {token} = data;
+        setToken(token);
+        setIsAuthenticated(!!token);     
+        goToHome();
+      },
+    },
+    queryClient
+  );
+  const onSubmit = async (data: LoginUser) => {
+    try {
+      await mutateAsync(data);
+      alert("User registered successfully");
+    } catch (error) {
+      alert("Error registering user");
+    }
+  };
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
     onSubmit: ({ value }) => {
-      // Do something with form data
-      alert(JSON.stringify(value, null, 2));
+      onSubmit(value);
     },
   });
 
@@ -34,24 +53,8 @@ export const LoginForm = () => {
       }}
     >
       <div>
-        {/* A type-safe field component*/}
         <form.Field
           name="email"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "A first name is required"
-                : value.length < 3
-                  ? "First name must be at least 3 characters"
-                  : undefined,
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return (
-                value.includes("error") && 'No "error" allowed in first name'
-              );
-            },
-          }}
           children={(field) => (
             <InputField field={field} label="Email" type="email" />
           )}

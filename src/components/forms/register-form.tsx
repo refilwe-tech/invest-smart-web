@@ -12,9 +12,8 @@ export const RegisterForm = () => {
   const { mutateAsync } = useMutation(
     {
       mutationFn: authService.register,
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
-        console.log(data);
         goToLogin();
       },
     },
