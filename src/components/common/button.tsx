@@ -37,13 +37,13 @@ export const Button: FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className="relative p-[2px] overflow-hidden rounded-lg group max-w-sm"
+      className="relative p-[2px] overflow-hidden rounded-lg group"
     >
       <div className={`absolute inset-0 ${btnVariantStyle} rounded-lg`}></div>
 
-      <div className="relative px-6 py-2  dark:bg-tertiary rounded-md group-hover:bg-white transition-all duration-300">
+      <div className="relative px-6 py-2 dark:bg-tertiary rounded-md group-hover:bg-white group-hover:text-tertiary transition-all duration-300">
         <span
-          className={`font-medium text-transparent bg-clip-text ${btnVariantStyle}`}
+          className={`font-medium text-transparent hover:text-tertiary bg-clip-text ${btnVariantStyle}`}
         >
           {children}
         </span>

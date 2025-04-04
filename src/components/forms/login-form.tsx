@@ -73,7 +73,7 @@ export const LoginForm = () => {
         children={([canSubmit, isSubmitting]) => (
           <section
             id="submit"
-            className="flex items-center w-full flex-col gap-2"
+            className="grid place-items-center  w-full flex-col gap-2"
           >
             <Button variant="solid" type="submit" disabled={!canSubmit}>
               {isSubmitting ? "..." : "Login"}

@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
+import toast from "react-hot-toast";
 
 import { Button, InputField } from "../common";
 import { authService, NewUser } from "../../services";
@@ -22,9 +23,9 @@ export const RegisterForm = () => {
   const onSubmit = async (data: NewUser) => {
     try {
       await mutateAsync(data);
-      alert("User registered successfully");
+      toast.success("User registered successfully");
     } catch (error) {
-      alert("Error registering user");
+      toast.error("Error registering user");
     }
   };
 
@@ -55,7 +56,6 @@ export const RegisterForm = () => {
       }}
     >
       <div>
-        {/* A type-safe field component*/}
         <form.Field
           name="firstName"
           validators={{

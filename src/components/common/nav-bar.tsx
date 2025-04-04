@@ -4,13 +4,18 @@ import {
   HiDocument,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Line } from "./line";
 import Logo from "../../assets/logo.png";
+import { useAuthStore } from "../../store";
 
 export const NavBar = () => {
-  const navigate = useNavigate()
   const { pathname } = useLocation();
+  const { setIsAuthenticated, setToken } = useAuthStore();
+  const logout = () => {
+    setIsAuthenticated(false);
+    setToken(null);
+  };
 
   const isActive = (path: string) => pathname === path;
 
@@ -36,8 +41,6 @@ export const NavBar = () => {
       name: "Reports",
     },
   ];
-
-  //const logout = (() => void 0)();
 
   return (
     <div className="bg-gradient-to-br to-[#812DE2] from-[#423EE0] text-white h-full w-56 flex-shrink-0 p-4">
@@ -79,6 +82,7 @@ export const NavBar = () => {
           </Link>
        
         <Link
+        onClick={logout}
           to="/login"
           className="flex items-center  gap-2  hover:text-blue-500"
         >
