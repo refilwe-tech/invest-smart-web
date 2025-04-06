@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 import { useForm } from "@tanstack/react-form";
 
 import { Button, InputField } from "../common";
@@ -17,7 +18,7 @@ export const LoginForm = () => {
       mutationFn: authService.login,
       onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
-        const {token} = data;
+        const { token } = data;
         setToken(token);
         setIsAuthenticated(!!token);     
         goToHome();
@@ -28,9 +29,8 @@ export const LoginForm = () => {
   const onSubmit = async (data: LoginUser) => {
     try {
       await mutateAsync(data);
-      alert("User registered successfully");
     } catch (error) {
-      alert("Error registering user");
+      toast.error(error as string);
     }
   };
   const form = useForm({
