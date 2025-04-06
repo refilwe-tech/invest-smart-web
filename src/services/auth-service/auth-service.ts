@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../../../config";
-import { LoginUser, NewUser, registerDto } from "./DTOs";
+import { LoginUser, NewUser, newUserDto } from "./DTOs";
 const { hostUrl } = config;
 
 const authBaseUrl = `${hostUrl}/auth`;
@@ -10,7 +10,7 @@ const AuthUrls = {
 };
 
 const register = (formData: NewUser) => {
-  const dto = registerDto(formData);
+  const dto = newUserDto(formData);
   return axios
     .post(AuthUrls.register, dto, {
       headers: {

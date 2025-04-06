@@ -2,6 +2,7 @@ import axios from "axios";
 import config from "../../../config";
 import { User } from "./models/models";
 import { profileDto } from "./dto/dto";
+import { NewUser, newUserDto } from "../auth-service";
 const { hostUrl } = config;
 
 const baseUrl = `${hostUrl}/users`;
@@ -65,8 +66,22 @@ const updateUser = (user: User) => {
     .then((response) => response.data);
 };
 
+const createUser = (formData: NewUser) => {
+  const dto = newUserDto(formData);
+  return axios
+    .post(UsersUrls.users, dto, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
 export default {
   getUsers,
+  createUser,
   updateUser,
   deleteUser,
   getUserById,

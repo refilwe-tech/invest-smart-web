@@ -21,6 +21,8 @@ import { Route as InvestImport } from './routes/invest'
 import { Route as HomeImport } from './routes/home'
 import { Route as AdminsImport } from './routes/admins'
 import { Route as IndexImport } from './routes/index'
+import { Route as UsersNewImport } from './routes/users.new'
+import { Route as AdminsNewImport } from './routes/admins.new'
 
 // Create/Update Routes
 
@@ -82,6 +84,18 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const UsersNewRoute = UsersNewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => UsersRoute,
+} as any)
+
+const AdminsNewRoute = AdminsNewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AdminsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -158,14 +172,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersImport
       parentRoute: typeof rootRoute
     }
+    '/admins/new': {
+      id: '/admins/new'
+      path: '/new'
+      fullPath: '/admins/new'
+      preLoaderRoute: typeof AdminsNewImport
+      parentRoute: typeof AdminsImport
+    }
+    '/users/new': {
+      id: '/users/new'
+      path: '/new'
+      fullPath: '/users/new'
+      preLoaderRoute: typeof UsersNewImport
+      parentRoute: typeof UsersImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AdminsRouteChildren {
+  AdminsNewRoute: typeof AdminsNewRoute
+}
+
+const AdminsRouteChildren: AdminsRouteChildren = {
+  AdminsNewRoute: AdminsNewRoute,
+}
+
+const AdminsRouteWithChildren =
+  AdminsRoute._addFileChildren(AdminsRouteChildren)
+
+interface UsersRouteChildren {
+  UsersNewRoute: typeof UsersNewRoute
+}
+
+const UsersRouteChildren: UsersRouteChildren = {
+  UsersNewRoute: UsersNewRoute,
+}
+
+const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admins': typeof AdminsRoute
+  '/admins': typeof AdminsRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -173,12 +222,14 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
-  '/users': typeof UsersRoute
+  '/users': typeof UsersRouteWithChildren
+  '/admins/new': typeof AdminsNewRoute
+  '/users/new': typeof UsersNewRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admins': typeof AdminsRoute
+  '/admins': typeof AdminsRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -186,13 +237,15 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
-  '/users': typeof UsersRoute
+  '/users': typeof UsersRouteWithChildren
+  '/admins/new': typeof AdminsNewRoute
+  '/users/new': typeof UsersNewRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/admins': typeof AdminsRoute
+  '/admins': typeof AdminsRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -200,7 +253,9 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
-  '/users': typeof UsersRoute
+  '/users': typeof UsersRouteWithChildren
+  '/admins/new': typeof AdminsNewRoute
+  '/users/new': typeof UsersNewRoute
 }
 
 export interface FileRouteTypes {
@@ -216,6 +271,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/reports'
     | '/users'
+    | '/admins/new'
+    | '/users/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -228,6 +285,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/reports'
     | '/users'
+    | '/admins/new'
+    | '/users/new'
   id:
     | '__root__'
     | '/'
@@ -240,12 +299,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/reports'
     | '/users'
+    | '/admins/new'
+    | '/users/new'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminsRoute: typeof AdminsRoute
+  AdminsRoute: typeof AdminsRouteWithChildren
   HomeRoute: typeof HomeRoute
   InvestRoute: typeof InvestRoute
   InvestmentsRoute: typeof InvestmentsRoute
@@ -253,12 +314,12 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ReportsRoute: typeof ReportsRoute
-  UsersRoute: typeof UsersRoute
+  UsersRoute: typeof UsersRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminsRoute: AdminsRoute,
+  AdminsRoute: AdminsRouteWithChildren,
   HomeRoute: HomeRoute,
   InvestRoute: InvestRoute,
   InvestmentsRoute: InvestmentsRoute,
@@ -266,7 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ReportsRoute: ReportsRoute,
-  UsersRoute: UsersRoute,
+  UsersRoute: UsersRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -295,7 +356,10 @@ export const routeTree = rootRoute
       "filePath": "index.tsx"
     },
     "/admins": {
-      "filePath": "admins.tsx"
+      "filePath": "admins.tsx",
+      "children": [
+        "/admins/new"
+      ]
     },
     "/home": {
       "filePath": "home.tsx"
@@ -319,7 +383,18 @@ export const routeTree = rootRoute
       "filePath": "reports.tsx"
     },
     "/users": {
-      "filePath": "users.tsx"
+      "filePath": "users.tsx",
+      "children": [
+        "/users/new"
+      ]
+    },
+    "/admins/new": {
+      "filePath": "admins.new.tsx",
+      "parent": "/admins"
+    },
+    "/users/new": {
+      "filePath": "users.new.tsx",
+      "parent": "/users"
     }
   }
 }

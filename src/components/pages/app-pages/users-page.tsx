@@ -3,12 +3,15 @@ import { useQuery } from "@tanstack/react-query";
 import { User, UserApi, userModel, userService } from "../../../services";
 import { DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 
 export const UsersPage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: userService.getUsers,
   });
+  const navigate = useNavigate({from:'/users'});
+  const goToNewUser = ()=>navigate({to:'/users/new'})
 
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
@@ -46,20 +49,26 @@ export const UsersPage = () => {
   ];
 
   return (
-    <section className="flex flex-col gap-4">
-      <Heading heading="Users" />
-      <section className="flex justify-end items-center">
-        <button
-          onClick={() => void 0}
-          className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
-        >
-          Add User
-        </button>
-      </section>
-      <Container>
-        <Table data={data?.users ?? []} columns={columns} loading={isLoading} />
-      </Container>
-      {/*       {isOpen && (
+    <>
+      <Outlet />
+      <section className="flex flex-col gap-4">
+        <Heading heading="Users" />
+        <section className="flex justify-end items-center">
+          <button
+            onClick={goToNewUser}
+            className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
+          >
+            Add User
+          </button>
+        </section>
+        <Container>
+          <Table
+            data={data?.users ?? []}
+            columns={columns}
+            loading={isLoading}
+          />
+        </Container>
+        {/*       {isOpen && (
         <div className="fixed top-0 right-0 w-1/3 h-full rounded-lg shadow-lg bg-white z-50">
           <section className="flex justify-end p-4">
             <button onClick={closeModal}>
@@ -83,6 +92,7 @@ export const UsersPage = () => {
           </div>
         </div>
       )} */}
-    </section>
+      </section>
+    </>
   );
 };
