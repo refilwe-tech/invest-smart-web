@@ -2,8 +2,10 @@ import axios from "axios";
 import config from "../../../config";
 const { hostUrl } = config;
 
+const investmentBaseUrl = `${hostUrl}/investments`
 const InvestmentUrls = {
-  investments: `${hostUrl}/investments`,
+  investments: `${investmentBaseUrl}`,
+  investment:(id:string)=>`${investmentBaseUrl}/${id}`
 };
 
 const getInvestments = () => {
@@ -16,7 +18,14 @@ const getInvestments = () => {
     .then((response) => response.data);
 };
 
+const deleteInvestment = (id:string)=>{
+  return axios
+  .delete(InvestmentUrls.investment(id))
+  .then((response) => response.data);
+}
+
 
 export default {
   getInvestments,
+  deleteInvestment,
 };
