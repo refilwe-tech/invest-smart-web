@@ -18,7 +18,7 @@ export const HomePage = () => {
   
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="py-3">Welcome <strong>{`${user?.firstName ?? ""}`}</strong></h3>
+      <h3 className="py-3 text-lg">Welcome <strong>{`${user?.firstName ?? ""}`}</strong></h3>
       {isLoading ? (
         <section className="flex justify-center gap-2">
           <ClipLoader className=" text-primary" /> Loading...

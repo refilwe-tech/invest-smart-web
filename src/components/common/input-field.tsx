@@ -4,6 +4,7 @@ import { AnyFieldApi } from "@tanstack/react-form";
 import { FieldInfo } from "./field-info";
 
 export type InputFieldProps = {
+  disabled?:boolean;
   field: AnyFieldApi;
   label?: string;
   type?: React.HTMLInputTypeAttribute;
@@ -13,10 +14,12 @@ export const InputField: FC<InputFieldProps> = ({
   field,
   label = "",
   type = "text",
+  disabled=false
 }) => {
   return (
-    <section id="input-field">
+    <section id="input-field w-full">
       <input
+      disabled={disabled}
         type={type}
         id={field.name}
         name={field.name}

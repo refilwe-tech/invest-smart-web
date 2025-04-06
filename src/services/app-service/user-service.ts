@@ -1,12 +1,14 @@
 import axios from "axios";
 import config from "../../../config";
+import { User } from "./models/models";
+import { profileDto } from "./dto/dto";
 const { hostUrl } = config;
 
 const baseUrl = `${hostUrl}/users`;
 
 const UsersUrls = {
   users: baseUrl,
-  user: (id:string)=> `${baseUrl}/${id}`,
+  user: (id: string) => `${baseUrl}/${id}`,
   currentUser: `${baseUrl}/current`,
   admins: `${baseUrl}/admins`,
 };
@@ -15,9 +17,7 @@ const getUsers = () => {
   return axios
     .get(`${UsersUrls.users}`, {
       headers: {
-      
         "ngrok-skip-browser-warning": true,
-        
       },
     })
     .then((response) => response.data);
@@ -37,7 +37,7 @@ const getCurrentUser = () => {
   return axios
     .get(`${UsersUrls.currentUser}`, {
       headers: {
-        "Authorization":`Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
         "ngrok-skip-browser-warning": true,
       },
     })
@@ -54,14 +54,20 @@ const getUserById = (id: string) => {
     .then((response) => response.data);
 };
 
-const deleteUser = (id:string, )=>{
+const deleteUser = (id: string) => {
+  return axios.delete(UsersUrls.user(id)).then((response) => response.data);
+};
+
+const updateUser = (user: User) => {
+  const dto = profileDto(user);
   return axios
-    .delete(UsersUrls.user(id))
+    .put(UsersUrls.user(user?.id),dto)
     .then((response) => response.data);
-}
+};
 
 export default {
   getUsers,
+  updateUser,
   deleteUser,
   getUserById,
   getAdminUsers,
