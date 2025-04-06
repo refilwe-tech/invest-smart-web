@@ -1,16 +1,9 @@
 import { Container } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
-import { userService } from "../../../services";
-import { Heading, Table } from "../../common";
+import { UserApi, userService } from "../../../services";
+import { DeleteButton, EditButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 
-export type userApiType = {
-  user_id:string;
-  first_name:string;
-  last_name:string
-  phone_number:string;
-  email:string
-}
 export const AdminUsersPage = () => {
 
  const { data, isLoading } = useQuery({
@@ -18,7 +11,7 @@ export const AdminUsersPage = () => {
      queryFn: userService.getAdminUsers,
    });
 
-   const columnHelper = createColumnHelper<userApiType>();
+   const columnHelper = createColumnHelper<UserApi>();
    const columns = [
     columnHelper.accessor("user_id", {
       header: "ID",
@@ -34,6 +27,24 @@ export const AdminUsersPage = () => {
     }),
     columnHelper.accessor("email", {
       header: "Email",
+    }),
+    columnHelper.display({
+      id: "Actions",
+      cell: ({ row }) => {
+        const { user_id, user_role } = row.original;
+        return (
+          <div
+            className={`flex items-center gap-2`}
+          >
+           {/*  <EditButton
+              onEdit={() => onEdit(row.original)}
+              id={user_id} userRole={user_role}
+            />{" "}
+            | */}
+            <DeleteButton id={user_id} userRole={user_role} />
+          </div>
+        );
+      },
     }),
    ];
 

@@ -20,6 +20,7 @@ export const LoginForm = () => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
         const { token } = data;
         setToken(token);
+        localStorage.setItem('token',token)
         setIsAuthenticated(!!token);     
         goToHome();
       },
@@ -35,8 +36,8 @@ export const LoginForm = () => {
   };
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "refilwe.dev@gmail.com",
+      password: "P@ssword1",
     },
     onSubmit: ({ value }) => {
       onSubmit(value);

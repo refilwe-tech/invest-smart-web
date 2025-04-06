@@ -1,7 +1,7 @@
 import { Container } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
-import { userService } from "../../../services";
-import { Heading, Table } from "../../common";
+import { User, UserApi, userModel, userService } from "../../../services";
+import { DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 
 export const UsersPage = () => {
@@ -11,7 +11,7 @@ export const UsersPage = () => {
      queryFn: userService.getUsers,
    });
 
-   const columnHelper = createColumnHelper();
+   const columnHelper = createColumnHelper<UserApi>();
    const columns = [
     columnHelper.accessor("user_id", {
       header: "ID",
@@ -28,6 +28,24 @@ export const UsersPage = () => {
     columnHelper.accessor("email", {
       header: "Email",
     }),
+        columnHelper.display({
+          id: "Actions",
+          cell: ({ row }) => {
+            const { user_id, user_role } = row.original;
+            return (
+              <div
+                className={`flex items-center gap-2`}
+              >
+               {/*  <EditButton
+                  onEdit={() => onEdit(row.original)}
+                  id={user_id} userRole={user_role}
+                />{" "}
+                | */}
+                <DeleteButton id={user_id} userRole={user_role} />
+              </div>
+            );
+          },
+        }),
    ];
 
   return (

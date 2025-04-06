@@ -5,6 +5,7 @@ import {
   HiOutlineBanknotes,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
+import { useEffect } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 
 import { Line } from "./line";
@@ -13,14 +14,15 @@ import { useAuthStore } from "../../store";
 import { useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../services";
 import { useUserStore } from "../../store/user-store";
-import { useEffect } from "react";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
+  const {token} = useAuthStore()
   const { data: currentUser, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => userService.getCurrentUser(),
     select: userModel,
+    enabled:!!token
   });
   const { pathname } = useLocation();
   const { setIsAuthenticated, setToken } = useAuthStore();

@@ -26,9 +26,9 @@ export const Table = <T extends Record<string, unknown>>({ data, columns, loadin
         <table className="min-w-full table-auto border-separate border-spacing-y-1 text-left">
           <thead className="rounded-lg">
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="bg-slate-100">
+              <tr key={headerGroup.id} className="bg-primary-dark">
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id}>
+                  <th className="text-white px-3" key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -42,9 +42,9 @@ export const Table = <T extends Record<string, unknown>>({ data, columns, loadin
           </thead>
           <tbody className="table-scroll">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr className="even:bg-gray-100" key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td className="px-3" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

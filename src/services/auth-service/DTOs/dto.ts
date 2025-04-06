@@ -15,6 +15,6 @@ export const registerDto = ({email,password,firstName,lastName}:NewUser) => ({
   last_name: lastName,  
   email,
   password,
-  user_role: "user",
+  user_role: "admin",
 }
 )
