@@ -89,7 +89,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({
           validators={{
             onChange: ({ value }) =>
               !value
-                ? "A first name is required"
+                ? "A last name is required"
                 : value.length < 3
                   ? "Last name must be at least 3 characters"
                   : undefined,
@@ -101,7 +101,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({
             },
           }}
           children={(field) => (
-            <InputField disabled={!isEdit} field={field} label="First Name" />
+            <InputField disabled={!isEdit} field={field} label="Last Name" />
           )}
         />
 

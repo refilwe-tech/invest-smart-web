@@ -15,6 +15,22 @@ export type UserApi = {
   is_active: boolean;
 };
 
+
+export interface UserFinancesAPI {
+  userId: string;
+  gross_salary: number;
+  net_salary: number;
+  age: number;
+}
+
+export interface UserFinances {
+  id?: string;
+  userId: string;
+  grossSalary: number;
+  netSalary: number;
+  age: number;
+}
+
 export type User = {
   id?: string;
   firstName: string;

@@ -90,8 +90,8 @@ export const EditAdminForm = () => {
           validators={{
             onChange: ({ value }) =>
               !value
-                ? "A first name is required"
-                : value.length < 3
+            ? "Last name must be at least 3 characters"
+            : value.length < 3
                   ? "Last name must be at least 3 characters"
                   : undefined,
             onChangeAsync: async ({ value }) => {
@@ -101,7 +101,7 @@ export const EditAdminForm = () => {
               );
             },
           }}
-          children={(field) => <InputField field={field} label="First Name" />}
+          children={(field) => <InputField field={field} label="Last Name" />}
         />
       </div>
       <div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../../config";
-import { User } from "./models/models";
-import { profileDto } from "./dto/dto";
+import { User, UserFinances } from "./models/models";
+import { profileDto, userFinancialDto } from "./dto/dto";
 import { NewUser, newUserDto } from "../auth-service";
 const { hostUrl } = config;
 
@@ -66,6 +66,14 @@ const updateUser = (user: User) => {
     .then((response) => response.data);
 };
 
+const updateInvestment = (user: UserFinances) => {
+  const dto = userFinancialDto(user);
+  return axios
+    .put(UsersUrls.user(user?.id??''),dto)
+    .then((response) => response.data);
+};
+
+
 const createUser = (formData: NewUser) => {
   const dto = newUserDto(formData);
   return axios
@@ -86,5 +94,6 @@ export default {
   deleteUser,
   getUserById,
   getAdminUsers,
+  updateInvestment,
   getCurrentUser,
 };

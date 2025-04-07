@@ -2,9 +2,9 @@ import toast from "react-hot-toast";
 import { Button, InputField } from "../common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { investmentService, userService } from "@project/services";
+import { userService } from "@project/services";
 import { useForm } from "@tanstack/react-form";
-import { FC } from "react";
+
 
 // Define the investment data structure
 export interface InvestmentData {
@@ -13,8 +13,6 @@ export interface InvestmentData {
   gross_salary: number;
   net_salary: number;
   age: number;
-  createdAt?: string;
-  updatedAt?: string;
 }
 
 export type InvestmentFormProps = {
@@ -22,13 +20,18 @@ export type InvestmentFormProps = {
   isEdit: boolean;
 };
 
-export const InvestForm: FC<InvestmentFormProps> = ({
-  initialValues,
-  isEdit,
-}) => {
+export const InvestForm = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate({ from: "/investments" });
+  const navigate = useNavigate();
   const refresh = () => navigate({ to: "/investments" });
+  const isEdit = false;
+
+  const initialValues = {
+    grossSalary:0,
+    age:0,
+    netSalary:0,
+    userId:''
+  }
   
   /* isEdit 
       ? userService.updateInvestment 
@@ -39,7 +42,7 @@ export const InvestForm: FC<InvestmentFormProps> = ({
      ,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["investments"] });
-      toast.success(isEdit ? "Investment updated successfully" : "Investment profile created successfully");
+      toast.success(isEdit ? "Financial profile updated successfully" : "Investment profile created successfully");
       refresh();
     },
     onError: () => toast.error(isEdit ? "Failed to update investment details" : "Failed to create investment profile"),
@@ -81,7 +84,6 @@ export const InvestForm: FC<InvestmentFormProps> = ({
           }}
           children={(field) => (
             <InputField 
-              disabled={!isEdit} 
               field={field} 
               label="Gross Salary" 
               type="number"
@@ -106,7 +108,6 @@ export const InvestForm: FC<InvestmentFormProps> = ({
           }}
           children={(field) => (
             <InputField
-              disabled={!isEdit}
               field={field}
               label="Age"
               type="number"
@@ -133,7 +134,6 @@ export const InvestForm: FC<InvestmentFormProps> = ({
           }}
           children={(field) => (
             <InputField
-              disabled={!isEdit}
               field={field}
               label="Net Salary"
               type="number"
@@ -172,7 +172,7 @@ export const InvestForm: FC<InvestmentFormProps> = ({
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? "..." : isEdit ? "Update Investment Profile" : "Create Investment Profile"}
+              {isSubmitting ? "..." : "Create Investment Profile"}
             </Button>
           </section>
         )}

@@ -1,8 +1,12 @@
-import { User } from "../models/models";
+import { User, UserFinances } from "../models/models";
 
-export const profileDto = (user:User)=>({
-  last_name:user?.lastName,
+export const profileDto = (user: User) => ({
+  last_name: user?.lastName,
   first_name: user?.firstName,
   phone_number: user?.phoneNumber,
-  email:user?.email
-})
+  email: user?.email,
+});
+
+export const userFinancialDto = (user: UserFinances) => ({
+  age: user.age,
+});
