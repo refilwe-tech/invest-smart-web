@@ -1,18 +1,12 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { NavBar, AuthNavBar } from "../components";
 import { useAuthStore } from "../store";
-import { useEffect } from "react";
-
 export const Route = createRootRoute({
   component: () => {
-    useEffect(() => {
-      localStorage.clear();
-    }, []);
-
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, token } = useAuthStore();
     return (
       <main className="w-full h-screen flex flex-col">
-        {!isAuthenticated ? (
+        {!isAuthenticated && !token ? (
           <main className="flex flex-col h-full">
             <AuthNavBar />
             <section>

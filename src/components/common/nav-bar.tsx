@@ -1,4 +1,6 @@
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { IoPieChartOutline } from "react-icons/io5";
+import { GiReceiveMoney } from "react-icons/gi";
 import {
   HiOutlineUsers,
   HiDocument,
@@ -71,9 +73,19 @@ export const NavBar = () => {
     ],
     user: [
       {
-        path: "/invest",
+        path: "/plan",
+        icon: <IoPieChartOutline />,
+        name: "My Plan",
+      },
+      {
+        path: "/finances",
         icon: <HiOutlineBanknotes />,
-        name: "Invest",
+        name: "My Finances",
+      },
+      {
+        path: "/invest",
+        icon: <GiReceiveMoney />,
+        name: "Financial Calculator",
       },
     ],
   };

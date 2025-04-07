@@ -4,26 +4,31 @@ import { dashboardService } from "../../../services";
 import { TfiStatsUp } from "react-icons/tfi";
 import { HiUsers } from "react-icons/hi";
 import { ClipLoader } from "react-spinners";
-import { useUserStore } from "../../../store/user-store";
+import { USER_ROLES, useUserStore } from "../../../store/user-store";
 import { useAuthStore } from "../../../store";
+import { RiBankCard2Line, RiBankLine, RiMoneyDollarBoxFill, RiMoneyDollarBoxLine, RiMoneyPoundCircleLine, RiPlantLine } from "react-icons/ri";
+import { Link } from "@tanstack/react-router";
+import { HiBanknotes } from "react-icons/hi2";
 
 export const HomePage = () => {
   const { user } = useUserStore();
   const { token } = useAuthStore();
   const { data, isLoading } = useQuery({
     queryKey: ["counts"],
-    queryFn: ()=>dashboardService.getCounts(token??''),
-    enabled: !!token, 
+    queryFn: () => dashboardService.getCounts(token ?? ""),
+    enabled: !!token,
   });
-  
+
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="py-3 text-lg">Welcome <strong>{`${user?.firstName ?? ""}`}</strong></h3>
+      <h3 className="py-3 text-lg">
+        Welcome <strong>{`${user?.firstName ?? ""}`}</strong>
+      </h3>
       {isLoading ? (
         <section className="flex justify-center gap-2">
           <ClipLoader className=" text-primary" /> Loading...
         </section>
-      ) : (
+      ) : user.userRole === USER_ROLES.ADMIN ? (
         <section className="flex gap-4 w-full">
           <Container>
             <>
@@ -52,6 +57,31 @@ export const HomePage = () => {
                   {data?.totalInvestments}
                 </h2>
                 <p>Total Active Banks</p>
+              </section>
+            </>
+          </Container>
+        </section>
+      ) : (
+        <section className="flex gap-4 w-full">
+          <Container>
+            <>
+              <section className="flex justify-center items-center">
+                <h4 className="text-2xl text-center">See how your money will grow</h4>
+              </section>
+              <section className="flex flex-col gap-1 justify-center items-center p-4">
+              <RiPlantLine className="w-40 h-40"/>
+                <Link className="text-primary-dark" to='/invest'>Analyze Growth</Link>
+              </section>
+            </>
+          </Container>
+          <Container>
+            <>
+              <section className="flex justify-center items-center">
+                <h4 className="text-2xl text-center">Invest The Smart Way</h4>
+              </section>
+              <section className="flex flex-col gap-1 justify-center items-center p-4">
+              <RiBankLine className="w-40 h-40"/>
+                <Link className="text-primary-dark" to='/invest'>Start Investing</Link>
               </section>
             </>
           </Container>

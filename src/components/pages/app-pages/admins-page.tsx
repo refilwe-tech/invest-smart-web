@@ -25,7 +25,7 @@ export const AdminUsersPage = () => {
     </button>
   );
 
-  const openProfile = (id: string) => void id;
+  const openProfile = (id: string) => navigate({to:`/admins/${id}/edit`});
 
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [

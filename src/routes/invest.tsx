@@ -1,9 +1,6 @@
+import { InvestPage } from '@project/components'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/invest')({
-  component: RouteComponent,
+  component: InvestPage,
 })
-
-function RouteComponent() {
-  return <div>Hello "/invest"!</div>
-}
