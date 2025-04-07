@@ -11,6 +11,7 @@ const UsersUrls = {
   users: baseUrl,
   user: (id: string) => `${baseUrl}/${id}`,
   currentUser: `${baseUrl}/current`,
+  userFinances: (id: string) => `${baseUrl}/${id}/finances`,
   admins: `${baseUrl}/admins`,
 };
 
@@ -62,17 +63,16 @@ const deleteUser = (id: string) => {
 const updateUser = (user: User) => {
   const dto = profileDto(user);
   return axios
-    .put(UsersUrls.user(user?.id??''),dto)
+    .put(UsersUrls.user(user?.id ?? ""), dto)
     .then((response) => response.data);
 };
 
 const updateInvestment = (user: UserFinances) => {
   const dto = userFinancialDto(user);
   return axios
-    .put(UsersUrls.user(user?.id??''),dto)
+    .put(UsersUrls.userFinances(user?.userId ?? ""), dto)
     .then((response) => response.data);
 };
-
 
 const createUser = (formData: NewUser) => {
   const dto = newUserDto(formData);

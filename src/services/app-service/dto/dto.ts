@@ -9,4 +9,6 @@ export const profileDto = (user: User) => ({
 
 export const userFinancialDto = (user: UserFinances) => ({
   age: user.age,
+  gross_salary:user?.grossSalary,
+  net_salary:user?.netSalary
 });

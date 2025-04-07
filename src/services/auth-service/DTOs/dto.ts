@@ -3,7 +3,7 @@ export type NewUser = {
   password: string;
   firstName: string;
   lastName: string;
-  userRole?:string
+  userRole?: string;
 };
 
 export type LoginUser = {
@@ -11,11 +11,16 @@ export type LoginUser = {
   password: string;
 };
 
-export const newUserDto = ({email,password,firstName,lastName, userRole='user'}:NewUser) => ({
+export const newUserDto = ({
+  email,
+  password,
+  firstName,
+  lastName,
+  userRole = "user",
+}: NewUser) => ({
   first_name: firstName,
-  last_name: lastName,  
+  last_name: lastName,
   email,
   password,
   user_role: userRole,
-}
-)
+});

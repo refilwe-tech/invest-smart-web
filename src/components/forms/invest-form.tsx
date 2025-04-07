@@ -2,25 +2,19 @@ import toast from "react-hot-toast";
 import { Button, InputField } from "../common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { userService } from "@project/services";
+import { UserFinances, userService } from "@project/services";
 import { useForm } from "@tanstack/react-form";
+import { useUserStore } from "@project/store/user-store";
 
 
 // Define the investment data structure
-export interface InvestmentData {
-  id?: string;
-  userId: string;
-  gross_salary: number;
-  net_salary: number;
-  age: number;
-}
-
 export type InvestmentFormProps = {
-  initialValues: InvestmentData;
+  initialValues: UserFinances;
   isEdit: boolean;
 };
 
 export const InvestForm = () => {
+  const {user} = useUserStore();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const refresh = () => navigate({ to: "/investments" });
@@ -30,12 +24,9 @@ export const InvestForm = () => {
     grossSalary:0,
     age:0,
     netSalary:0,
-    userId:''
+    userId:user?.id??''
   }
   
-  /* isEdit 
-      ? userService.updateInvestment 
-      : userService.createInvestment, */
   const { mutateAsync } = useMutation({
     mutationFn: 
       userService.updateInvestment 
@@ -45,10 +36,10 @@ export const InvestForm = () => {
       toast.success(isEdit ? "Financial profile updated successfully" : "Investment profile created successfully");
       refresh();
     },
-    onError: () => toast.error(isEdit ? "Failed to update investment details" : "Failed to create investment profile"),
+    onError: () => toast.error("Failed to update investment details"),
   });
   
-  const onSubmit = async (data: InvestmentData) => mutateAsync(data);
+  const onSubmit = async (data: UserFinances) => mutateAsync(data);
 
   const form = useForm({
     defaultValues: initialValues,
@@ -73,12 +64,12 @@ export const InvestForm = () => {
     >
       <section className="flex flex-col gap-3">
         <form.Field
-          name="gross_salary"
+          name="grossSalary"
           validators={{
             onChange: ({ value }) =>
               value === undefined || value === null
                 ? "Gross salary is required"
-                : value < 0
+                : Number(value) < 0
                   ? "Gross salary cannot be negative"
                   : undefined,
           }}
@@ -87,9 +78,6 @@ export const InvestForm = () => {
               field={field} 
               label="Gross Salary" 
               type="number"
-              step="0.01"
-              min="0"
-              placeholder="Enter your gross salary"
             />
           )}
         />
@@ -121,37 +109,23 @@ export const InvestForm = () => {
       
       <section className="flex flex-col w-full gap-3">
         <form.Field
-          name="net_salary"
-          validators={{
-            onChange: ({ value }) =>
-              value === undefined || value === null
-                ? "Net salary is required"
-                : value < 0
-                  ? "Net salary cannot be negative"
-                  : value > field.state.value.gross_salary
-                    ? "Net salary cannot be greater than gross salary"
-                    : undefined,
-          }}
+          name="netSalary"
           children={(field) => (
             <InputField
               field={field}
               label="Net Salary"
               type="number"
-              step="0.01"
-              min="0"
-              placeholder="Enter your net salary"
             />
           )}
         />
         
-        {/* This space is kept empty to maintain grid alignment */}
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-400 mb-1">
             Estimated Tax Rate
           </label>
           <div className="h-10 flex items-center px-3 text-lg font-medium">
-            {form.getFieldValue("gross_salary") > 0 && form.getFieldValue("net_salary") > 0 ? (
-              `${(100 - (form.getFieldValue("net_salary") / form.getFieldValue("gross_salary") * 100)).toFixed(2)}%`
+            {form.getFieldValue("grossSalary") > 0 && form.getFieldValue("netSalary") > 0 ? (
+              `${(100 - (form.getFieldValue("netSalary") / form.getFieldValue("grossSalary") * 100)).toFixed(2)}%`
             ) : (
               "N/A"
             )}

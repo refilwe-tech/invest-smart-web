@@ -82,6 +82,17 @@ export const ProfileForm: FC<ProfileFormProps> = ({
             />
           )}
         />
+        <form.Field
+          name="grossSalary"
+          children={(field) => (
+            <InputField
+              field={field}
+              label="Gross Salary"
+              disabled
+              type="grossSalary"
+            />
+          )}
+        />
       </section>
       <section className="flex flex-col w-full gap-3">
         <form.Field
@@ -113,6 +124,17 @@ export const ProfileForm: FC<ProfileFormProps> = ({
               field={field}
               label="Phone Number"
               type="tel"
+            />
+          )}
+        />
+         <form.Field
+          name="netSalary"
+          children={(field) => (
+            <InputField
+              field={field}
+              label="Net Salary"
+              disabled
+              type="netSalary"
             />
           )}
         />

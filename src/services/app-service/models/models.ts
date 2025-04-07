@@ -6,6 +6,9 @@ export type CountsData = {
 export type UserApi = {
   user_id: string;
   first_name: string;
+  gross_salary?: string;
+  net_salary?: string;
+  age?: number;
   last_name: string;
   email: string;
   phone_number?: string;
@@ -15,7 +18,6 @@ export type UserApi = {
   is_active: boolean;
 };
 
-
 export interface UserFinancesAPI {
   userId: string;
   gross_salary: number;
@@ -24,7 +26,6 @@ export interface UserFinancesAPI {
 }
 
 export interface UserFinances {
-  id?: string;
   userId: string;
   grossSalary: number;
   netSalary: number;
@@ -36,6 +37,9 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
+  grossSalary?: string;
+  netSalary?: string;
+  age?: number;
   phoneNumber?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -57,7 +61,7 @@ export const userModel = ({
   created_at,
   updated_at,
   ...data
-}: UserApi):User => ({
+}: UserApi): User => ({
   id: data?.user_id ?? "",
   userRole: user_role ?? "",
   firstName: first_name ?? "",
@@ -66,5 +70,7 @@ export const userModel = ({
   createdAt: created_at ?? "",
   updatedAt: updated_at ?? "",
   isActive: is_active ?? false,
+  grossSalary: data?.gross_salary ?? 'R 0.00',
+  netSalary: data?.net_salary??'R 0.00',
   ...data,
 });
