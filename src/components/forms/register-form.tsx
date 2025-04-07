@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { Button, InputField } from "../common";
 import { authService, NewUser } from "../../services";
+import { AxiosError } from "axios";
 
 export const RegisterForm = () => {
   const queryClient = useQueryClient();
@@ -15,19 +16,16 @@ export const RegisterForm = () => {
       mutationFn: authService.register,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
+        toast.success("User registered successfully");
         goToLogin();
+      },
+      onError: ({ response }: AxiosError) => {
+        toast.error(response?.data?.error);
       },
     },
     queryClient
   );
-  const onSubmit = async (data: NewUser) => {
-    try {
-      await mutateAsync(data);
-      toast.success("User registered successfully");
-    } catch (error) {
-      toast.error("Error registering user");
-    }
-  };
+  const onSubmit = (data: NewUser) => mutateAsync(data);
 
   const form = useForm({
     defaultValues: {

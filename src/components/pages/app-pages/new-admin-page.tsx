@@ -6,10 +6,10 @@ import { MdOutlineCloseFullscreen } from "react-icons/md";
 
 export const NewAdminPage = () => {
   const location = useLocation();
-  const navigate = useNavigate({ from: "/admins/new" });
+  const navigate = useNavigate();
   const { pathname } = location;
   const isOpen = useMemo(() => pathname == "/admins/new", [pathname]);
-  const close = () => navigate({ to: "/admins" });
+  const close = () => navigate({ to: "/admins", replace:true });
 
   return (
     <section

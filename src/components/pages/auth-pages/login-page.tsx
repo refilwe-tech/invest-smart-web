@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 
 import { Button, GradientHeading } from "../../common";
-import { LoginForm, RegisterForm } from "../../forms";
+import { LoginForm } from "../../forms";
 
 export const LoginPage = () => {
   const navigate = useNavigate({ from: "/login" });

@@ -6,6 +6,7 @@ import { useForm } from "@tanstack/react-form";
 import { Button, InputField } from "../common";
 import { authService, LoginUser } from "../../services";
 import { useAuthStore } from "../../store";
+import { AxiosError } from "axios";
 
 export const LoginForm = () => {
   const queryClient = useQueryClient();
@@ -20,28 +21,23 @@ export const LoginForm = () => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
         const { token } = data;
         setToken(token);
-        localStorage.setItem('token',token)
-        setIsAuthenticated(!!token);     
+        localStorage.setItem("token", token);
+        setIsAuthenticated(!!token);
         goToHome();
       },
+      onError: ({ response }: AxiosError) =>
+        toast.error(response?.data.error),
     },
     queryClient
   );
-  const onSubmit = async (data: LoginUser) => {
-    try {
-      await mutateAsync(data);
-    } catch (error) {
-      toast.error(error as string);
-    }
-  };
+  const onSubmit = async (data: LoginUser) => mutateAsync(data);
+
   const form = useForm({
     defaultValues: {
-      email: "refilwe.dev@gmail.com",
-      password: "P@ssword1",
+      email: "",
+      password: "",
     },
-    onSubmit: ({ value }) => {
-      onSubmit(value);
-    },
+    onSubmit: ({ value }) => onSubmit(value),
   });
 
   return (
