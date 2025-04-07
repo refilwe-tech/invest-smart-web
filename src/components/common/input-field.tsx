@@ -17,7 +17,8 @@ export const InputField: FC<InputFieldProps> = ({
   disabled = false,
 }) => {
   return (
-    <section id="input-field w-full">
+    <section id="input-field w-full flex flex-col">
+      <label className="text-xs" htmlFor={field?.name}>{label}</label>
       <input
         disabled={disabled}
         type={type}
