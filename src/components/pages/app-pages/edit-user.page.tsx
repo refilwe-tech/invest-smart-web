@@ -1,15 +1,17 @@
 import { Heading } from "@project/components/common";
-import { UserForm } from "@project/components/forms";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { EditUserForm, UserForm } from "@project/components/forms";
+import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
 
-export const NewUserPage = () => {
+export const EditUserPage = () => {
   const location = useLocation();
+  const { userId } = useParams({ strict: false });
+
   const navigate = useNavigate();
   const { pathname } = location;
-  const isOpen = useMemo(() => pathname == "/users/new", [pathname]);
-  const close = ()=>navigate({to:"/users",'from':'/'})
+  const isOpen = useMemo(() => pathname == `/users/${userId}/edit`, [pathname]);
+  const close = () => navigate({ to: "/users" });
 
   return (
     <section
@@ -18,10 +20,10 @@ export const NewUserPage = () => {
       } sm:w-full sm:max-w-md`}
     >
       <button className="absolute top-0 right-0 p-5" onClick={close}>
-      <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
+        <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
       </button>
-      <Heading heading="Add New User"/>
-      <UserForm />
+      <Heading heading="Edit User" />
+      <EditUserForm />
     </section>
   );
 };

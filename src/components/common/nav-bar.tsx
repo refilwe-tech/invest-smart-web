@@ -17,12 +17,12 @@ import { useUserStore } from "../../store/user-store";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
-  const {token} = useAuthStore()
+  const { token } = useAuthStore();
   const { data: currentUser, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => userService.getCurrentUser(),
     select: userModel,
-    enabled:!!token
+    enabled: !!token,
   });
   const { pathname } = useLocation();
   const { setIsAuthenticated, setToken } = useAuthStore();
@@ -91,10 +91,11 @@ export const NavBar = () => {
         </li>
 
         {ROUTES?.[
-          currentUser?.userRole  as keyof typeof ROUTES ?? ("user")
+          (currentUser?.userRole as keyof typeof ROUTES) ?? "user"
         ]?.map(({ path, icon, name }, index) => (
           <li key={index + 1}>
             <Link
+              activeOptions={{ exact: true }}
               to={path}
               className="flex items-center gap-2 hover:text-blue-500 pb-1"
             >

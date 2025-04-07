@@ -23,6 +23,7 @@ import { Route as AdminsImport } from './routes/admins'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersNewImport } from './routes/users.new'
 import { Route as AdminsNewImport } from './routes/admins.new'
+import { Route as UsersUserIdEditImport } from './routes/users.$userId.edit'
 
 // Create/Update Routes
 
@@ -96,6 +97,12 @@ const AdminsNewRoute = AdminsNewImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => AdminsRoute,
+} as any)
+
+const UsersUserIdEditRoute = UsersUserIdEditImport.update({
+  id: '/$userId/edit',
+  path: '/$userId/edit',
+  getParentRoute: () => UsersRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -186,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersNewImport
       parentRoute: typeof UsersImport
     }
+    '/users/$userId/edit': {
+      id: '/users/$userId/edit'
+      path: '/$userId/edit'
+      fullPath: '/users/$userId/edit'
+      preLoaderRoute: typeof UsersUserIdEditImport
+      parentRoute: typeof UsersImport
+    }
   }
 }
 
@@ -204,10 +218,12 @@ const AdminsRouteWithChildren =
 
 interface UsersRouteChildren {
   UsersNewRoute: typeof UsersNewRoute
+  UsersUserIdEditRoute: typeof UsersUserIdEditRoute
 }
 
 const UsersRouteChildren: UsersRouteChildren = {
   UsersNewRoute: UsersNewRoute,
+  UsersUserIdEditRoute: UsersUserIdEditRoute,
 }
 
 const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
@@ -225,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
   '/users/new': typeof UsersNewRoute
+  '/users/$userId/edit': typeof UsersUserIdEditRoute
 }
 
 export interface FileRoutesByTo {
@@ -240,6 +257,7 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
   '/users/new': typeof UsersNewRoute
+  '/users/$userId/edit': typeof UsersUserIdEditRoute
 }
 
 export interface FileRoutesById {
@@ -256,6 +274,7 @@ export interface FileRoutesById {
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
   '/users/new': typeof UsersNewRoute
+  '/users/$userId/edit': typeof UsersUserIdEditRoute
 }
 
 export interface FileRouteTypes {
@@ -273,6 +292,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/admins/new'
     | '/users/new'
+    | '/users/$userId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -287,6 +307,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/admins/new'
     | '/users/new'
+    | '/users/$userId/edit'
   id:
     | '__root__'
     | '/'
@@ -301,6 +322,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/admins/new'
     | '/users/new'
+    | '/users/$userId/edit'
   fileRoutesById: FileRoutesById
 }
 
@@ -385,7 +407,8 @@ export const routeTree = rootRoute
     "/users": {
       "filePath": "users.tsx",
       "children": [
-        "/users/new"
+        "/users/new",
+        "/users/$userId/edit"
       ]
     },
     "/admins/new": {
@@ -394,6 +417,10 @@ export const routeTree = rootRoute
     },
     "/users/new": {
       "filePath": "users.new.tsx",
+      "parent": "/users"
+    },
+    "/users/$userId/edit": {
+      "filePath": "users.$userId.edit.tsx",
       "parent": "/users"
     }
   }

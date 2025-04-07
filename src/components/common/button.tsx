@@ -2,49 +2,85 @@ import { ButtonHTMLAttributes, FC, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: "outline" | "clear" | "solid" | "gradient" | "circle";
+  variant?: "outline" | "clear" | "solid" | "gradient" | "circle"|'negative';
 }
 
 export const Button: FC<ButtonProps> = ({
   children,
   onClick,
   variant = "outline",
+  className = "",
+  ...rest
 }) => {
-  let btnVariantStyle = "";
+  // Styles for the outer button container
+  let containerStyle = "relative p-[2px] overflow-hidden rounded-lg group";
+  
+  // Styles for the background layer
+  let backgroundStyle = "";
+  
+  // Styles for the content container
+  let contentContainerStyle = "relative px-6 py-2 transition-all duration-300";
+  
+  // Styles for the text content
+  let contentStyle = "font-medium";
+  
   switch (variant) {
     case "outline":
-      btnVariantStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      contentContainerStyle += " dark:bg-tertiary rounded-md group-hover:bg-transparent";
+      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white";
       break;
+      
     case "clear":
-      btnVariantStyle = "bg-transparent text-white";
+      containerStyle = "relative overflow-hidden group";
+      backgroundStyle = "bg-transparent";
+      contentContainerStyle += " bg-transparent";
+      contentStyle += " text-white";
       break;
+      
     case "solid":
-      btnVariantStyle = "bg-primary text-white";
+      containerStyle = "relative overflow-hidden rounded-lg group";
+      backgroundStyle = "bg-tertiary";
+      contentContainerStyle += " bg-transparent";
+      contentStyle += " text-white";
       break;
+
+      case "negative":
+        containerStyle = "relative overflow-hidden rounded-lg group";
+        backgroundStyle = "bg-red-500 ";
+        contentContainerStyle += " bg-transparent hover:bg-red-700";
+        contentStyle += " text-white";
+        break;
+      
     case "gradient":
-      btnVariantStyle =
-        "bg-gradient-to-r from-secondary-2 to-primary-dark text-white";
+      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      contentContainerStyle += " bg-transparent";
+      contentStyle += " text-white";
       break;
+      
     case "circle":
-      btnVariantStyle =
-        "bg-gradient-to-r from-secondary-2 to-primary-dark text-white rounded-full";
+      containerStyle = "relative p-[2px] overflow-hidden rounded-full group";
+      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      contentContainerStyle += " rounded-full bg-transparent";
+      contentStyle += " text-white";
       break;
+      
     default:
-      btnVariantStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      contentContainerStyle += " dark:bg-tertiary rounded-md group-hover:bg-transparent";
+      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white";
       break;
   }
 
   return (
     <button
       onClick={onClick}
-      className="relative p-[2px] overflow-hidden rounded-lg group"
+      className={`${containerStyle} ${className}`}
+      {...rest}
     >
-      <div className={`absolute inset-0 ${btnVariantStyle} rounded-lg`}></div>
-
-      <div className="relative px-6 py-2 dark:bg-tertiary rounded-md group-hover:bg-white group-hover:text-tertiary transition-all duration-300">
-        <span
-          className={`font-medium text-transparent hover:text-tertiary bg-clip-text ${btnVariantStyle}`}
-        >
+      <div className={`absolute inset-0 ${backgroundStyle}`}></div>
+      <div className={contentContainerStyle}>
+        <span className={contentStyle}>
           {children}
         </span>
       </div>

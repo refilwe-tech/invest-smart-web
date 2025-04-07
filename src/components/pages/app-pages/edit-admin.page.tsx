@@ -4,12 +4,12 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
 
-export const NewUserPage = () => {
+export const EditAdminPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
-  const isOpen = useMemo(() => pathname == "/users/new", [pathname]);
-  const close = ()=>navigate({to:"/users",'from':'/'})
+  const isOpen = useMemo(() => pathname == "/admins/${id}/edit", [pathname]);
+  const close = () => navigate({ to: "/admins", replace:true });
 
   return (
     <section
@@ -18,10 +18,10 @@ export const NewUserPage = () => {
       } sm:w-full sm:max-w-md`}
     >
       <button className="absolute top-0 right-0 p-5" onClick={close}>
-      <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
+        <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
       </button>
-      <Heading heading="Add New User"/>
-      <UserForm />
+      <Heading heading="Add New Admin" />
+      <UserForm userRole="admin" />
     </section>
   );
 };

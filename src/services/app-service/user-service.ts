@@ -62,7 +62,7 @@ const deleteUser = (id: string) => {
 const updateUser = (user: User) => {
   const dto = profileDto(user);
   return axios
-    .put(UsersUrls.user(user?.id),dto)
+    .put(UsersUrls.user(user?.id??''),dto)
     .then((response) => response.data);
 };
 

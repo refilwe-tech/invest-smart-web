@@ -1,17 +1,31 @@
 import { Container } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi, userService } from "../../../services";
-import { DeleteButton, EditButton, Heading, Table } from "../../common";
+import { DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
+import { LiaUserEditSolid } from "react-icons/lia";
+import { useUserStore } from "@project/store/user-store";
 
 export const AdminUsersPage = () => {
+  const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({
     queryKey: ["admins"],
     queryFn: userService.getAdminUsers,
   });
   const navigate = useNavigate({ from: "/admins" });
   const goToNewUser = () => navigate({ to: "/admins/new" });
+
+  const EditBtn = ({ onClick }: { onClick: () => void }) => (
+    <button
+      className={`text-tertiary hover:text-blue-700 p-2 font-medium flex gap-2`}
+      onClick={onClick}
+    >
+      <LiaUserEditSolid className="w-5 h-5" />
+    </button>
+  );
+
+  const openProfile = (id: string) => void id;
 
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
@@ -35,14 +49,12 @@ export const AdminUsersPage = () => {
       cell: ({ row }) => {
         const { user_id, user_role } = row.original;
         return (
-          <div className={`flex items-center gap-2`}>
-            {/*  <EditButton
-              onEdit={() => onEdit(row.original)}
-              id={user_id} userRole={user_role}
-            />{" "}
-            | */}
-            <DeleteButton id={user_id} userRole={user_role} />
-          </div>
+          currentUser?.id !== row?.original.user_id && (
+            <div className={`flex items-center gap-2`}>
+              <EditBtn onClick={() => openProfile(user_id)} /> |
+              <DeleteButton id={user_id} userRole={user_role} />
+            </div>
+          )
         );
       },
     }),

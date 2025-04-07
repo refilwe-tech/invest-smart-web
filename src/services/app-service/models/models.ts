@@ -16,14 +16,14 @@ export type UserApi = {
 };
 
 export type User = {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
-  createdAt: string;
-  updatedAt: string;
-  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  isActive?: boolean;
   userRole: string;
 };
 

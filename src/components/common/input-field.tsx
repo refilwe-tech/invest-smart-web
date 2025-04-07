@@ -4,7 +4,7 @@ import { AnyFieldApi } from "@tanstack/react-form";
 import { FieldInfo } from "./field-info";
 
 export type InputFieldProps = {
-  disabled?:boolean;
+  disabled?: boolean;
   field: AnyFieldApi;
   label?: string;
   type?: React.HTMLInputTypeAttribute;
@@ -14,16 +14,16 @@ export const InputField: FC<InputFieldProps> = ({
   field,
   label = "",
   type = "text",
-  disabled=false
+  disabled = false,
 }) => {
   return (
     <section id="input-field w-full">
       <input
-      disabled={disabled}
+        disabled={disabled}
         type={type}
         id={field.name}
         name={field.name}
-        placeholder={label}
+        placeholder={(type === "password" ? "************" : label)}
         value={field.state.value}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
