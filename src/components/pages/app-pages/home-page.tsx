@@ -6,9 +6,8 @@ import { HiUsers } from "react-icons/hi";
 import { ClipLoader } from "react-spinners";
 import { USER_ROLES, useUserStore } from "../../../store/user-store";
 import { useAuthStore } from "../../../store";
-import { RiBankCard2Line, RiBankLine, RiMoneyDollarBoxFill, RiMoneyDollarBoxLine, RiMoneyPoundCircleLine, RiPlantLine } from "react-icons/ri";
+import { RiBankLine, RiPlantLine } from "react-icons/ri";
 import { Link } from "@tanstack/react-router";
-import { HiBanknotes } from "react-icons/hi2";
 
 export const HomePage = () => {
   const { user } = useUserStore();
@@ -28,7 +27,7 @@ export const HomePage = () => {
         <section className="flex justify-center gap-2">
           <ClipLoader className=" text-primary" /> Loading...
         </section>
-      ) : user.userRole === USER_ROLES.ADMIN ? (
+      ) : [USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN].includes(user.userRole) ? (
         <section className="flex gap-4 w-full">
           <Container>
             <>
@@ -66,11 +65,15 @@ export const HomePage = () => {
           <Container>
             <>
               <section className="flex justify-center items-center">
-                <h4 className="text-2xl text-center">See how your money will grow</h4>
+                <h4 className="text-2xl text-center">
+                  See how your money will grow
+                </h4>
               </section>
               <section className="flex flex-col gap-1 justify-center items-center p-4">
-              <RiPlantLine className="w-40 h-40"/>
-                <Link className="text-primary-dark" to='/invest'>Analyze Growth</Link>
+                <RiPlantLine className="w-40 h-40" />
+                <Link className="text-primary-dark" to="/invest">
+                  Analyze Growth
+                </Link>
               </section>
             </>
           </Container>
@@ -80,8 +83,10 @@ export const HomePage = () => {
                 <h4 className="text-2xl text-center">Invest The Smart Way</h4>
               </section>
               <section className="flex flex-col gap-1 justify-center items-center p-4">
-              <RiBankLine className="w-40 h-40"/>
-                <Link className="text-primary-dark" to='/invest'>Start Investing</Link>
+                <RiBankLine className="w-40 h-40" />
+                <Link className="text-primary-dark" to="/invest">
+                  Start Investing
+                </Link>
               </section>
             </>
           </Container>

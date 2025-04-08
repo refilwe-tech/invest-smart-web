@@ -5,7 +5,7 @@ import { DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { LiaUserEditSolid } from "react-icons/lia";
-import { useUserStore } from "@project/store/user-store";
+import { USER_ROLES, useUserStore } from "@project/store/user-store";
 
 export const AdminUsersPage = () => {
   const { user: currentUser } = useUserStore();
@@ -49,6 +49,7 @@ export const AdminUsersPage = () => {
       cell: ({ row }) => {
         const { user_id, user_role } = row.original;
         return (
+          currentUser?.userRole === USER_ROLES.SUPER_ADMIN &&
           currentUser?.id !== row?.original.user_id && (
             <div className={`flex items-center gap-2`}>
               <EditBtn onClick={() => openProfile(user_id)} /> |
@@ -65,14 +66,16 @@ export const AdminUsersPage = () => {
       <Outlet />
       <section className="flex flex-col gap-4">
         <Heading heading="Admins" />
-        <section className="flex justify-end items-center">
-          <button
-            onClick={goToNewUser}
-            className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
-          >
-            Add Admin
-          </button>
-        </section>
+        {currentUser?.userRole === USER_ROLES.SUPER_ADMIN && (
+          <section className="flex justify-end items-center">
+            <button
+              onClick={goToNewUser}
+              className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
+            >
+              Add Admin
+            </button>
+          </section>
+        )}
         <Container>
           <Table
             data={data?.users ?? []}

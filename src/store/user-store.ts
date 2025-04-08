@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 export const USER_ROLES = {
   ADMIN: "admin",
   USER: "user",
+  SUPER_ADMIN:'super_admin'
 }
 export interface UserStore {
   user: {

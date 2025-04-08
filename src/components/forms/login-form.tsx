@@ -26,7 +26,7 @@ export const LoginForm = () => {
         goToHome();
       },
       onError: ({ response }: AxiosError) =>
-        toast.error(response?.data.error),
+        toast.error(response?.data?.error ?? "Check that you're connected."),
     },
     queryClient
   );
@@ -34,7 +34,7 @@ export const LoginForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: "refilwe.dev+admin@gmail.com",
+      email: "admin@investsmart.com",
       password: "P@ssword1",
     },
     onSubmit: ({ value }) => onSubmit(value),
