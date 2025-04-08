@@ -8,6 +8,7 @@ import { useAuthStore } from "@project/store";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { USER_ROLES } from "@project/store/user-store";
 
 export const ProfilePage = () => {
   const { setIsAuthenticated, setToken } = useAuthStore();
@@ -41,8 +42,9 @@ export const ProfilePage = () => {
 
   const onDelete = () => mutate();
 
-  // Admin badge display logic
-  const isAdmin = data?.userRole === "admin";
+  const isAdmin = [USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN].includes(
+    data?.userRole ?? ""
+  );
 
   return (
     <>
@@ -130,14 +132,16 @@ export const ProfilePage = () => {
             }
           }
         />
-        <section className="grid place-items-center p-4 absolute bottom-0 right-0 ">
-          <button
-            onClick={() => setIsDelete(true)}
-            className="text-sm p-3 bg-red-500 rounded-3xl text-white hover:bg-red-900"
-          >
-            Delete Account
-          </button>
-        </section>
+        {data?.userRole !== USER_ROLES.SUPER_ADMIN && (
+          <section className="grid place-items-center p-4 absolute bottom-0 right-0 ">
+            <button
+              onClick={() => setIsDelete(true)}
+              className="text-sm p-3 bg-red-500 rounded-3xl text-white hover:bg-red-900"
+            >
+              Delete Account
+            </button>
+          </section>
+        )}
       </section>
     </>
   );
