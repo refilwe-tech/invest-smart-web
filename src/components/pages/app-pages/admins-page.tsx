@@ -11,7 +11,7 @@ export const AdminUsersPage = () => {
   const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({
     queryKey: ["admins"],
-    queryFn: userService.getAdminUsers,
+    queryFn: () => userService.getAdminUsers(),
   });
   const navigate = useNavigate({ from: "/admins" });
   const goToNewUser = () => navigate({ to: "/admins/new" });
@@ -25,7 +25,7 @@ export const AdminUsersPage = () => {
     </button>
   );
 
-  const openProfile = (id: string) => navigate({to:`/admins/${id}/edit`});
+  const openProfile = (id: string) => navigate({ to: `/admins/${id}/edit` });
 
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [

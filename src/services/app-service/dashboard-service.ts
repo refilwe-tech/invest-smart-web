@@ -1,7 +1,6 @@
 import axios from "axios";
 import config from "../../../config";
 import { countsModel } from "./models/models";
-import { useAuthStore } from "../../store";
 const { hostUrl } = config;
 
 const DashboardUrls = {
@@ -13,6 +12,7 @@ const getCounts = (token:string) => {
   return axios
     .get(`${DashboardUrls.counts}`, {
       headers: {
+        "ngrok-skip-browser-warning": true,
         Authorization: `Bearer ${token}`,
       },
     })

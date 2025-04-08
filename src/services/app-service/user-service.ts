@@ -20,6 +20,7 @@ const getUsers = () => {
     .get(`${UsersUrls.users}`, {
       headers: {
         "ngrok-skip-browser-warning": true,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => response.data);
@@ -30,6 +31,7 @@ const getAdminUsers = () => {
     .get(`${UsersUrls.admins}`, {
       headers: {
         "ngrok-skip-browser-warning": true,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => response.data);

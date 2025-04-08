@@ -1,31 +1,32 @@
-import { Container } from "../../layouts";
-import { useQuery } from "@tanstack/react-query";
-import { User, UserApi, userModel, userService } from "../../../services";
-import { DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { LiaUserEditSolid } from "react-icons/lia";
+import { useQuery } from "@tanstack/react-query";
+
+import { Container } from "../../layouts";
+import { UserApi, userService } from "../../../services";
+import { DeleteButton, Heading, Table } from "../../common";
 import { useUserStore } from "@project/store/user-store";
 
 export const UsersPage = () => {
-    const { user: currentUser } = useUserStore();
+  const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: userService.getUsers,
   });
-  const navigate = useNavigate({from:'/users'});
-  const goToNewUser = ()=>navigate({to:'/users/new'})
-  const openProfile = (id: string) => navigate({to:`/users/${id}/edit`});
+  const navigate = useNavigate({ from: "/users" });
+  const goToNewUser = () => navigate({ to: "/users/new" });
+  const openProfile = (id: string) => navigate({ to: `/users/${id}/edit` });
 
-    const EditBtn = ({ onClick }: { onClick: () => void }) => (
-      <button
-        className={`text-tertiary hover:text-blue-700 p-2 font-medium flex gap-2`}
-        onClick={onClick}
-      >
-        <LiaUserEditSolid className="w-5 h-5" />
-      </button>
-    );
-    
+  const EditBtn = ({ onClick }: { onClick: () => void }) => (
+    <button
+      className={`text-tertiary hover:text-blue-700 p-2 font-medium flex gap-2`}
+      onClick={onClick}
+    >
+      <LiaUserEditSolid className="w-5 h-5" />
+    </button>
+  );
+
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
     columnHelper.accessor("user_id", {
