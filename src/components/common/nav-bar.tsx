@@ -15,7 +15,7 @@ import Logo from "../../assets/logo.png";
 import { useAuthStore } from "../../store";
 import { useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../services";
-import { useUserStore } from "../../store/user-store";
+import { USER_ROLES, useUserStore } from "../../store/user-store";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
@@ -103,7 +103,9 @@ export const NavBar = () => {
         </li>
 
         {ROUTES?.[
-          (currentUser?.userRole as keyof typeof ROUTES) ?? "user"
+          ((currentUser?.userRole === USER_ROLES.SUPER_ADMIN
+            ? USER_ROLES.ADMIN
+            : currentUser?.userRole) as keyof typeof ROUTES) ?? "user"
         ]?.map(({ path, icon, name }, index) => (
           <li key={index + 1}>
             <Link
