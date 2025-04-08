@@ -4,9 +4,10 @@ import { IoMdUndo } from "react-icons/io";
 
 export type EditButtonProps = {
   isEdit: boolean;
+  title?: string;
   onClick: () => void;
 };
-export const EditButton: FC<EditButtonProps> = ({ onClick, isEdit }) => {
+export const EditButton: FC<EditButtonProps> = ({ onClick, isEdit, title='Profile' }) => {
   return (
     <button
       className={`${!isEdit ? "text-tertiary" : "text-red-500"} hover:text-blue-700 p-2 font-medium flex gap-2"`}
@@ -18,7 +19,7 @@ export const EditButton: FC<EditButtonProps> = ({ onClick, isEdit }) => {
         </>
       ) : (
         <>
-          <LiaUserEditSolid className="w-5 h-5" /> Edit Profile{" "}
+          <LiaUserEditSolid className="w-5 h-5" /> Edit {`${title}`}
         </>
       )}
     </button>

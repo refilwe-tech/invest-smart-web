@@ -11,7 +11,8 @@ const UsersUrls = {
   users: baseUrl,
   user: (id: string) => `${baseUrl}/${id}`,
   currentUser: `${baseUrl}/current`,
-  userFinances: (id: string) => `${baseUrl}/${id}/finances`,
+  finances: `${hostUrl}/finances`,
+  userFinances: (id: string) => `${hostUrl}/finances/${id}`,
   admins: `${baseUrl}/admins`,
 };
 
@@ -58,6 +59,16 @@ const getUserById = (id: string) => {
     .then((response) => response.data);
 };
 
+const getUserProfileById = (id: string) => {
+  return axios
+    .get(`${UsersUrls.finances}/${id}`, {
+      headers: {
+        "ngrok-skip-browser-warning": true,
+      },
+    })
+    .then((response) => response.data);
+};
+
 const deleteUser = (id: string) => {
   return axios.delete(UsersUrls.user(id)).then((response) => response.data);
 };
@@ -73,6 +84,13 @@ const updateInvestment = (user: UserFinances) => {
   const dto = userFinancialDto(user);
   return axios
     .put(UsersUrls.userFinances(user?.userId ?? ""), dto)
+    .then((response) => response.data);
+};
+
+const createInvestment = (user: UserFinances) => {
+  const dto = userFinancialDto(user);
+  return axios
+    .post(UsersUrls.finances, dto)
     .then((response) => response.data);
 };
 
@@ -96,6 +114,8 @@ export default {
   deleteUser,
   getUserById,
   getAdminUsers,
-  updateInvestment,
   getCurrentUser,
+  createInvestment,
+  updateInvestment,
+  getUserProfileById,
 };

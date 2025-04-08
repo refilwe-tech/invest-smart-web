@@ -34,7 +34,7 @@ export const ProfilePage = () => {
       navigate({ to: "/login" });
     },
     onError: ({ response }: AxiosError) => {
-      toast.error(response?.data?.error);
+      toast.error(response?.data?.error??'Check server connection.');
     },
   });
 
@@ -128,6 +128,7 @@ export const ProfilePage = () => {
               phoneNumber: "",
               createdAt: "",
               isActive: true,
+              age:0,
               updatedAt: "",
             }
           }

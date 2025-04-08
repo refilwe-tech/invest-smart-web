@@ -83,13 +83,13 @@ export const ProfileForm: FC<ProfileFormProps> = ({
           )}
         />
         <form.Field
-          name="grossSalary"
+          name="age"
           children={(field) => (
             <InputField
               field={field}
-              label="Gross Salary"
-              disabled
-              type="grossSalary"
+              label="Age"
+              disabled={!isEdit}
+              type="number"
             />
           )}
         />
@@ -124,17 +124,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({
               field={field}
               label="Phone Number"
               type="tel"
-            />
-          )}
-        />
-         <form.Field
-          name="netSalary"
-          children={(field) => (
-            <InputField
-              field={field}
-              label="Net Salary"
-              disabled
-              type="netSalary"
             />
           )}
         />
