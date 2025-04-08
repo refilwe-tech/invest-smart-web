@@ -21,7 +21,7 @@ export const InvestForm = ({
   const navigate = useNavigate();
   const refresh = () => navigate({ to: "/finances" });
   const isNewProfile = useMemo(
-    () => !initialValues?.investmentGoal,
+    () => !initialValues?.profileId,
     [initialValues]
   );
 

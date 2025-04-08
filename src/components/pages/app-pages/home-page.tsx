@@ -15,7 +15,7 @@ export const HomePage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["counts"],
     queryFn: () => dashboardService.getCounts(token ?? ""),
-    enabled: !!token,
+    enabled: !!token && user.userRole !== USER_ROLES.USER,
   });
 
   return (
@@ -84,7 +84,7 @@ export const HomePage = () => {
               </section>
               <section className="flex flex-col gap-1 justify-center items-center p-4">
                 <RiBankLine className="w-40 h-40" />
-                <Link className="text-primary-dark" to="/invest">
+                <Link className="text-primary-dark" to="/finances">
                   Start Investing
                 </Link>
               </section>

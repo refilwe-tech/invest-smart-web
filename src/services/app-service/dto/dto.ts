@@ -8,10 +8,19 @@ export const profileDto = (user: User) => ({
   age: user.age,
 });
 
+export const newUserFinancialDto = (user: UserFinances) => ({
+  monthly_expenses: user?.monthlyExpenses,
+  investment_goal: user?.investmentGoal ?? "",
+  gross_salary: user?.grossSalary,
+  net_salary: user?.netSalary,
+  user_id: user?.userId,
+});
+
 export const userFinancialDto = (user: UserFinances) => ({
   monthly_expenses: user?.monthlyExpenses,
   investment_goal: user?.investmentGoal ?? "",
   gross_salary: user?.grossSalary,
   net_salary: user?.netSalary,
   user_id: user?.userId,
+  profile_id: user?.profileId,
 });

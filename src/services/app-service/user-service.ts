@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../../config";
 import { User, UserFinances } from "./models/models";
-import { profileDto, userFinancialDto } from "./dto/dto";
+import { newUserFinancialDto, profileDto, userFinancialDto } from "./dto/dto";
 import { NewUser, newUserDto } from "../auth-service";
 const { hostUrl } = config;
 
@@ -88,7 +88,7 @@ const updateInvestment = (user: UserFinances) => {
 };
 
 const createInvestment = (user: UserFinances) => {
-  const dto = userFinancialDto(user);
+  const dto = newUserFinancialDto(user);
   return axios
     .post(UsersUrls.finances, dto)
     .then((response) => response.data);
