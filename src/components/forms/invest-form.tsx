@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { UserFinances, userService } from "@project/services";
 import { useForm } from "@tanstack/react-form";
 import { useUserStore } from "@project/store/user-store";
+import { useMemo } from "react";
 
 // Define the investment data structure
 export type InvestmentFormProps = {
@@ -19,13 +20,19 @@ export const InvestForm = ({
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const refresh = () => navigate({ to: "/finances" });
+  const isNewProfile = useMemo(
+    () => !initialValues?.investmentGoal,
+    [initialValues]
+  );
 
   const { mutateAsync } = useMutation({
-    mutationFn: userService.createInvestment,
+    mutationFn: !isNewProfile
+      ? userService.updateInvestment
+      : userService.createInvestment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["investments"] });
       toast.success(
-        isEdit
+        !isNewProfile
           ? "Financial profile updated successfully"
           : "Investment profile created successfully"
       );
@@ -128,14 +135,14 @@ export const InvestForm = ({
             id="submit"
             className="flex items-center w-full col-span-2 flex-col gap-2"
           >
-            <Button
+            {isEdit && <Button
               className="w-96"
               variant="solid"
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? "..." : "Create Investment Profile"}
-            </Button>
+              {isSubmitting ? "..." : "Update Investment Profile"}
+            </Button>}
           </section>
         )}
       />

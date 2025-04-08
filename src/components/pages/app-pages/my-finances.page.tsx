@@ -1,5 +1,5 @@
 import { EditButton, Heading, InvestForm } from "@project/components";
-import { userService } from "@project/services";
+import { userProfileModel, userService } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -11,12 +11,12 @@ export const MyFinancesPage = () => {
     queryKey: ["financialProfile"],
     queryFn: () => userService.getUserProfileById(user?.id ?? ""),
     enabled: !!localStorage.getItem("token"),
+    select: userProfileModel,
   });
 
-  console.log(data)
   const toggleEdit = () => setIsEdit(!isEdit);
 
-  const initialValues = {
+  const initialValues = data ?? {
     grossSalary: 0,
     monthlyExpenses: 0,
     netSalary: 0,
@@ -26,8 +26,8 @@ export const MyFinancesPage = () => {
   return (
     <section className="flex flex-col gap-2">
       <Heading heading="My Finances" />
-       <EditButton title='Finances' onClick={toggleEdit} isEdit={isEdit} />
-      <InvestForm initialValues={initialValues} isEdit={isEdit}/>
+      <EditButton title="Finances" onClick={toggleEdit} isEdit={isEdit} />
+      <InvestForm initialValues={initialValues} isEdit={isEdit} />
     </section>
   );
 };

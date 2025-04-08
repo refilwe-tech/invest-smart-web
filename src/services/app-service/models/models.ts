@@ -19,11 +19,11 @@ export type UserApi = {
 };
 
 export interface UserFinancesAPI {
-  userId: string;
+  user_id: string;
   gross_salary: string;
   net_salary: string;
   monthly_expenses: string;
-  investment_goal:string
+  investment_goal: string;
 }
 
 export interface UserFinances {
@@ -84,8 +84,10 @@ export const userProfileModel = ({
   monthly_expenses,
   ...data
 }: UserFinancesAPI): UserFinances => ({
-
-  grossSalary: gross_salary ?? 0,
-  netSalary: data?.net_salary ?? "R 0.00",
+  grossSalary: Number(gross_salary) ?? 0,
+  netSalary: Number(net_salary) ?? 0,
+  monthlyExpenses: Number(monthly_expenses)??0,
+  investmentGoal: investment_goal??'',
+  userId: data?.user_id,
   ...data,
 });
