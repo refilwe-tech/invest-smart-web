@@ -6,7 +6,7 @@ export type ContainerProps = {
 }
 export const Container:FC<ContainerProps> = ({ children, color = "bg-white" }) => {
   return (
-    <section className={`${color} drop-shadow-lg w-full rounded-xl p-5`}>
+    <section className={`${color} drop-shadow-lg border-gray-100 w-full rounded-xl p-5`}>
       {children}
     </section>
   );

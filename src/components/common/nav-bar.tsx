@@ -43,7 +43,7 @@ export const NavBar = () => {
         lastName: currentUser?.lastName ?? "",
         email: currentUser?.email ?? "",
         phoneNumber: currentUser?.phoneNumber ?? "",
-        userRole: currentUser?.userRole ?? "",
+        userRole: currentUser?.userRole ?? "user",
       });
     }
   }, [currentUser]);
@@ -73,11 +73,6 @@ export const NavBar = () => {
     ],
     user: [
       {
-        path: "/plan",
-        icon: <IoPieChartOutline />,
-        name: "My Plan",
-      },
-      {
         path: "/finances",
         icon: <HiOutlineBanknotes />,
         name: "My Finances",
@@ -86,6 +81,11 @@ export const NavBar = () => {
         path: "/invest",
         icon: <GiReceiveMoney />,
         name: "Create Financial Plan",
+      },
+      {
+        path: "/plan",
+        icon: <IoPieChartOutline />,
+        name: "My Plan",
       },
     ],
   };

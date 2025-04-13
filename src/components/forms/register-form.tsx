@@ -2,10 +2,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 import { Button, InputField } from "../common";
 import { authService, NewUser } from "../../services";
-import { AxiosError } from "axios";
 
 export const RegisterForm = () => {
   const queryClient = useQueryClient();
@@ -30,6 +30,8 @@ export const RegisterForm = () => {
   const form = useForm({
     defaultValues: {
       firstName: "",
+      idNumber: "",
+      confirmPassword: "",
       lastName: "",
       email: "",
       password: "",
@@ -95,7 +97,26 @@ export const RegisterForm = () => {
         />
       </div>
       <div>
-        {/* A type-safe field component*/}
+        <form.Field
+          name="idNumber"
+          validators={{
+            onChange: ({ value }) =>
+              !value
+                ? "ID Number is required"
+                : value.length !== 13
+                  ? "ID Number must be 13 characters"
+                  : undefined,
+            onChangeAsync: async ({ value }) => {
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              return (
+                value.includes("error") && 'No "error" allowed in id number'
+              );
+            },
+          }}
+          children={(field) => <InputField field={field} label="ID Number" />}
+        />
+      </div>
+      <div>
         <form.Field
           name="email"
           children={(field) => (
@@ -108,6 +129,14 @@ export const RegisterForm = () => {
           name="password"
           children={(field) => (
             <InputField field={field} label="Password" type="password" />
+          )}
+        />
+      </div>
+      <div>
+        <form.Field
+          name="confirmPassword"
+          children={(field) => (
+            <InputField field={field} label="Confirm Password" type="password" />
           )}
         />
       </div>

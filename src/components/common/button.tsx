@@ -35,7 +35,7 @@ export const Button: FC<ButtonProps> = ({
       containerStyle = "relative overflow-hidden group";
       backgroundStyle = "bg-transparent";
       contentContainerStyle += " bg-transparent";
-      contentStyle += " text-white";
+      contentStyle += " text-black hover:text-primary-dark";
       break;
       
     case "solid":

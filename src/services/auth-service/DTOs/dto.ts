@@ -4,6 +4,8 @@ export type NewUser = {
   firstName: string;
   lastName: string;
   userRole?: string;
+  confirmPassword: string;
+  idNumber: string;
 };
 
 export type LoginUser = {
@@ -16,11 +18,11 @@ export const newUserDto = ({
   password,
   firstName,
   lastName,
-  userRole = "user",
+  idNumber,
 }: NewUser) => ({
   first_name: firstName,
   last_name: lastName,
   email,
   password,
-  user_role: userRole,
+  id_number: idNumber,
 });

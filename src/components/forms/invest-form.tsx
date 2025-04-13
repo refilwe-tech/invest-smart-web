@@ -1,11 +1,11 @@
-import toast from "react-hot-toast";
-import { Button, InputField } from "../common";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { UserFinances, userService } from "@project/services";
-import { useForm } from "@tanstack/react-form";
-import { useUserStore } from "@project/store/user-store";
 import { useMemo } from "react";
+import toast from "react-hot-toast";
+import { useForm } from "@tanstack/react-form";
+import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { Button, InputField } from "../common";
+import { UserFinances, userService } from "@project/services";
 
 // Define the investment data structure
 export type InvestmentFormProps = {
@@ -52,7 +52,7 @@ export const InvestForm = ({
 
   return (
     <form
-      className="grid grid-cols-2 gap-4 w-full px-20 py-10"
+      className="flex flex-col gap-3 w-full px-3"
       onReset={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -64,7 +64,6 @@ export const InvestForm = ({
         form.handleSubmit(onSubmit);
       }}
     >
-      <section className="flex flex-col gap-3">
         <form.Field
           name="grossSalary"
           validators={{
@@ -96,16 +95,18 @@ export const InvestForm = ({
             />
           )}
         />
-      </section>
-
-      <section className="flex flex-col w-full gap-3">
         <form.Field
           name="netSalary"
           children={(field) => (
             <InputField field={field} label="Net Salary" type="number" />
           )}
         />
-
+        <form.Field
+          name="investmentGoal"
+          children={(field) => (
+            <InputField field={field} label="Investment Goal" type="text" />
+          )}
+        />
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-400 mb-1">
             Estimated Tax Rate
@@ -117,16 +118,6 @@ export const InvestForm = ({
               : "N/A"}
           </div>
         </div>
-      </section>
-
-      <section className="w-full col-span-2">
-        <form.Field
-          name="investmentGoal"
-          children={(field) => (
-            <InputField field={field} label="Investment Goal" type="text" />
-          )}
-        />
-      </section>
 
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
@@ -135,14 +126,18 @@ export const InvestForm = ({
             id="submit"
             className="flex items-center w-full col-span-2 flex-col gap-2"
           >
-            {isEdit && <Button
+            <Button
               className="w-96"
               variant="solid"
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? "..." : "Update Investment Profile"}
-            </Button>}
+              {isSubmitting
+                ? "..."
+                : isEdit
+                  ? "Update Investment Profile"
+                  : "Create Investment Profile"}
+            </Button>
           </section>
         )}
       />

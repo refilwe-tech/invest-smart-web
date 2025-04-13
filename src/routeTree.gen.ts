@@ -24,6 +24,7 @@ import { Route as FinancesImport } from './routes/finances'
 import { Route as AdminsImport } from './routes/admins'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersNewImport } from './routes/users.new'
+import { Route as FinancesNewImport } from './routes/finances.new'
 import { Route as AdminsNewImport } from './routes/admins.new'
 import { Route as UsersUserIdEditImport } from './routes/users.$userId.edit'
 import { Route as AdminsUserIdEditImport } from './routes/admins.$userId.edit'
@@ -106,6 +107,12 @@ const UsersNewRoute = UsersNewImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => UsersRoute,
+} as any)
+
+const FinancesNewRoute = FinancesNewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => FinancesRoute,
 } as any)
 
 const AdminsNewRoute = AdminsNewImport.update({
@@ -221,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminsNewImport
       parentRoute: typeof AdminsImport
     }
+    '/finances/new': {
+      id: '/finances/new'
+      path: '/new'
+      fullPath: '/finances/new'
+      preLoaderRoute: typeof FinancesNewImport
+      parentRoute: typeof FinancesImport
+    }
     '/users/new': {
       id: '/users/new'
       path: '/new'
@@ -260,6 +274,18 @@ const AdminsRouteChildren: AdminsRouteChildren = {
 const AdminsRouteWithChildren =
   AdminsRoute._addFileChildren(AdminsRouteChildren)
 
+interface FinancesRouteChildren {
+  FinancesNewRoute: typeof FinancesNewRoute
+}
+
+const FinancesRouteChildren: FinancesRouteChildren = {
+  FinancesNewRoute: FinancesNewRoute,
+}
+
+const FinancesRouteWithChildren = FinancesRoute._addFileChildren(
+  FinancesRouteChildren,
+)
+
 interface UsersRouteChildren {
   UsersNewRoute: typeof UsersNewRoute
   UsersUserIdEditRoute: typeof UsersUserIdEditRoute
@@ -275,7 +301,7 @@ const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admins': typeof AdminsRouteWithChildren
-  '/finances': typeof FinancesRoute
+  '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -286,6 +312,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -294,7 +321,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admins': typeof AdminsRouteWithChildren
-  '/finances': typeof FinancesRoute
+  '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -305,6 +332,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -314,7 +342,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/admins': typeof AdminsRouteWithChildren
-  '/finances': typeof FinancesRoute
+  '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
   '/invest': typeof InvestRoute
   '/investments': typeof InvestmentsRoute
@@ -325,6 +353,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -346,6 +375,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -364,6 +394,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -382,6 +413,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -391,7 +423,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminsRoute: typeof AdminsRouteWithChildren
-  FinancesRoute: typeof FinancesRoute
+  FinancesRoute: typeof FinancesRouteWithChildren
   HomeRoute: typeof HomeRoute
   InvestRoute: typeof InvestRoute
   InvestmentsRoute: typeof InvestmentsRoute
@@ -406,7 +438,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminsRoute: AdminsRouteWithChildren,
-  FinancesRoute: FinancesRoute,
+  FinancesRoute: FinancesRouteWithChildren,
   HomeRoute: HomeRoute,
   InvestRoute: InvestRoute,
   InvestmentsRoute: InvestmentsRoute,
@@ -453,7 +485,10 @@ export const routeTree = rootRoute
       ]
     },
     "/finances": {
-      "filePath": "finances.ts"
+      "filePath": "finances.tsx",
+      "children": [
+        "/finances/new"
+      ]
     },
     "/home": {
       "filePath": "home.tsx"
@@ -489,6 +524,10 @@ export const routeTree = rootRoute
     "/admins/new": {
       "filePath": "admins.new.tsx",
       "parent": "/admins"
+    },
+    "/finances/new": {
+      "filePath": "finances.new.tsx",
+      "parent": "/finances"
     },
     "/users/new": {
       "filePath": "users.new.tsx",
