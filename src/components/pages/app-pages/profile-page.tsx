@@ -89,7 +89,7 @@ export const ProfilePage = () => {
             </div>
           )}
           <EditButton onClick={toggleEdit} isEdit={isEdit} />
-          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} (${data?.gender})`}</h3>
+          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} (${data?.gender??''})`}</h3>
           {isAdmin && (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
               <svg

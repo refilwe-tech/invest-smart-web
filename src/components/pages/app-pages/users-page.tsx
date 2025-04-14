@@ -38,6 +38,9 @@ export const UsersPage = () => {
     columnHelper.accessor("last_name", {
       header: "Last Name",
     }),
+    columnHelper.accessor("gender", {
+      header: "Gender",
+    }),
     columnHelper.accessor("phone_number", {
       header: "Phone Number",
     }),

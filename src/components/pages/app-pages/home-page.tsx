@@ -29,6 +29,22 @@ export const HomePage = () => {
         </section>
       ) : [USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN].includes(user.userRole) ? (
         <section className="flex gap-4 w-full">
+          {USER_ROLES.SUPER_ADMIN === user?.userRole && (
+            <Container>
+              <>
+                <section className="flex justify-between items-center">
+                  <h4 className="text-2xl text-center">Total Admins</h4>
+                  <HiUsers className="w-5 h-5" />
+                </section>
+                <section className="flex flex-col gap-1 justify-center items-center p-4">
+                  <h2 className="text-center font-medium text-7xl">
+                    {data?.totalAdmins}
+                  </h2>
+                  <p>Total Active Admins</p>
+                </section>
+              </>
+            </Container>
+          )}
           <Container>
             <>
               <section className="flex justify-between items-center">

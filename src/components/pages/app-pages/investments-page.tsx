@@ -32,10 +32,10 @@ export const InvestmentsPage = () => {
     columnHelper.accessor("investment_name", {
       header: "Name",
     }),
-    columnHelper.accessor("minimum_interest", {
+    columnHelper.accessor("expected_return_min", {
       header: "Min Interest %",
     }),
-    columnHelper.accessor("maximum_interest", {
+    columnHelper.accessor("expected_return_max", {
       header: "Max Interest %",
     }),
     columnHelper.display({

@@ -1,6 +1,7 @@
 export type CountsData = {
   total_investments: number;
   total_users: number;
+  total_admins: number;
 };
 
 export type UserApi = {
@@ -60,6 +61,7 @@ export type User = {
 export const countsModel = (data: CountsData) => ({
   totalInvestments: data?.total_investments ?? 0,
   totalUsers: data?.total_users ?? 0,
+  totalAdmins: data?.total_admins ?? 0,
 });
 
 export const userModel = ({
