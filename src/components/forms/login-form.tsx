@@ -34,8 +34,8 @@ export const LoginForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "user@investsmart.com",
+      password: "P@ssword1",
     },
     onSubmit: ({ value }) => onSubmit(value),
   });

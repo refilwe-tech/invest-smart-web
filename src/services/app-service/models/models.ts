@@ -9,6 +9,8 @@ export type UserApi = {
   gross_salary?: string;
   net_salary?: string;
   age?: number;
+  birth_date?: string;
+  gender?: string;
   last_name: string;
   email: string;
   phone_number?: string;
@@ -23,6 +25,7 @@ export interface UserFinancesAPI {
   profile_id?:string;
   gross_salary: string;
   net_salary: string;
+  current_savings: string;
   monthly_expenses: string;
   investment_goal: string;
 }
@@ -30,9 +33,10 @@ export interface UserFinancesAPI {
 export interface UserFinances {
   userId: string;
   profileId?:string;
-  grossSalary: number;
-  netSalary: number;
-  monthlyExpenses: number;
+  grossSalary: string;
+  netSalary: string;
+  currentSavings: string;
+  monthlyExpenses: string;
   investmentGoal: string;
 }
 
@@ -44,6 +48,8 @@ export type User = {
   grossSalary?: string;
   netSalary?: string;
   age?: number;
+  gender?: string;
+  birthDate?: string;
   phoneNumber?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -73,6 +79,7 @@ export const userModel = ({
   phoneNumber: phone_number ?? "",
   createdAt: created_at ?? "",
   updatedAt: updated_at ?? "",
+  birthDate: data?.birth_date ?? "",
   isActive: is_active ?? false,
   grossSalary: data?.gross_salary ?? "R 0.00",
   netSalary: data?.net_salary ?? "R 0.00",
@@ -86,10 +93,11 @@ export const userProfileModel = ({
   monthly_expenses,
   ...data
 }: UserFinancesAPI): UserFinances => ({
-  grossSalary: Number(gross_salary) ?? 0,
-  netSalary: Number(net_salary) ?? 0,
-  monthlyExpenses: Number(monthly_expenses)??0,
+  grossSalary: (gross_salary) ?? 0,
+  netSalary: (net_salary) ?? 0,
+  monthlyExpenses: (monthly_expenses)??0,
   investmentGoal: investment_goal??'',
+  currentSavings: data?.current_savings??0,
   userId: data?.user_id,
   profileId: data?.profile_id,
   ...data,

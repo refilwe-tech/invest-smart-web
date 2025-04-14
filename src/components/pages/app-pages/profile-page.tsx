@@ -34,7 +34,7 @@ export const ProfilePage = () => {
       navigate({ to: "/login" });
     },
     onError: ({ response }: AxiosError) => {
-      toast.error(response?.data?.error??'Check server connection.');
+      toast.error(response?.data?.error ?? "Check server connection.");
     },
   });
 
@@ -89,7 +89,7 @@ export const ProfilePage = () => {
             </div>
           )}
           <EditButton onClick={toggleEdit} isEdit={isEdit} />
-          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName}`}</h3>
+          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} (${data?.gender})`}</h3>
           {isAdmin && (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
               <svg
@@ -109,12 +109,27 @@ export const ProfilePage = () => {
               Administrator
             </span>
           )}
-          <p className="text-xs text-green-400">
-            Joined {dayjs(data?.createdAt).format("DD MMMM YYYY")}
-          </p>
-          <p className="text-xs text-teal-400">
-            Last Updated {dayjs(data?.updatedAt).format("DD MMMM YYYY")}
-          </p>
+          <section className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-1"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p className="text-xs text-green-400">
+              Joined {dayjs(data?.createdAt).format("DD MMMM YYYY")}
+            </p>
+            |
+            <p className="text-xs text-teal-400">
+              Updated {dayjs(data?.updatedAt).format("DD MMMM YYYY")}
+            </p>
+          </section>
         </section>
         <ProfileForm
           isEdit={isEdit}
@@ -128,7 +143,7 @@ export const ProfilePage = () => {
               phoneNumber: "",
               createdAt: "",
               isActive: true,
-              age:0,
+              age: 0,
               updatedAt: "",
             }
           }

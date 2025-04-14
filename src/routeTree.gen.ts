@@ -25,6 +25,7 @@ import { Route as AdminsImport } from './routes/admins'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersNewImport } from './routes/users.new'
 import { Route as FinancesNewImport } from './routes/finances.new'
+import { Route as FinancesEditImport } from './routes/finances.edit'
 import { Route as AdminsNewImport } from './routes/admins.new'
 import { Route as UsersUserIdEditImport } from './routes/users.$userId.edit'
 import { Route as AdminsUserIdEditImport } from './routes/admins.$userId.edit'
@@ -112,6 +113,12 @@ const UsersNewRoute = UsersNewImport.update({
 const FinancesNewRoute = FinancesNewImport.update({
   id: '/new',
   path: '/new',
+  getParentRoute: () => FinancesRoute,
+} as any)
+
+const FinancesEditRoute = FinancesEditImport.update({
+  id: '/edit',
+  path: '/edit',
   getParentRoute: () => FinancesRoute,
 } as any)
 
@@ -228,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminsNewImport
       parentRoute: typeof AdminsImport
     }
+    '/finances/edit': {
+      id: '/finances/edit'
+      path: '/edit'
+      fullPath: '/finances/edit'
+      preLoaderRoute: typeof FinancesEditImport
+      parentRoute: typeof FinancesImport
+    }
     '/finances/new': {
       id: '/finances/new'
       path: '/new'
@@ -275,10 +289,12 @@ const AdminsRouteWithChildren =
   AdminsRoute._addFileChildren(AdminsRouteChildren)
 
 interface FinancesRouteChildren {
+  FinancesEditRoute: typeof FinancesEditRoute
   FinancesNewRoute: typeof FinancesNewRoute
 }
 
 const FinancesRouteChildren: FinancesRouteChildren = {
+  FinancesEditRoute: FinancesEditRoute,
   FinancesNewRoute: FinancesNewRoute,
 }
 
@@ -312,6 +328,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
@@ -332,6 +349,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
@@ -353,6 +371,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/users': typeof UsersRouteWithChildren
   '/admins/new': typeof AdminsNewRoute
+  '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
@@ -375,6 +394,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/edit'
     | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
@@ -394,6 +414,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/edit'
     | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
@@ -413,6 +434,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/users'
     | '/admins/new'
+    | '/finances/edit'
     | '/finances/new'
     | '/users/new'
     | '/admins/$userId/edit'
@@ -487,6 +509,7 @@ export const routeTree = rootRoute
     "/finances": {
       "filePath": "finances.tsx",
       "children": [
+        "/finances/edit",
         "/finances/new"
       ]
     },
@@ -524,6 +547,10 @@ export const routeTree = rootRoute
     "/admins/new": {
       "filePath": "admins.new.tsx",
       "parent": "/admins"
+    },
+    "/finances/edit": {
+      "filePath": "finances.edit.tsx",
+      "parent": "/finances"
     },
     "/finances/new": {
       "filePath": "finances.new.tsx",

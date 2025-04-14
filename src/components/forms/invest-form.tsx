@@ -30,7 +30,7 @@ export const InvestForm = ({
       ? userService.updateInvestment
       : userService.createInvestment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["investments"] });
+      queryClient.invalidateQueries({ queryKey: ["financialProfile"] });
       toast.success(
         !isNewProfile
           ? "Financial profile updated successfully"
@@ -101,6 +101,12 @@ export const InvestForm = ({
             <InputField field={field} label="Net Salary" type="number" />
           )}
         />
+                <form.Field
+          name="currentSavings"
+          children={(field) => (
+            <InputField field={field} label="Current Savings" type="number" />
+          )}
+        />
         <form.Field
           name="investmentGoal"
           children={(field) => (
@@ -112,9 +118,9 @@ export const InvestForm = ({
             Estimated Tax Rate
           </label>
           <div className="h-10 flex items-center px-3 text-lg font-medium">
-            {form.getFieldValue("grossSalary") > 0 &&
-            form.getFieldValue("netSalary") > 0
-              ? `${(100 - (form.getFieldValue("netSalary") / form.getFieldValue("grossSalary")) * 100).toFixed(2)}%`
+            {Number(form.getFieldValue("grossSalary")) > 0 &&
+            Number(form.getFieldValue("netSalary")) > 0
+              ? `${(100 - (Number(form.getFieldValue("netSalary")) / Number(form.getFieldValue("grossSalary"))) * 100).toFixed(2)}%`
               : "N/A"}
           </div>
         </div>

@@ -88,7 +88,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({
             <InputField
               field={field}
               label="Age"
-              disabled={!isEdit}
+              disabled
               type="number"
             />
           )}
