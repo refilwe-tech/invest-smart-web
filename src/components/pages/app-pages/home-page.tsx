@@ -27,7 +27,7 @@ export const HomePage = () => {
   });
 
   return (
-    <PageLayout>
+    <PageLayout isLoading={isLoading}>
       <section>
         <h3 className="text-lg">
           Welcome back, <strong>{`${user?.firstName ?? ""}`}</strong>

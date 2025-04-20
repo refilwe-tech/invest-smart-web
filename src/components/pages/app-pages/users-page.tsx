@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "@tanstack/react-router";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { useQuery } from "@tanstack/react-query";
 
-import { Container } from "../../layouts";
+import { Container, PageLayout } from "../../layouts";
 import { UserApi, userService } from "../../../services";
 import { DeleteButton, Heading, Table } from "../../common";
 import { useUserStore } from "@project/store/user-store";
@@ -64,7 +64,7 @@ export const UsersPage = () => {
   ];
 
   return (
-    <>
+    <PageLayout isLoading={isLoading}>
       <Outlet />
       <section className="flex flex-col gap-4">
         <Heading heading="Users" />
@@ -84,6 +84,6 @@ export const UsersPage = () => {
           />
         </Container>
       </section>
-    </>
+    </PageLayout>
   );
 };

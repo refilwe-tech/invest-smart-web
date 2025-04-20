@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../../services";
-import { Button, EditButton, ProfileForm } from "@project/components";
+import { Button, EditButton, PageLayout, ProfileForm } from "@project/components";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -15,7 +15,7 @@ export const ProfilePage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
-  const { data } = useQuery({
+  const { data , isLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => userService.getCurrentUser(),
     enabled: !!localStorage.getItem("token"),
@@ -47,7 +47,7 @@ export const ProfilePage = () => {
   );
 
   return (
-    <>
+    <PageLayout isLoading={isLoading}>
       {isDelete && (
         <div className="fixed top-[20%] right-[25%] w-1/3 h-46 rounded-lg shadow-lg bg-white z-50">
           <section className="flex justify-end p-4">
@@ -159,6 +159,6 @@ export const ProfilePage = () => {
           </section>
         )}
       </section>
-    </>
+    </PageLayout>
   );
 };

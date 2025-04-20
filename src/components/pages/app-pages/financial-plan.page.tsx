@@ -1,6 +1,9 @@
+import { PageLayout } from "@project/components/layouts";
 
 export const FinancialPlanPage = () => {
   return (
-    <div>FinancialPlanPage</div>
-  )
-}
+    <PageLayout>
+      <div>FinancialPlanPage</div>
+    </PageLayout>
+  );
+};

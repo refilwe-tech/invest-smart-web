@@ -1,4 +1,4 @@
-import { Container } from "../../layouts";
+import { Container, PageLayout } from "../../layouts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { investmentService } from "../../../services";
 import { DeleteButton, Heading, Table } from "../../common";
@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 export const InvestmentsPage = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: (id:string) => investmentService.deleteInvestment(id),
+    mutationFn: (id: string) => investmentService.deleteInvestment(id),
     onSuccess: () => {
       toast.success("Investment deleted successfully.", { duration: 3000 });
       queryClient.invalidateQueries({
@@ -21,7 +21,7 @@ export const InvestmentsPage = () => {
       toast.error("Failed to delete investment. Please try again.");
     },
   });
-  const onDelete = (id:string) => mutate(id);
+  const onDelete = (id: string) => mutate(id);
   const { data, isLoading } = useQuery({
     queryKey: ["investments"],
     queryFn: investmentService.getInvestments,
@@ -60,24 +60,27 @@ export const InvestmentsPage = () => {
   ];
 
   return (
-    <section className="flex flex-col gap-4">
-      <Heading heading="Investment Options" />
-      {false && <section className="flex justify-end items-center">
-        <button
-          onClick={() => void 0}
-          className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
-        >
-          Add Bank
-        </button>
-      </section>}
-      <Container>
-        <Table
-          data={data?.investments ?? []}
-          columns={columns}
-          loading={isLoading}
-        />
-      </Container>
-      {/*       {isOpen && (
+    <PageLayout isLoading={isLoading}>
+      <section className="flex flex-col gap-4">
+        <Heading heading="Investment Options" />
+        {false && (
+          <section className="flex justify-end items-center">
+            <button
+              onClick={() => void 0}
+              className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
+            >
+              Add Bank
+            </button>
+          </section>
+        )}
+        <Container>
+          <Table
+            data={data?.investments ?? []}
+            columns={columns}
+            loading={isLoading}
+          />
+        </Container>
+        {/*       {isOpen && (
         <div className="fixed top-0 right-0 w-1/3 h-full rounded-lg shadow-lg bg-white z-50">
           <section className="flex justify-end p-4">
             <button onClick={closeModal}>
@@ -101,6 +104,7 @@ export const InvestmentsPage = () => {
           </div>
         </div>
       )} */}
-    </section>
+      </section>
+    </PageLayout>
   );
 };

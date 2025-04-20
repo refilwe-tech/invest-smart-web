@@ -1,4 +1,4 @@
-import { Container } from "../../layouts";
+import { Container, PageLayout } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi, userService } from "../../../services";
 import { DeleteButton, Heading, Table } from "../../common";
@@ -62,7 +62,7 @@ export const AdminUsersPage = () => {
   ];
 
   return (
-    <>
+    <PageLayout isLoading={isLoading}>
       <Outlet />
       <section className="flex flex-col gap-4">
         <Heading heading="Admins" />
@@ -84,6 +84,6 @@ export const AdminUsersPage = () => {
           />
         </Container>
       </section>
-    </>
+    </PageLayout>
   );
 };

@@ -20,7 +20,7 @@ import { Outlet, useNavigate } from "@tanstack/react-router";
 export const MyFinancesPage = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const { data } = useQuery({
+  const { data , isLoading } = useQuery({
     queryKey: ["financialProfile"],
     queryFn: () => userService.getUserProfileById(user?.id ?? ""),
     enabled: !!localStorage.getItem("token"),
@@ -32,7 +32,7 @@ export const MyFinancesPage = () => {
     navigate({ to: "/finances/edit", from: "/" });
 
   return (
-   <PageLayout>
+   <PageLayout isLoading={isLoading}>
       <Heading heading="My Finances" />
       {data?.profileId ? (
         <EditButton title="Finances" onClick={editFinancialInfo} isEdit={false} />
