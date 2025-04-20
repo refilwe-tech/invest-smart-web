@@ -13,7 +13,7 @@ const UsersUrls = {
   currentUser: `${baseUrl}/current`,
   finances: `${hostUrl}/finances`,
   userFinances: (id: string) => `${hostUrl}/finances/${id}`,
-  admins: `${baseUrl}/admins`,
+  admins: `${hostUrl}/admins`,
 };
 
 const getUsers = () => {

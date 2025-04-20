@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
@@ -17,7 +17,9 @@ declare module "@tanstack/react-router" {
 
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
+  const token = localStorage.getItem("token");
   const root = ReactDOM.createRoot(rootElement);
+  if (!token) localStorage.clear();
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>

@@ -78,7 +78,7 @@ export const AdminUsersPage = () => {
         )}
         <Container>
           <Table
-            data={data?.users ?? []}
+            data={data?.admins ?? []}
             columns={columns}
             loading={isLoading}
           />

@@ -11,6 +11,7 @@ import {
   EditButton,
   FinanceCard,
   Heading,
+  PageLayout,
 } from "@project/components";
 import { userProfileModel, userService } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
@@ -31,7 +32,7 @@ export const MyFinancesPage = () => {
     navigate({ to: "/finances/edit", from: "/" });
 
   return (
-    <section className="flex flex-col gap-3">
+   <PageLayout>
       <Heading heading="My Finances" />
       {data?.profileId ? (
         <EditButton title="Finances" onClick={editFinancialInfo} isEdit={false} />
@@ -82,6 +83,6 @@ export const MyFinancesPage = () => {
         />
       </section>
       <Outlet />
-    </section>
+    </PageLayout>
   );
 };
