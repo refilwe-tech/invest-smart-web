@@ -64,21 +64,21 @@ export const MyFinancesPage = () => {
           icon={<FcMoneyTransfer className="w-10 h-10" />}
           total={data?.grossSalary??"0.00"}
           title="Gross Salary"
-          lastUpdatedAt={""}
+          description={"total income earned before taxes and deductions"}
           updated={!!data?.profileId}
         />
         <FinanceCard
           icon={<MdOutlineSavings className="w-10 h-10" />}
           total={data?.currentSavings??"0.00"}
           title="Current Savings"
-          lastUpdatedAt={""}
+          description={"total amount of money you have set aside and available for use"}
           updated={!!data?.profileId}
         />
         <FinanceCard
           icon={<IoReceiptOutline className="w-10 h-10" />}
           total={data?.monthlyExpenses ?? "0.00"}
           title="Monthly Expenses"
-          lastUpdatedAt={""}
+          description={"total costs you use each month, including rent, groceries, transport, and other bills."}
           updated={!!data?.profileId}
         />
       </section>
