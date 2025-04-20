@@ -6,6 +6,7 @@ import {
   HiDocument,
   HiOutlineBanknotes,
   HiOutlineUserGroup,
+  HiHome,
 } from "react-icons/hi2";
 import { useEffect } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
@@ -51,6 +52,11 @@ export const NavBar = () => {
   const ROUTES = {
     admin: [
       {
+        path: "/home",
+        icon: <HiHome />,
+        name: "Dashboard",
+      },
+      {
         path: "/admins",
         icon: <HiOutlineUserGroup />,
         name: "Admins",
@@ -72,6 +78,11 @@ export const NavBar = () => {
       },
     ],
     user: [
+      {
+        path: "/home",
+        icon: <HiHome />,
+        name: "Dashboard",
+      },
       {
         path: "/finances",
         icon: <HiOutlineBanknotes />,
