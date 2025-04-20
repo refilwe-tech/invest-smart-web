@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { MdOutlineSavings } from "react-icons/md";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { IoReceiptOutline } from "react-icons/io5";
@@ -64,21 +63,21 @@ export const MyFinancesPage = () => {
           icon={<FcMoneyTransfer className="w-10 h-10" />}
           total={data?.grossSalary??"0.00"}
           title="Gross Salary"
-          description={"total income earned before taxes and deductions"}
+          description={"Total income earned before taxes and deductions"}
           updated={!!data?.profileId}
         />
         <FinanceCard
           icon={<MdOutlineSavings className="w-10 h-10" />}
           total={data?.currentSavings??"0.00"}
           title="Current Savings"
-          description={"total amount of money you have set aside and available for use"}
+          description={"Total amount of money you have set aside in savings."}
           updated={!!data?.profileId}
         />
         <FinanceCard
           icon={<IoReceiptOutline className="w-10 h-10" />}
           total={data?.monthlyExpenses ?? "0.00"}
           title="Monthly Expenses"
-          description={"total costs you use each month, including rent, groceries, transport, and other bills."}
+          description={"Total costs for each month, including rent, groceries etc."}
           updated={!!data?.profileId}
         />
       </section>
