@@ -12,7 +12,7 @@ import {
   Heading,
   PageLayout,
 } from "@project/components";
-import { userProfileModel, userService } from "@project/services";
+import { userProfileModel, financialService} from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 
@@ -21,7 +21,7 @@ export const MyFinancesPage = () => {
   const navigate = useNavigate();
   const { data , isLoading } = useQuery({
     queryKey: ["financialProfile"],
-    queryFn: () => userService.getUserProfileById(user?.id ?? ""),
+    queryFn: () => financialService.getUserFinancialProfile(user?.id ?? ""),
     enabled: !!localStorage.getItem("token"),
     select: userProfileModel,
   });

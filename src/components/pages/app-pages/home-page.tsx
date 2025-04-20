@@ -1,19 +1,26 @@
 import { Container, PageLayout } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
-import { dashboardService } from "../../../services";
+import { dashboardService, financialService } from "../../../services";
 import { TfiStatsUp } from "react-icons/tfi";
 import { HiOutlineUserGroup, HiUsers } from "react-icons/hi";
 import { ClipLoader } from "react-spinners";
+
 import { USER_ROLES, useUserStore } from "../../../store/user-store";
 import { useAuthStore } from "../../../store";
 import { BsPiggyBankFill } from "react-icons/bs";
 
 import { LineGraph } from "@project/components/common/line-graph";
-import { Heading, PieGraph } from "@project/components";
+import { COLORS, Heading, PieGraph } from "@project/components";
 
 export const HomePage = () => {
   const { user } = useUserStore();
   const { token } = useAuthStore();
+  const { data: financialData } = useQuery({
+    queryKey: ["financialData"],
+    queryFn: () => financialService.getFinancialGraph(user?.id ?? ""),
+    enabled: !!token && user.userRole === USER_ROLES.USER,
+  });
+
   const graph = [
     { name: "Salary", value: 18000 },
     { name: "Expenses", value: 2300 },
@@ -170,24 +177,23 @@ export const HomePage = () => {
           </section>
           <Heading heading="My Finances" />
           <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
-            <PieGraph data={graph} />
+            <PieGraph data={financialData?.categories ?? []} />
             <section className="flex flex-col w-full gap-2">
-              <ul>
-                <li className="flex gap-2 items-center">
-                  <div className="rounded-full h-5 w-5 bg-[#0088FE]" />
-                  Salary
-                </li>
-                <li className="flex gap-2 items-center">
-                  <div className="rounded-full h-5 w-5 bg-[#00C49F]" /> Gross
-                </li>
-                <li className="flex gap-2 items-center">
-                  <div className="rounded-full h-5 w-5 bg-[#F00]" />
-                  Loans
-                </li>
-                <li className="flex gap-2 items-center">
-                  <div className="rounded-full h-5 w-5 bg-[#FF8042]" />
-                  Investment/Savings
-                </li>
+              <ul className="flex flex-col gap-2">
+                {
+                  financialData?.categories?.map(({name},index:number) => (
+                    <li
+                      key={name}
+                      className="flex text-xs gap-2 items-center"
+                    >
+                      <div
+                        className="rounded-full h-5 w-5"
+                        style={{ backgroundColor: COLORS[index] }}
+                      />
+                      {name}
+                    </li>
+                  ))
+                }
               </ul>
             </section>
           </section>

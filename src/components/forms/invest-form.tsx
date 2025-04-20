@@ -5,9 +5,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button, InputField } from "../common";
-import { UserFinances, userService } from "@project/services";
+import { financialService, type UserFinances } from "@project/services";
 
-// Define the investment data structure
 export type InvestmentFormProps = {
   initialValues: UserFinances;
   isEdit?: boolean;
@@ -24,11 +23,11 @@ export const InvestForm = ({
     () => !initialValues?.profileId,
     [initialValues]
   );
-
+  console.log("isNewProfile", isNewProfile);
   const { mutateAsync } = useMutation({
-    mutationFn: !isNewProfile
-      ? userService.updateInvestment
-      : userService.createInvestment,
+    mutationFn: isNewProfile
+      ? financialService.createFinancialProfile
+      : financialService.updateFinancialProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["financialProfile"] });
       toast.success(
@@ -64,70 +63,70 @@ export const InvestForm = ({
         form.handleSubmit(onSubmit);
       }}
     >
-        <form.Field
-          name="grossSalary"
-          validators={{
-            onChange: ({ value }) =>
-              value === undefined || value === null
-                ? "Gross salary is required"
-                : Number(value) < 0
-                  ? "Gross salary cannot be negative"
-                  : undefined,
-          }}
-          children={(field) => (
-            <InputField field={field} label="Gross Salary" type="number" />
-          )}
-        />
-
-        <form.Field
-          name="monthlyExpenses"
-          validators={{
-            onChange: ({ value }) =>
-              value === undefined || value === null
-                ? "Monthly Expenses are required"
+      <form.Field
+        name="grossSalary"
+        validators={{
+          onChange: ({ value }) =>
+            value === undefined || value === null
+              ? "Gross salary is required"
+              : Number(value) < 0
+                ? "Gross salary cannot be negative"
                 : undefined,
-          }}
-          children={(field) => (
-            <InputField
-              field={field}
-              label="Total Monthly Expenses"
-              type="number"
-            />
-          )}
-        />
-        <form.Field
-          name="netSalary"
-          children={(field) => (
-            <InputField field={field} label="Net Salary" type="number" />
-          )}
-        />
-                <form.Field
-          name="currentSavings"
-          children={(field) => (
-            <InputField field={field} label="Current Savings" type="number" />
-          )}
-        />
-        <form.Field
-          name="investmentGoal"
-          children={(field) => (
-            <InputField field={field} label="Investment Goal" type="text" />
-          )}
-        />
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-400 mb-1">
-            Estimated Tax Rate
-          </label>
-          <div className="h-10 flex items-center px-3 text-lg font-medium">
-            {Number(form.getFieldValue("grossSalary")) > 0 &&
-            Number(form.getFieldValue("netSalary")) > 0
-              ? `${(100 - (Number(form.getFieldValue("netSalary")) / Number(form.getFieldValue("grossSalary"))) * 100).toFixed(2)}%`
-              : "N/A"}
-          </div>
+        }}>
+        {  (field) => (
+          <InputField field={field} label="Gross Salary" type="number" />
+        )}
+        </form.Field>
+
+      <form.Field
+        name="monthlyExpenses"
+        validators={{
+          onChange: ({ value }) =>
+            value === undefined || value === null
+              ? "Monthly Expenses are required"
+              : undefined,
+        }}
+       >{(field) => (
+          <InputField
+            field={field}
+            label="Total Monthly Expenses"
+            type="number"
+          />
+        )}
+      </form.Field>
+      <form.Field
+        name="netSalary"
+       >{(field) => (
+          <InputField field={field} label="Net Salary" type="number" />
+        )}
+      </form.Field>
+      <form.Field
+        name="currentSavings"
+      >{(field) => (
+          <InputField field={field} label="Current Savings" type="number" />
+        )}
+      </form.Field>
+      <form.Field
+        name="investmentGoal"
+        >{(field) => (
+          <InputField field={field} label="Investment Goal" type="text" />
+        )}
+        </form.Field>
+      <div className="flex flex-col">
+        <p className="text-sm font-medium text-gray-400 mb-1">
+          Estimated Tax Rate
+        </p>
+        <div className="h-10 flex items-center px-3 text-lg font-medium">
+          {Number(form.getFieldValue("grossSalary")) > 0 &&
+          Number(form.getFieldValue("netSalary")) > 0
+            ? `${(100 - (Number(form.getFieldValue("netSalary")) / Number(form.getFieldValue("grossSalary"))) * 100).toFixed(2)}%`
+            : "N/A"}
         </div>
+      </div>
 
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
+       >{([canSubmit, isSubmitting]) => (
           <section
             id="submit"
             className="flex items-center w-full col-span-2 flex-col gap-2"
@@ -146,7 +145,7 @@ export const InvestForm = ({
             </Button>
           </section>
         )}
-      />
+      </form.Subscribe>
     </form>
   );
 };

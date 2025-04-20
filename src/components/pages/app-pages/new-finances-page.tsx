@@ -1,5 +1,5 @@
 import { Heading, InvestForm, PageLayout } from "@project/components";
-import { userProfileModel, userService } from "@project/services";
+import { financialService, userProfileModel } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -11,14 +11,14 @@ export const AddFinancesPage = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: ["financialProfile"],
-    queryFn: () => userService.getUserProfileById(user?.id ?? ""),
+    queryFn: () => financialService.getUserFinancialProfile(user?.id ?? ""),
     enabled: !!localStorage.getItem("token"),
     select: userProfileModel,
   });
 
   const { pathname } = location;
-  const isOpen = pathname == "/finances/new" || pathname == "/finances/edit";
-  const isEdit = pathname == "/finances/edit";
+  const isOpen = pathname === "/finances/new" || pathname === "/finances/edit";
+  const isEdit = pathname === "/finances/edit";
   const close = () => navigate({ to: "/finances", from: "/" });
   const initialValues = data ?? {
     grossSalary: "0",
@@ -36,7 +36,7 @@ export const AddFinancesPage = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         } sm:w-full sm:max-w-md`}
       >
-        <button className="absolute top-0 right-0 p-5" onClick={close}>
+        <button type="button" className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
         <Heading heading={`${isEdit ? "Edit" : "Add"} Financial Data`} />
