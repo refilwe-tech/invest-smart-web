@@ -91,12 +91,12 @@ export const NavBar = () => {
       {
         path: "/invest",
         icon: <GiReceiveMoney />,
-        name: "Create Financial Plan",
+        name: "Investment Analysis",
       },
       {
         path: "/plan",
         icon: <IoPieChartOutline />,
-        name: "My Plan",
+        name: "My Plans",
       },
     ],
   };

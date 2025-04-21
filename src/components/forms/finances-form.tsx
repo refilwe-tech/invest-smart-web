@@ -7,15 +7,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, InputField } from "../common";
 import { financialService, type UserFinances } from "@project/services";
 
-export type InvestmentFormProps = {
+export type FinancesFormProps = {
   initialValues: UserFinances;
   isEdit?: boolean;
 };
 
-export const InvestForm = ({
+export const FinancesForm = ({
   isEdit = false,
   initialValues,
-}: InvestmentFormProps) => {
+}: FinancesFormProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const refresh = () => navigate({ to: "/finances" });

@@ -15,7 +15,7 @@ import { COLORS, Heading, PieGraph } from "@project/components";
 export const HomePage = () => {
   const { user } = useUserStore();
   const { token } = useAuthStore();
-  const { data: financialData } = useQuery({
+  const { data: financialData, isLoading:financialDataLoading } = useQuery({
     queryKey: ["financialData"],
     queryFn: () => financialService.getFinancialGraph(user?.id ?? ""),
     enabled: !!token && user.userRole === USER_ROLES.USER,
@@ -34,7 +34,7 @@ export const HomePage = () => {
   });
 
   return (
-    <PageLayout isLoading={isLoading}>
+    <PageLayout isLoading={isLoading||financialDataLoading}>
       <section>
         <h3 className="text-lg">
           Welcome back, <strong>{`${user?.firstName ?? ""}`}</strong>
@@ -175,7 +175,7 @@ export const HomePage = () => {
               <p className="text-xs"></p>
             </section>
           </section>
-          <Heading heading="My Finances" />
+          <Heading heading="Financial Overview" />
           <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
             <PieGraph data={financialData?.categories ?? []} />
             <section className="flex flex-col w-full gap-2">

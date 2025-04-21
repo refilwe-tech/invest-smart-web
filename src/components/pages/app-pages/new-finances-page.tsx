@@ -1,9 +1,10 @@
-import { Heading, InvestForm, PageLayout } from "@project/components";
-import { financialService, userProfileModel } from "@project/services";
-import { useUserStore } from "@project/store/user-store";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
+
+import { FinancesForm, Heading, PageLayout } from "@project/components";
+import { financialService, userProfileModel } from "@project/services";
+import { useUserStore } from "@project/store/user-store";
 
 export const AddFinancesPage = () => {
   const location = useLocation();
@@ -40,7 +41,7 @@ export const AddFinancesPage = () => {
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
         <Heading heading={`${isEdit ? "Edit" : "Add"} Financial Data`} />
-        <InvestForm initialValues={initialValues} isEdit={isEdit} />
+        <FinancesForm initialValues={initialValues} isEdit={isEdit} />
       </section>
     </PageLayout>
   );

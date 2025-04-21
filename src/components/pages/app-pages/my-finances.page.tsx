@@ -42,7 +42,7 @@ export const MyFinancesPage = () => {
           </section>
         </Button>
       )}
-      <Container>
+      <Container color="bg-gray-100">
         <section className="grid place-items-center gap-3">
           <section className="flex flex-col items-center gap-1">
             <h3 className="text-lg font-semibold text-gray-700">Your Net</h3>
@@ -51,7 +51,8 @@ export const MyFinancesPage = () => {
             </p>
           </section>
           <section className="flex flex-col items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-700">Your Goal</h3>
+           
+            <h3 className="text-lg font-semibold text-gray-700">🏆 Your Goal 🏆</h3>
             <p className="text-sm font-bold text-gray-500">
               {data?.investmentGoal ?? "No goal set yet."}
             </p>
@@ -63,7 +64,7 @@ export const MyFinancesPage = () => {
           icon={<FcMoneyTransfer className="w-10 h-10" />}
           total={data?.grossSalary??"0.00"}
           title="Gross Salary"
-          description={"Total income earned before taxes and deductions"}
+          description={"Total income earned before taxes and deductions."}
           updated={!!data?.profileId}
         />
         <FinanceCard
