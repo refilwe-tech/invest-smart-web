@@ -3,16 +3,12 @@ import { useNavigate } from "@tanstack/react-router";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
 
 import { Button, InputField } from "../common";
 import { authService, type LoginUser } from "../../services";
 import { useAuthStore } from "../../store";
+import { LoginSchema } from "@project/schemas";
 
-const LoginSchema = z.object({
-  email: z.string().email().nonempty({ message: "Email is required" }),
-  password: z.string().nonempty({ message: "Password is required" }),
-});
 
 export const LoginForm = () => {
   const queryClient = useQueryClient();

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from "react";
+import type { ButtonHTMLAttributes, FC, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -74,11 +74,12 @@ export const Button: FC<ButtonProps> = ({
 
   return (
     <button
+    disabled
       onClick={onClick}
       className={`${containerStyle} ${className}`}
       {...rest}
     >
-      <div className={`absolute inset-0 ${backgroundStyle}`}></div>
+      <div className={`absolute inset-0 ${rest.disabled ? "bg-gray-400" : backgroundStyle}`}/>
       <div className={contentContainerStyle}>
         <span className={contentStyle}>
           {children}
