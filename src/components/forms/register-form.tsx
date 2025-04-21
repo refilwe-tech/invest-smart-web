@@ -2,11 +2,30 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
+import { z } from "zod";
 
 import { Button, InputField } from "../common";
-import { authService, NewUser } from "../../services";
+import { authService, type NewUser } from "../../services";
 
+export const RegisterSchema = z
+  .object({
+    firstName: z.string().min(3),
+    lastName: z.string().min(3),
+    idNumber: z.string().length(13),
+    email: z.string().email(),
+    password: z
+      .string()
+      .regex(/^(?=.*[a-z])/, "Password must contain lowercase letters")
+      .regex(/^(?=.*[A-Z])/, "Password must contain uppercase letters")
+      .regex(/^(?=.*\d)/, "Password must contain numbers")
+      .regex(/^(?=.*[^a-zA-Z\d])/, "Password must have at least one @#$ symbol")
+      .min(7, "Length must be greater than 7 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+  });
 export const RegisterForm = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate({ from: "/register" });
@@ -136,7 +155,11 @@ export const RegisterForm = () => {
         <form.Field
           name="confirmPassword"
           children={(field) => (
-            <InputField field={field} label="Confirm Password" type="password" />
+            <InputField
+              field={field}
+              label="Confirm Password"
+              type="password"
+            />
           )}
         />
       </div>

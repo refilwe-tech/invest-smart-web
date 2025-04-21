@@ -1,12 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 import { useForm } from "@tanstack/react-form";
+import { z } from "zod";
 
 import { Button, InputField } from "../common";
-import { authService, LoginUser } from "../../services";
+import { authService, type LoginUser } from "../../services";
 import { useAuthStore } from "../../store";
-import { AxiosError } from "axios";
+
+const LoginSchema = z.object({
+  email: z.string().email().nonempty({ message: "Email is required" }),
+  password: z.string().nonempty({ message: "Password is required" }),
+});
 
 export const LoginForm = () => {
   const queryClient = useQueryClient();
@@ -37,6 +43,9 @@ export const LoginForm = () => {
       email: "user@investsmart.com",
       password: "P@ssword1",
     },
+    validators: {
+      onSubmit: LoginSchema,
+    },
     onSubmit: ({ value }) => onSubmit(value),
   });
 
@@ -50,24 +59,21 @@ export const LoginForm = () => {
       }}
     >
       <div>
-        <form.Field
-          name="email"
-          children={(field) => (
-            <InputField field={field} label="Email" type="email" />
-          )}
-        />
+        <form.Field name="email">
+          {(field) => <InputField field={field} label="Email" type="email" />}
+        </form.Field>
       </div>
       <div>
-        <form.Field
-          name="password"
-          children={(field) => (
+        <form.Field name="password">
+          {(field) => (
             <InputField field={field} label="Password" type="password" />
           )}
-        />
+        </form.Field>
       </div>
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
+      >
+        {([canSubmit, isSubmitting]) => (
           <section
             id="submit"
             className="grid place-items-center  w-full flex-col gap-2"
@@ -77,7 +83,7 @@ export const LoginForm = () => {
             </Button>
           </section>
         )}
-      />
+      </form.Subscribe>
     </form>
   );
 };

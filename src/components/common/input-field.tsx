@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { AnyFieldApi } from "@tanstack/react-form";
+import type { FC } from "react";
+import type { AnyFieldApi } from "@tanstack/react-form";
 
 import { FieldInfo } from "./field-info";
 
