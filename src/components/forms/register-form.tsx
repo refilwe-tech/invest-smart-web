@@ -59,18 +59,24 @@ export const RegisterForm = () => {
     >
       <div>
         <form.Field name="firstName">
-          {(field) => <InputField maxLength={30} field={field} label="First Name" />}
+          {(field) => (
+            <InputField maxLength={30} field={field} label="First Name" />
+          )}
         </form.Field>
       </div>
       <div>
         {/* A type-safe field component*/}
         <form.Field name="lastName">
-          {(field) => <InputField maxLength={30} field={field} label="Last Name" />}
+          {(field) => (
+            <InputField maxLength={30} field={field} label="Last Name" />
+          )}
         </form.Field>
       </div>
       <div>
         <form.Field name="idNumber">
-          {(field) => <InputField maxLength={13} field={field} label="ID Number" />}
+          {(field) => (
+            <InputField maxLength={13} field={field} label="ID Number" />
+          )}
         </form.Field>
       </div>
       <div>
@@ -81,7 +87,12 @@ export const RegisterForm = () => {
       <div>
         <form.Field name="password">
           {(field) => (
-            <InputField maxLength={16} field={field} label="Password" type="password" />
+            <InputField
+              maxLength={16}
+              field={field}
+              label="Password"
+              type="password"
+            />
           )}
         </form.Field>
       </div>
@@ -89,7 +100,7 @@ export const RegisterForm = () => {
         <form.Field name="confirmPassword">
           {(field) => (
             <InputField
-            maxLength={16}
+              maxLength={16}
               field={field}
               label="Confirm Password"
               type="password"
