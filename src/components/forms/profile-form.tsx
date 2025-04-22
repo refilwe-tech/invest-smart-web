@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { User, userService } from "@project/services";
 import { useForm } from "@tanstack/react-form";
 import { FC } from "react";
+import { ProfileSchema } from "@project/schemas";
 
 export type ProfileFormProps = {
   initialValues: User;
@@ -31,6 +32,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({
 
   const form = useForm({
     defaultValues: initialValues,
+    validators: {
+      onChange: ProfileSchema,
+    },
     onSubmit: ({ value }) => {
       onSubmit(value);
     },
@@ -53,22 +57,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({
       <section className="flex flex-col gap-3">
         <form.Field
           name="firstName"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "A first name is required"
-                : value.length < 3
-                  ? "First name must be at least 3 characters"
-                  : undefined,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return (
-                value.includes("error") && 'No "error" allowed in first name'
-              );
-            },
-          }}
           children={(field) => (
-            <InputField disabled={!isEdit} field={field} label="First Name" />
+            <InputField disabled={!isEdit} field={field} label="First Name" maxLength={30} />
           )}
         />
         <form.Field
@@ -97,22 +87,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({
       <section className="flex flex-col w-full gap-3">
         <form.Field
           name="lastName"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "A last name is required"
-                : value.length < 3
-                  ? "Last name must be at least 3 characters"
-                  : undefined,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return (
-                value.includes("error") && 'No "error" allowed in last name'
-              );
-            },
-          }}
           children={(field) => (
-            <InputField disabled={!isEdit} field={field} label="Last Name" />
+            <InputField disabled={!isEdit} field={field} label="Last Name" maxLength={30}/>
           )}
         />
 
@@ -124,6 +100,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({
               field={field}
               label="Phone Number"
               type="tel"
+              maxLength={10}
             />
           )}
         />
