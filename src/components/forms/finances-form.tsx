@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button, InputField } from "../common";
 import { financialService, type UserFinances } from "@project/services";
+import { PageLayout } from "../layouts";
 
 export type FinancesFormProps = {
   initialValues: UserFinances;
@@ -23,7 +24,6 @@ export const FinancesForm = ({
     () => !initialValues?.profileId,
     [initialValues]
   );
-  console.log("isNewProfile", isNewProfile);
   const { mutateAsync } = useMutation({
     mutationFn: isNewProfile
       ? financialService.createFinancialProfile
@@ -50,6 +50,7 @@ export const FinancesForm = ({
   });
 
   return (
+    <PageLayout>
     <form
       className="flex flex-col gap-3 w-full px-3"
       onReset={(e) => {
@@ -147,5 +148,6 @@ export const FinancesForm = ({
         )}
       </form.Subscribe>
     </form>
+    </PageLayout>
   );
 };

@@ -1,15 +1,376 @@
 import { useState } from "react";
 
+import { useForm } from "@tanstack/react-form";
+import { z } from "zod";
+import { Label } from "@project/components/ui/label";
+import { Input } from "@project/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@project/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@project/components/ui/radio-group";
+import { Button } from "@project/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@project/components/ui/card";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Heading } from "@project/components/common";
 import { PageLayout } from "@project/components/layouts";
 
+const InvestmentSchema = z.object({
+  amount: z.number().min(100, 'Minimum investment is R100').max(10000000, 'Maximum investment is R10,000,000'),
+  durationMonths: z.number().min(1, 'Minimum duration is 1 month').max(360, 'Maximum duration is 30 years'),
+  monthlyContribution: z.number().min(0).optional(),
+  riskTolerance: z.enum(['low', 'medium', 'high']).optional(),
+});
+
+export type InvestmentPlanResponse = {
+  planName: string;
+  description: string;
+  totalInvested: number;
+  projectedValue: number;
+  projectedGrowth: number;
+  durationMonths: number;
+  items: Array<{
+    investment_id: string;
+    bank_account_id: string;
+    name: string;
+    type: string;
+    risk_level: string;
+    amount: number;
+    expected_duration_months: number;
+    expected_return: number;
+  }>;
+};
+
+export type SavedInvestmentPlan = {
+  planName: string;
+  description: string;
+  items: Array<{
+    investment_id: string;
+    bank_account_id: string;
+    amount: number;
+    expected_duration_months: number;
+  }>;
+};
+
 export const InvestPage = () => {
-  const [showResults, setShowResults] = useState(false);
+  const [result, setResult] = useState<InvestmentPlanResponse | null>(null);
+  const [activeTab, setActiveTab] = useState<'calculator' | 'saved'>('calculator');
+
+  const form = useForm({
+    id: 'investment-form',
+    defaultValues: {
+      amount: 1000,
+      durationMonths: 12,
+      monthlyContribution: 0,
+      riskTolerance: 'medium' as const,
+    },
+    validators: {
+      onSubmit: InvestmentSchema
+    },
+    onSubmit: async ({ value }) => {
+      calculateMutation.mutate(value);
+    },
+  });
+
+  const calculateMutation = useMutation({
+    mutationFn: (data)=>void data,//'calculateInvestmentPlan',
+    onSuccess: (data) => {
+      setResult(data?.plan);
+    },
+  });
+
+  const savePlanMutation = useMutation({
+    mutationFn: ()=> void 'saveInvestmentPlan',
+    onSuccess: () => {
+      plansQuery.refetch();
+      setActiveTab('saved');
+    },
+  });
+
+  const plansQuery = useQuery({
+    queryKey: ['investmentPlans'],
+    queryFn: ()=> void 'getUserPlans',
+  });
+
+  const handleSavePlan = (planName: string) => {
+    if (!result) return;
+    
+    const planToSave: SavedInvestmentPlan = {
+      planName,
+      description: result.description,
+      items: result.items.map(item => ({
+        investment_id: item.investment_id,
+        bank_account_id: item.bank_account_id,
+        amount: item.amount,
+        expected_duration_months: item.expected_duration_months,
+      }))
+    };
+    
+    savePlanMutation.mutate(planToSave);
+  };
+
   return (
     <PageLayout>
-        <Heading heading="Investment Analyses" />
-      <section className="flex flex-col gap-2">
-      </section>
-    </PageLayout>
+      <Heading heading="Investment Calculator" />
+      
+      <div className="flex gap-4 mb-6">
+        <Button 
+          variant={activeTab === 'calculator' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('calculator')}
+        >
+          Calculator
+        </Button>
+        <Button 
+          variant={activeTab === 'saved' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('saved')}
+        >
+          My Saved Plans
+        </Button>
+      </div>
+
+      {activeTab === 'calculator' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Investment Parameters</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    void form.handleSubmit();
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <form.Field
+                      name="amount"
+                      children={(field) => (
+                        <div className="space-y-2">
+                          <Label htmlFor={field.name}>Investment Amount (R)</Label>
+                          <Input
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            type="number"
+                            onChange={(e) => field.handleChange(Number.parseFloat(e.target.value))}
+                          />
+                          {field.state.meta.errors ? (
+                            <p className="text-sm text-red-500">{field.state.meta.errors.join(', ')}</p>
+                          ) : null}
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div>
+                    <form.Field
+                      name="durationMonths"
+                      children={(field) => (
+                        <div className="space-y-2">
+                          <Label htmlFor={field.name}>Investment Duration</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value}
+                              type="number"
+                              onChange={(e) => field.handleChange(parseInt(e.target.value))}
+                              className="w-24"
+                            />
+                            <Select
+                              onValueChange={(value) => {
+                                const multiplier = value === 'years' ? 12 : 1;
+                                field.handleChange(Math.floor(field.state.value / multiplier) * multiplier);
+                              }}
+                              defaultValue="months"
+                            >
+                              <SelectTrigger className="w-[120px]">
+                                <SelectValue placeholder="Months" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="months">Months</SelectItem>
+                                <SelectItem value="years">Years</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          {field.state.meta.errors ? (
+                            <p className="text-sm text-red-500">{field.state.meta.errors.join(', ')}</p>
+                          ) : null}
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div>
+                    <form.Field
+                      name="monthlyContribution"
+                      children={(field) => (
+                        <div className="space-y-2">
+                          <Label htmlFor={field.name}>Monthly Contribution (R) - Optional</Label>
+                          <Input
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            type="number"
+                            onChange={(e) => field.handleChange(parseFloat(e.target.value) || 0)}
+                          />
+                          {field.state.meta.errors ? (
+                            <p className="text-sm text-red-500">{field.state.meta.errors.join(', ')}</p>
+                          ) : null}
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div>
+                    <form.Field
+                      name="riskTolerance"
+                      children={(field) => (
+                        <div className="space-y-2">
+                          <Label>Risk Tolerance</Label>
+                          <RadioGroup
+                            value={field.state.value}
+                            onValueChange={(value) => field.handleChange(value as 'low' | 'medium' | 'high')}
+                            className="flex gap-4"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="low" id="risk-low" />
+                              <Label htmlFor="risk-low">Low</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="medium" id="risk-medium" />
+                              <Label htmlFor="risk-medium">Medium</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="high" id="risk-high" />
+                              <Label htmlFor="risk-high">High</Label>
+                            </div>
+                          </RadioGroup>
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <Button type="submit" disabled={calculateMutation.isPending}>
+                    {calculateMutation.isPending ? 'Calculating...' : 'Calculate Plan'}
+                  </Button>
+                </form>
+            </CardContent>
+          </Card>
+
+          {result && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Recommended Investment Plan</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold">{result.planName}</h3>
+                  <p className="text-sm text-gray-600">{result.description}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Total Invested</p>
+                    <p className="text-xl font-bold">R{result.totalInvested.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Projected Value</p>
+                    <p className="text-xl font-bold">R{result.projectedValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Projected Growth</p>
+                    <p className="text-xl font-bold">R{result.projectedGrowth.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Duration</p>
+                    <p className="text-xl font-bold">{result.durationMonths} months</p>
+                  </div>
+                </div>
+
+                <h4 className="font-medium mb-2">Investment Allocation</h4>
+                <div className="space-y-4">
+                  {result.items.map((item, index) => (
+                    <div key={index} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h5 className="font-medium">{item.name}</h5>
+                          <p className="text-sm text-gray-600">{item.type} • {item.risk_level} risk</p>
+                        </div>
+                        <span className="font-bold">R{item.amount.toLocaleString()}</span>
+                      </div>
+                      <div className="mt-2">
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className="bg-blue-600 h-2.5 rounded-full" 
+                            style={{ width: `${(item.amount / result.totalInvested) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <p className="text-sm mt-1">
+                        Expected return: {item.expected_return.toFixed(2)}% • Duration: {item.expected_duration_months} months
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6">
+                  <Button 
+                    onClick={() => {
+                      const planName = prompt('Enter a name for this plan:');
+                      if (planName) handleSavePlan(planName);
+                    }}
+                    disabled={savePlanMutation.isPending}
+                  >
+                    {savePlanMutation.isPending ? 'Saving...' : 'Save This Plan'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      ) : (
+        <div>
+          {plansQuery.isLoading ? (
+            <p>Loading your plans...</p>
+          ) : plansQuery.data?.plans.length === 0 ? (
+            <p>You don't have any saved plans yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {plansQuery.data?.plans.map((plan) => (
+                <Card key={plan.plan_id}>
+                  <CardHeader>
+                    <CardTitle>{plan.plan_name}</CardTitle>
+                    <p className="text-sm text-gray-600">
+                      Created on {new Date(plan.created_at).toLocaleDateString()}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600">Total Invested</p>
+                      <p className="text-xl font-bold">R{plan.totalInvested.toLocaleString()}</p>
+                    </div>
+
+                    <h4 className="font-medium mb-2">Investments</h4>
+                    <div className="space-y-2">
+                      {plan.items.map((item, index) => (
+                        <div key={index} className="border-b pb-2 last:border-b-0">
+                          <div className="flex justify-between">
+                            <p className="font-medium">{item.name}</p>
+                            <p>R{item.amount.toLocaleString()}</p>
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            {item.type} • {item.risk_level} risk • {item.expected_return.toFixed(2)}% return
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+ </PageLayout>
   );
 };

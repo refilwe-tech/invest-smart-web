@@ -47,7 +47,7 @@ export const MyFinancesPage = () => {
           <section className="flex flex-col items-center gap-1">
             <h3 className="text-lg font-semibold text-gray-700">Your Net</h3>
             <p className="text-2xl font-bold text-primary">
-              {data?.netSalary ?? "0.00"}
+              R{data?.netSalary ?? "0.00"}
             </p>
           </section>
           <section className="flex flex-col items-center gap-2">
