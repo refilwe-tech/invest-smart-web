@@ -17,7 +17,7 @@ export const RegisterPage = () => {
             Grow your money with confidence. Smart investing starts here.
           </p>
         </section>
-        <section className="text-center"> <Button onClick={learnMore}>Learn More</Button></section>
+        <section className="text-center"> <Button variant="gradient" onClick={learnMore}>Learn More</Button></section>
        
       </section>
     </section>
