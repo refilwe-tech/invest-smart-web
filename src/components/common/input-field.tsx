@@ -8,10 +8,12 @@ export type InputFieldProps = {
   field: AnyFieldApi;
   label?: string;
   type?: React.HTMLInputTypeAttribute;
+  maxLength?: number;
 };
 
 export const InputField: FC<InputFieldProps> = ({
   field,
+  maxLength,
   label = "",
   type = "text",
   disabled = false,
@@ -20,6 +22,7 @@ export const InputField: FC<InputFieldProps> = ({
     <section id="input-field w-full flex flex-col">
       <label className="text-xs" htmlFor={field?.name}>{label}</label>
       <input
+      maxLength={maxLength}
         disabled={disabled}
         type={type}
         id={field.name}
