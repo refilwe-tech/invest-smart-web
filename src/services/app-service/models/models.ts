@@ -104,3 +104,60 @@ export const userProfileModel = ({
   profileId: data?.profile_id,
   ...data,
 });
+
+export interface InvestmentPlanRequest {
+  amount: number;
+  durationMonths: number;
+  monthlyContribution?: number;
+  riskTolerance?: 'low' | 'medium' | 'high';
+}
+
+export interface SavedInvestmentPlan {
+  planName: string;
+  description?: string;
+  items: {
+    investment_id?: number;
+    bank_account_id?: number;
+    amount: number;
+    expected_duration_months: number;
+    notes?: string;
+  }[];
+}
+
+export interface InvestmentPlanResponse {
+  planName: string;
+  description: string;
+  items: {
+    investment_id?: number;
+    bank_account_id?: number;
+    amount: number;
+    expected_duration_months: number;
+    expected_return: number;
+    name: string;
+    type: string;
+    risk_level: string;
+  }[];
+  totalInvested: number;
+  projectedValue: number;
+  projectedGrowth: number;
+  durationMonths: number;
+  monthlyContribution?: number;
+}
+
+export interface UserInvestmentPlan {
+  plan_id: number;
+  plan_name: string;
+  description?: string;
+  created_at: string;
+  items: {
+    item_id: number;
+    amount: number;
+    expected_duration_months: number;
+    notes?: string;
+    name: string;
+    type: string;
+    risk_level: string;
+    expected_return: number;
+  }[];
+  totalInvested: number;
+}

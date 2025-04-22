@@ -16,7 +16,7 @@ export const Route = createRootRoute({
         ) : (
           <section className="flex w-full h-full">
             <NavBar />
-            <section className="bg-light-gray p-5 w-full">
+            <section className="bg-light-gray p-5 w-full overflow-auto">
               <Outlet />
             </section>
           </section>
