@@ -18,7 +18,7 @@ export const LoginPage = () => {
             </p>
           </section>
           <section className="flex items-center justify-center w-1/2">
-            <Button className="w-1/2" onClick={learnMore}>Learn More</Button>
+            <Button variant="gradient" className="w-1/2" onClick={learnMore}>Learn More</Button>
           </section>
         </section>
       </section>

@@ -38,7 +38,7 @@ export const RegisterForm = () => {
       password: "",
     },
     validators: {
-      onSubmit: RegisterSchema,
+      onChange: RegisterSchema,
     },
     onSubmit: ({ value }) => onSubmit(value),
   });

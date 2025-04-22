@@ -40,7 +40,7 @@ export const LoginForm = () => {
       password: "P@ssword1",
     },
     validators: {
-      onSubmit: LoginSchema,
+      onChange: LoginSchema,
     },
     onSubmit: ({ value }) => onSubmit(value),
   });
