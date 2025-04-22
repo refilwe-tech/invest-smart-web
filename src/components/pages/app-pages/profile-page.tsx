@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@project/store";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { USER_ROLES } from "@project/store/user-store";
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
     },
   });
 
-  const toggleEdit = () => setIsEdit(!isEdit);
+  const toggleEdit = () => {setIsEdit(!isEdit)};
 
   const onDelete = () => mutate();
 

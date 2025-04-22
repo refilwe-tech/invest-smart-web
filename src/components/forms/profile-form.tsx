@@ -2,9 +2,9 @@ import toast from "react-hot-toast";
 import { Button, InputField } from "../common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { User, userService } from "@project/services";
+import { type User, userService } from "@project/services";
 import { useForm } from "@tanstack/react-form";
-import { FC } from "react";
+import { type FC, useEffect } from "react";
 import { ProfileSchema } from "@project/schemas";
 
 export type ProfileFormProps = {
@@ -30,6 +30,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({
   });
   const onSubmit = async (data: User) => mutateAsync(data);
 
+  
+
   const form = useForm({
     defaultValues: initialValues,
     validators: {
@@ -39,6 +41,12 @@ export const ProfileForm: FC<ProfileFormProps> = ({
       onSubmit(value);
     },
   });
+
+  useEffect(() => {
+    if (!isEdit) {
+      form.reset();
+    }
+  }, [isEdit, form]);
 
   return (
     <form
