@@ -18,19 +18,16 @@ export const ProfileForm: FC<ProfileFormProps> = ({
 }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate({ from: "/profile" });
-  const refresh = () => navigate({ to: "/profile" });
   const { mutateAsync } = useMutation({
     mutationFn: userService.updateUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       toast.success("User profile updated successfully");
-      refresh();
+      navigate({ to: "/profile" });
     },
     onError: () => toast.error("Failed to update profile details"),
   });
   const onSubmit = async (data: User) => mutateAsync(data);
-
-  
 
   const form = useForm({
     defaultValues: initialValues,
@@ -63,46 +60,41 @@ export const ProfileForm: FC<ProfileFormProps> = ({
       }}
     >
       <section className="flex flex-col gap-3">
-        <form.Field
-          name="firstName"
-          children={(field) => (
-            <InputField disabled={!isEdit} field={field} label="First Name" maxLength={30} />
-          )}
-        />
-        <form.Field
-          name="email"
-          children={(field) => (
+        <form.Field name="firstName">
+          {(field) => (
             <InputField
+              disabled={!isEdit}
               field={field}
-              label="Email"
-              disabled
-              type="email"
+              label="First Name"
+              maxLength={30}
             />
           )}
-        />
-        <form.Field
-          name="age"
-          children={(field) => (
-            <InputField
-              field={field}
-              label="Age"
-              disabled
-              type="number"
-            />
+        </form.Field>
+        <form.Field name="email">
+          {(field) => (
+            <InputField field={field} label="Email" disabled type="email" />
           )}
-        />
+        </form.Field>
+        <form.Field name="age">
+          {(field) => (
+            <InputField field={field} label="Age" disabled type="number" />
+          )}
+        </form.Field>
       </section>
       <section className="flex flex-col w-full gap-3">
-        <form.Field
-          name="lastName"
-          children={(field) => (
-            <InputField disabled={!isEdit} field={field} label="Last Name" maxLength={30}/>
+        <form.Field name="lastName">
+          {(field) => (
+            <InputField
+              disabled={!isEdit}
+              field={field}
+              label="Last Name"
+              maxLength={30}
+            />
           )}
-        />
+        </form.Field>
 
-        <form.Field
-          name="phoneNumber"
-          children={(field) => (
+        <form.Field name="phoneNumber">
+          {(field) => (
             <InputField
               disabled={!isEdit}
               field={field}
@@ -111,12 +103,13 @@ export const ProfileForm: FC<ProfileFormProps> = ({
               maxLength={10}
             />
           )}
-        />
+        </form.Field>
       </section>
       {isEdit && (
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+        >
+          {([canSubmit, isSubmitting]) => (
             <section
               id="submit"
               className="flex items-center w-full col-span-2 flex-col gap-2"
@@ -131,7 +124,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({
               </Button>
             </section>
           )}
-        />
+        </form.Subscribe>
       )}
     </form>
   );

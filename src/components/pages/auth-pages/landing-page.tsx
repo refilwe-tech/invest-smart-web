@@ -23,10 +23,10 @@ export const LandingPage = () => {
           you. Find the best investments—fast. Grow your money with confidence.
           Smart investing starts here. Compare, choose, and grow your wealth.
         </p>
-        <Button onClick={getStarted}>Get Started</Button>
+        <Button variant="gradient" onClick={getStarted}>Get Started</Button>
       </section>
       <section className="drop-shadow-2xl min-h-screen place-items-center grid">
-        <img src={LineGraphImage} className="w-3/4" alt="line graph image" />
+        <img src={LineGraphImage} className="w-3/4" alt="line graph" />
       </section>
     </section>
   );

@@ -22,13 +22,13 @@ export const AddFinancesPage = () => {
   const isEdit = pathname === "/finances/edit";
   const close = () => navigate({ to: "/finances", from: "/" });
   const initialValues = data ?? {
-    grossSalary: "0",
-    monthlyExpenses: "0",
-    netSalary: "0",
-    currentSavings: "0",
+    grossSalary: 0,
+    monthlyExpenses: 0,
+    netSalary: 0,
+    currentSavings: 0,
     investmentGoal: "",
-    userId: user?.id ?? "",
-    profileId: "",
+    userId: Number(user?.id) ?? -1,
+    profileId: -1,
   };
   return (
     <PageLayout isLoading={isLoading}>

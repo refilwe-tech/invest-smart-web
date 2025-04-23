@@ -42,3 +42,21 @@ export const InvestmentSchema = z.object({
   monthlyContribution: z.number().min(0).optional(),
   riskTolerance: z.enum(["low", "medium", "high"]).optional(),
 });
+
+export const FinancesSchema = z.object({
+  grossSalary: z.number().min(0, "Gross salary must be a positive number"),
+  monthlyExpenses: z
+    .number()
+    .min(0, "Monthly expenses must be a positive number"),
+  netSalary: z.number().min(0, "Net salary must be a positive number"),
+  currentSavings: z
+    .number()
+    .min(0, "Current savings must be a positive number"),
+  investmentGoal: z
+    .string()
+    .min(3, "Investment goal must be at least 3 characters long")
+    .max(100, "Investment goal must be at most 100 characters long")
+    .optional(),
+  userId: z.number(),
+  profileId: z.number().optional(),
+});

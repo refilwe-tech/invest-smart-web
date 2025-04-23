@@ -53,7 +53,7 @@ export const Button: FC<ButtonProps> = ({
         break;
       
     case "gradient":
-      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
+      backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark hover:bg-gradient-to-r hover:from-primary-dark hover:to-secondary";
       contentContainerStyle += " bg-transparent";
       contentStyle += " text-white";
       break;
@@ -74,7 +74,7 @@ export const Button: FC<ButtonProps> = ({
 
   return (
     <button
-    disabled
+    disabled={rest.disabled}
       onClick={onClick}
       className={`${containerStyle} ${className}`}
       {...rest}

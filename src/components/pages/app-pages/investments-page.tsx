@@ -1,7 +1,7 @@
 import { Container, PageLayout } from "../../layouts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { investmentService } from "../../../services";
-import { DeleteButton, Heading, Table } from "../../common";
+import { Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { GoTrash } from "react-icons/go";
 import toast from "react-hot-toast";

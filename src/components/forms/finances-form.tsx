@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, InputField } from "../common";
 import { financialService, type UserFinances } from "@project/services";
 import { PageLayout } from "../layouts";
+import { FinancesSchema } from "@project/schemas";
 
 export type FinancesFormProps = {
   initialValues: UserFinances;
@@ -43,6 +44,9 @@ export const FinancesForm = ({
   const onSubmit = async (data: UserFinances) => mutateAsync(data);
 
   const form = useForm({
+    validators: {
+      onChange: FinancesSchema
+    },
     defaultValues: initialValues,
     onSubmit: ({ value }) => {
       onSubmit(value);
@@ -65,15 +69,7 @@ export const FinancesForm = ({
       }}
     >
       <form.Field
-        name="grossSalary"
-        validators={{
-          onChange: ({ value }) =>
-            value === undefined || value === null
-              ? "Gross salary is required"
-              : Number(value) < 0
-                ? "Gross salary cannot be negative"
-                : undefined,
-        }}>
+        name="grossSalary">
         {  (field) => (
           <InputField field={field} label="Gross Salary" type="number" />
         )}
@@ -81,12 +77,6 @@ export const FinancesForm = ({
 
       <form.Field
         name="monthlyExpenses"
-        validators={{
-          onChange: ({ value }) =>
-            value === undefined || value === null
-              ? "Monthly Expenses are required"
-              : undefined,
-        }}
        >{(field) => (
           <InputField
             field={field}
@@ -126,7 +116,7 @@ export const FinancesForm = ({
       </div>
 
       <form.Subscribe
-        selector={(state) => [state.canSubmit, state.isSubmitting]}
+        selector={({canSubmit, isSubmitting}) => [canSubmit, isSubmitting]}
        >{([canSubmit, isSubmitting]) => (
           <section
             id="submit"

@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../../services";
-import { Button, EditButton, PageLayout, ProfileForm } from "@project/components";
+import {
+  Button,
+  EditButton,
+  PageLayout,
+  ProfileForm,
+} from "@project/components";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -9,13 +14,15 @@ import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { USER_ROLES } from "@project/store/user-store";
+import { FaUserClock } from "react-icons/fa6";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 export const ProfilePage = () => {
   const { setIsAuthenticated, setToken } = useAuthStore();
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
-  const { data , isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => userService.getCurrentUser(),
     enabled: !!localStorage.getItem("token"),
@@ -38,7 +45,9 @@ export const ProfilePage = () => {
     },
   });
 
-  const toggleEdit = () => {setIsEdit(!isEdit)};
+  const toggleEdit = () => {
+    setIsEdit(!isEdit);
+  };
 
   const onDelete = () => mutate();
 
@@ -89,39 +98,15 @@ export const ProfilePage = () => {
             </div>
           )}
           <EditButton onClick={toggleEdit} isEdit={isEdit} />
-          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} (${data?.gender??''})`}</h3>
+          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} ${data?.gender ? (data?.gender ?? ""):''}`}</h3>
           {isAdmin && (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
+              <MdOutlineAdminPanelSettings />
               Administrator
             </span>
           )}
           <section className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <FaUserClock />
             <p className="text-xs text-green-400">
               Joined {dayjs(data?.createdAt).format("DD MMMM YYYY")}
             </p>
@@ -151,6 +136,7 @@ export const ProfilePage = () => {
         {data?.userRole !== USER_ROLES.SUPER_ADMIN && (
           <section className="grid place-items-center p-4 absolute bottom-0 right-0 ">
             <button
+              type="button"
               onClick={() => setIsDelete(true)}
               className="text-sm p-3 bg-red-500 rounded-3xl text-white hover:bg-red-900"
             >

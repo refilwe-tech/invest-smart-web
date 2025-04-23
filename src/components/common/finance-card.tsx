@@ -3,7 +3,7 @@ import { FaInfoCircle } from "react-icons/fa";
 
 export type FinanceCardProps = {
   icon: ReactNode;
-  total: string;
+  total: number;
   title: string;
   description: string;
   updated: boolean;

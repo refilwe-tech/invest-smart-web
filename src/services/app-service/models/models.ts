@@ -22,8 +22,8 @@ export type UserApi = {
 };
 
 export interface UserFinancesAPI {
-  user_id: string;
-  profile_id?:string;
+  user_id: number;
+  profile_id?: number;
   gross_salary: string;
   net_salary: string;
   current_savings: string;
@@ -32,13 +32,13 @@ export interface UserFinancesAPI {
 }
 
 export interface UserFinances {
-  userId: string;
-  profileId?:string;
-  grossSalary: string;
-  netSalary: string;
-  currentSavings: string;
-  monthlyExpenses: string;
-  investmentGoal: string;
+  userId: number;
+  profileId?: number;
+  grossSalary: number;
+  netSalary: number;
+  currentSavings: number;
+  monthlyExpenses: number;
+  investmentGoal?: string;
 }
 
 export type User = {
@@ -95,11 +95,11 @@ export const userProfileModel = ({
   monthly_expenses,
   ...data
 }: UserFinancesAPI): UserFinances => ({
-  grossSalary: (gross_salary) ?? 0,
-  netSalary: (net_salary) ?? 0,
-  monthlyExpenses: (monthly_expenses)??0,
-  investmentGoal: investment_goal??'',
-  currentSavings: data?.current_savings??0,
+  grossSalary: Number(gross_salary) ?? 0,
+  netSalary: Number(net_salary) ?? 0,
+  monthlyExpenses: Number(monthly_expenses) ?? 0,
+  investmentGoal: investment_goal ?? "",
+  currentSavings: Number(data?.current_savings) ?? 0,
   userId: data?.user_id,
   profileId: data?.profile_id,
   ...data,
@@ -109,7 +109,7 @@ export interface InvestmentPlanRequest {
   amount: number;
   durationMonths: number;
   monthlyContribution?: number;
-  riskTolerance?: 'low' | 'medium' | 'high';
+  riskTolerance?: "low" | "medium" | "high";
 }
 
 export interface SavedInvestmentPlan {

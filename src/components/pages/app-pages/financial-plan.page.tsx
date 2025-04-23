@@ -1,9 +1,10 @@
+import { Heading } from "@project/components";
 import { PageLayout } from "@project/components/layouts";
 
 export const FinancialPlanPage = () => {
   return (
     <PageLayout>
-      <div>FinancialPlanPage</div>
+      <Heading heading="My Financial Plans" />
     </PageLayout>
   );
 };
