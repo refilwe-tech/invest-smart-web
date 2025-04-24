@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../../../config";
-import { LoginUser, NewUser, newUserDto } from "./DTOs";
+import { type LoginUser, type NewUser, newUserDto } from "./DTOs";
 const { hostUrl } = config;
 
 const authBaseUrl = `${hostUrl}/auth`;
