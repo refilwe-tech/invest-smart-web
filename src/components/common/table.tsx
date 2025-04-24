@@ -26,7 +26,7 @@ export const Table = <T extends Record<string, unknown>>({ data, columns, loadin
         <table className="min-w-full table-auto border-separate border-spacing-y-1 text-left">
           <thead className="rounded-lg">
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="bg-primary-dark">
+              <tr key={headerGroup.id} className="bg-gradient-to-r from-secondary-2 to-primary-dark">
                 {headerGroup.headers.map((header) => (
                   <th className="text-white px-3" key={header.id}>
                     {header.isPlaceholder
