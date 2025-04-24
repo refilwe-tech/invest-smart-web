@@ -26,7 +26,7 @@ export const LandingPage = () => {
         <Button variant="gradient" onClick={getStarted}>Get Started</Button>
       </section>
       <section className="drop-shadow-2xl min-h-screen place-items-center grid">
-        <img src={LineGraphImage} className="w-3/4" alt="line graph" />
+        <img src={LineGraphImage} className="w-full" alt="line graph" />
       </section>
     </section>
   );
