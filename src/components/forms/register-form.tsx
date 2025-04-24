@@ -116,7 +116,7 @@ export const RegisterForm = () => {
             id="submit"
             className="flex items-center w-full flex-col gap-2"
           >
-            <Button variant="solid" type="submit" disabled={!canSubmit}>
+            <Button variant="gradient" type="submit" disabled={!canSubmit}>
               {isSubmitting ? "..." : "Submit"}
             </Button>
           </section>

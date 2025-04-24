@@ -19,7 +19,7 @@ import { Outlet, useNavigate } from "@tanstack/react-router";
 export const MyFinancesPage = () => {
   const { user } = useUserStore();
   const navigate = useNavigate({ from: "/finances" });
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["financialProfile"],
     queryFn: () => financialService.getUserFinancialProfile(user?.id ?? ""),
     enabled: !!localStorage.getItem("token"),
@@ -34,13 +34,14 @@ export const MyFinancesPage = () => {
     <PageLayout isLoading={isLoading}>
       <Heading heading="My Finances" />
       {data?.profileId ? (
-        <EditButton
-          title="Finances"
-          onClick={editFinancialInfo}
-          isEdit={false}
-        />
+        <section className="flex justify-start w-4/11"> <EditButton
+        title="Finances"
+        onClick={editFinancialInfo}
+        isEdit={false}
+      /></section>
+       
       ) : (
-        <Button variant="clear" onClick={addFinancialInfo}>
+        <Button variant="outline" onClick={addFinancialInfo}>
           <section className="flex items-center gap-2">
             <CiCirclePlus /> Add Financial Info
           </section>

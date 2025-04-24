@@ -1,16 +1,23 @@
 import { LiaUserEditSolid } from "react-icons/lia";
-import { FC } from "react";
+import type { FC } from "react";
 import { IoMdUndo } from "react-icons/io";
+import { Button } from "./button";
 
 export type EditButtonProps = {
   isEdit: boolean;
   title?: string;
   onClick: () => void;
 };
-export const EditButton: FC<EditButtonProps> = ({ onClick, isEdit, title='Profile' }) => {
+export const EditButton: FC<EditButtonProps> = ({
+  onClick,
+  isEdit,
+  title = "Profile",
+}) => {
   return (
-    <button
-      className={`${!isEdit ? "text-tertiary" : "text-red-500"} hover:text-blue-700 p-2 font-medium flex gap-2"`}
+    <Button
+      variant="gradient"
+      type="button"
+      className={`${!isEdit ? "bg-tertiary rounded-xl text-white" : "text-red-500"} hover:text-blue-700 font-medium flex items-center gap-2"`}
       onClick={onClick}
     >
       {isEdit ? (
@@ -22,6 +29,6 @@ export const EditButton: FC<EditButtonProps> = ({ onClick, isEdit, title='Profil
           <LiaUserEditSolid className="w-5 h-5" /> Edit {`${title}`}
         </>
       )}
-    </button>
+    </Button>
   );
 };

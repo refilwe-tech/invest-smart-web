@@ -77,7 +77,7 @@ export const ProfilePage = () => {
                 <Button onClick={onDelete} variant="negative">
                   Yes
                 </Button>
-                <Button onClick={() => setIsDelete(false)} variant="solid">
+                <Button onClick={() => setIsDelete(false)} variant="gradient">
                   No
                 </Button>
               </section>

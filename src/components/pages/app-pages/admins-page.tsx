@@ -1,7 +1,7 @@
 import { Container, PageLayout } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
 import { UserApi, userService } from "../../../services";
-import { DeleteButton, Heading, Table } from "../../common";
+import { Button, DeleteButton, Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { LiaUserEditSolid } from "react-icons/lia";
@@ -68,12 +68,9 @@ export const AdminUsersPage = () => {
         <Heading heading="Admins" />
         {currentUser?.userRole === USER_ROLES.SUPER_ADMIN && (
           <section className="flex justify-end items-center">
-            <button
-              onClick={goToNewUser}
-              className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
-            >
+            <Button variant="gradient" onClick={goToNewUser}>
               Add Admin
-            </button>
+            </Button>
           </section>
         )}
         <Container>

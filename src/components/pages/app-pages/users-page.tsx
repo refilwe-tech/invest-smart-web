@@ -4,8 +4,8 @@ import { LiaUserEditSolid } from "react-icons/lia";
 import { useQuery } from "@tanstack/react-query";
 
 import { Container, PageLayout } from "../../layouts";
-import { UserApi, userService } from "../../../services";
-import { DeleteButton, Heading, Table } from "../../common";
+import { type UserApi, userService } from "../../../services";
+import { Button, DeleteButton, Heading, Table } from "../../common";
 import { useUserStore } from "@project/store/user-store";
 
 export const UsersPage = () => {
@@ -69,12 +69,9 @@ export const UsersPage = () => {
       <section className="flex flex-col gap-4">
         <Heading heading="Users" />
         <section className="flex justify-end items-center">
-          <button
-            onClick={goToNewUser}
-            className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
-          >
+          <Button variant="gradient" onClick={goToNewUser}>
             Add User
-          </button>
+          </Button>
         </section>
         <Container>
           <Table

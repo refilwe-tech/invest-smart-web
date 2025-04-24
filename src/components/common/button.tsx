@@ -13,7 +13,7 @@ export const Button: FC<ButtonProps> = ({
   ...rest
 }) => {
   // Styles for the outer button container
-  let containerStyle = "relative p-[2px] overflow-hidden rounded-lg group";
+  let containerStyle = "relative overflow-hidden rounded-xl group";
   
   // Styles for the background layer
   let backgroundStyle = "";
@@ -22,13 +22,13 @@ export const Button: FC<ButtonProps> = ({
   let contentContainerStyle = "relative px-6 py-2 transition-all duration-300";
   
   // Styles for the text content
-  let contentStyle = "font-medium";
+  let contentStyle = "font-medium flex justify-center items-center gap-2";
   
   switch (variant) {
     case "outline":
       backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
       contentContainerStyle += " dark:bg-tertiary rounded-md group-hover:bg-transparent";
-      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white";
+      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white flex items-center gap-2";
       break;
       
     case "clear":
@@ -39,14 +39,14 @@ export const Button: FC<ButtonProps> = ({
       break;
       
     case "solid":
-      containerStyle = "relative overflow-hidden rounded-lg group";
+      containerStyle = "relative overflow-hidden rounded-xl group";
       backgroundStyle = "bg-tertiary";
-      contentContainerStyle += " bg-transparent";
+      contentContainerStyle += " bg-transparent hover:bg-primary-dark";
       contentStyle += " text-white";
       break;
 
       case "negative":
-        containerStyle = "relative overflow-hidden rounded-lg group";
+        containerStyle = "relative overflow-hidden rounded-xl group";
         backgroundStyle = "bg-red-500 ";
         contentContainerStyle += " bg-transparent hover:bg-red-700";
         contentStyle += " text-white";
@@ -54,7 +54,7 @@ export const Button: FC<ButtonProps> = ({
       
     case "gradient":
       backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark hover:bg-gradient-to-r hover:from-primary-dark hover:to-secondary";
-      contentContainerStyle += " bg-transparent";
+      contentContainerStyle += " bg-transparent hover:bg-gradient-to-r hover:from-primary-dark hover:to-secondary";
       contentStyle += " text-white";
       break;
       
@@ -68,7 +68,7 @@ export const Button: FC<ButtonProps> = ({
     default:
       backgroundStyle = "bg-gradient-to-r from-secondary-2 to-primary-dark";
       contentContainerStyle += " dark:bg-tertiary rounded-md group-hover:bg-transparent";
-      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white";
+      contentStyle += " text-transparent bg-clip-text bg-gradient-to-r from-secondary-2 to-primary-dark group-hover:text-white flex items-center gap-2";
       break;
   }
 

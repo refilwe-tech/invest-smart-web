@@ -124,7 +124,7 @@ export const FinancesForm = ({
           >
             <Button
               className="w-96"
-              variant="solid"
+              variant="gradient"
               type="submit"
               disabled={!canSubmit}
             >
