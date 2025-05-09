@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { MdOutlineSavings } from "react-icons/md";
-import { FcMoneyTransfer } from "react-icons/fc";
-import { IoReceiptOutline } from "react-icons/io5";
+import {IoReceiptSharp } from "react-icons/io5";
 import { CiCirclePlus } from "react-icons/ci";
 
 import {
@@ -15,6 +13,7 @@ import {
 import { userProfileModel, financialService } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { Outlet, useNavigate } from "@tanstack/react-router";
+import { GiPiggyBank, GiReceiveMoney } from "react-icons/gi";
 
 export const MyFinancesPage = () => {
   const { user } = useUserStore();
@@ -51,7 +50,7 @@ export const MyFinancesPage = () => {
         <section className="grid place-items-center gap-3">
           <section className="flex flex-col items-center gap-1">
             <h3 className="text-lg font-semibold text-gray-700">Your Net</h3>
-            <p className="text-2xl font-bold text-primary">
+            <p className="text-2xl font-bold text-black">
               R{data?.netSalary ?? "0.00"}
             </p>
           </section>
@@ -67,21 +66,21 @@ export const MyFinancesPage = () => {
       </Container>
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <FinanceCard
-          icon={<FcMoneyTransfer className="w-10 h-10" />}
+          icon={<GiReceiveMoney className="w-10 h-10" />}
           total={data?.grossSalary ?? 0}
           title="Gross Salary"
           description={"Total income earned before taxes and deductions."}
           updated={!!data?.profileId}
         />
         <FinanceCard
-          icon={<MdOutlineSavings className="w-10 h-10" />}
+          icon={<GiPiggyBank className="w-10 h-10" />}
           total={data?.currentSavings ?? 0}
           title="Current Savings"
           description={"Total amount of money you have set aside in savings."}
           updated={!!data?.profileId}
         />
         <FinanceCard
-          icon={<IoReceiptOutline className="w-10 h-10" />}
+          icon={<IoReceiptSharp className="w-10 h-10" />}
           total={data?.monthlyExpenses ?? 0}
           title="Monthly Expenses"
           description={

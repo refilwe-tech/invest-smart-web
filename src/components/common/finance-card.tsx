@@ -31,7 +31,7 @@ export const FinanceCard: FC<FinanceCardProps> = ({
         </div>
 
         <div className="ml-4">
-          <h2 className="text-red-600 text-xl font-bold">{title}</h2>
+          <h2 className="text-black text-xl font-bold">{title}</h2>
           <h3 className="text-lg font-bold">R{total}</h3>
           <div className="flex w-full items-center py-2 gap-2 text-gray-500">
             <FaInfoCircle className="w-5 h-5 text-blue-500" />

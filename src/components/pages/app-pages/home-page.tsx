@@ -159,20 +159,20 @@ export const HomePage = () => {
       ) : (
         <section className="flex flex-col gap-4">
           <section className="grid md:grid-cols-3 gap-4 w-full">
-            <section className="flex flex-col p-3 h-32 bg-primary hover:bg-dark text-white rounded-xl gap-4 drop-shadow-2xl">
+            <section className="flex flex-col p-3 h-20 bg-primary hover:bg-dark text-white rounded-xl gap-4 drop-shadow-2xl">
               <h4 className="font-semibold text-sm">Invest Smart</h4>
-              <p></p>
+              <p className="text-xs">Check how your money can grow</p>
             </section>
-            <section className="flex flex-col p-3 h-32 hover:bg-secondary/80 bg-secondary text-white rounded-xl gap-4 drop-shadow-2xl">
+            <section className="flex flex-col p-3 h-20 hover:bg-secondary/80 bg-secondary text-white rounded-xl gap-4 drop-shadow-2xl">
               <h4 className="font-semibold text-sm">Analyze your profile</h4>
-              <p></p>
+              <p className="text-xs">Check how your money can grow</p>
             </section>
-            <section className="grid w-full place-items-start p-3 h-32 hover:bg-dark bg-tertiary text-white rounded-xl gap-4 drop-shadow-2xl">
+            <section className="grid w-full place-items-start p-3 h-20 hover:bg-dark bg-tertiary text-white rounded-xl gap-4 drop-shadow-2xl">
               <section className="flex gap-2 items-center">
                 <BsPiggyBankFill className="text-primary w-5 h-5" />
                 <h4 className="font-semibold text-sm">Grow your money</h4>
               </section>
-              <p className="text-xs"></p>
+              <p className="text-xs">Check how your money can grow</p>
             </section>
           </section>
           <Heading heading="Financial Overview" />

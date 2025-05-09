@@ -7,7 +7,7 @@ export type PieGraphProps = {
     value: number;
   }[];
 };
-export const COLORS = ["#0088FE", "#00C49F", "#F00", "#FF8042", "#FFBB28"];
+export const COLORS = ["#4646F9", "#9130F4", "#121139", "#FF8042", "#FFBB28"];
 export const PieGraph: FC<PieGraphProps> = ({ data }) => {
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
