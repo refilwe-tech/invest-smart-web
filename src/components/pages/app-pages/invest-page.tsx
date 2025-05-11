@@ -30,6 +30,15 @@ import {
 } from "@project/services";
 import { InvestmentSchema } from "@project/schemas";
 import { useDocumentTitle } from "@project/hooks";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@project/components/ui/dialog";
 
 export const InvestPage = () => {
   const pageTitle = "Investment Calculator";
@@ -38,6 +47,9 @@ export const InvestPage = () => {
   const [activeTab, setActiveTab] = useState<"calculator" | "saved">(
     "calculator"
   );
+
+  const [planName, setPlanName] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const form = useForm({
     id: "investment-form",
@@ -90,6 +102,13 @@ export const InvestPage = () => {
     };
 
     savePlanMutation.mutate(planToSave);
+  };
+
+  const handleDialogSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (planName.trim()) {
+      handleSavePlan(planName);
+    }
   };
 
   return (
@@ -324,17 +343,53 @@ export const InvestPage = () => {
                 </div>
 
                 <div className="mt-6">
-                  <Button
-                    onClick={() => {
-                      const planName = prompt("Enter a name for this plan:");
-                      if (planName) handleSavePlan(planName);
-                    }}
-                    disabled={savePlanMutation.isPending}
-                  >
-                    {savePlanMutation.isPending
-                      ? "Saving..."
-                      : "Save This Plan"}
-                  </Button>
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button disabled={savePlanMutation.isPending}>
+                        {savePlanMutation.isPending
+                          ? "Saving..."
+                          : "Save This Plan"}
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <form onSubmit={handleDialogSubmit}>
+                        <DialogHeader>
+                          <DialogTitle>Save Investment Plan</DialogTitle>
+                          <DialogDescription>
+                            Give your plan a name to save it for future
+                            reference.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="planName" className="text-right">
+                              Plan Name
+                            </Label>
+                            <Input
+                              id="planName"
+                              value={planName}
+                              onChange={(e) => setPlanName(e.target.value)}
+                              placeholder="e.g., Retirement Plan 2030"
+                              className="col-span-3"
+                              autoFocus
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button
+                            type="submit"
+                            disabled={
+                              !planName.trim() || savePlanMutation.isPending
+                            }
+                          >
+                            {savePlanMutation.isPending
+                              ? "Saving..."
+                              : "Save Plan"}
+                          </Button>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>

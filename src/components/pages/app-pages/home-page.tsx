@@ -177,7 +177,7 @@ export const HomePage = () => {
               <p className="text-xs">Check how your money can grow</p>
             </section>
           </section>
-          {financialData?.categories && (
+          {financialData?.categories.length != 0 && (
             <>
               <Heading heading="Financial Overview" />
               <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
