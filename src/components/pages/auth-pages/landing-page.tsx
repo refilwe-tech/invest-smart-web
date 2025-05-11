@@ -1,8 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Button, GradientHeading } from "../../common";
 import { LineGraphImage } from "../../../assets";
+import { useDocumentTitle } from "@project/hooks";
 
 export const LandingPage = () => {
+  const pageTitle = "Invest Smart";
+  useDocumentTitle(pageTitle);
   const navigate = useNavigate({ from: "/" });
   const getStarted = () => navigate({ to: "/register" });
 
@@ -11,7 +14,7 @@ export const LandingPage = () => {
       <section className="flex flex-col gap-5">
         <section className="flex flex-col gap-1">
           <GradientHeading>
-            Invest Smart
+            {pageTitle}
           </GradientHeading>
           <h2 className="text-white font-bold text-6xl">Grow your money</h2>
         </section>

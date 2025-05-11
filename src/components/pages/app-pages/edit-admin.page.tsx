@@ -4,8 +4,11 @@ import { PageLayout } from "@project/components/layouts";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
+import { useDocumentTitle } from "@project/hooks";
 
 export const EditAdminPage = () => {
+  const pageTitle = "Edit Admin";
+  useDocumentTitle(pageTitle);
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
@@ -26,7 +29,7 @@ export const EditAdminPage = () => {
         <button className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
-        <Heading heading="Edit Admin" />
+        <Heading heading={pageTitle} />
         <EditAdminForm />
       </section>
     </PageLayout>

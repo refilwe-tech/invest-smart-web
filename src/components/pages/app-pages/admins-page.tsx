@@ -6,8 +6,11 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { USER_ROLES, useUserStore } from "@project/store/user-store";
+import { useDocumentTitle } from "@project/hooks";
 
 export const AdminUsersPage = () => {
+  const pageTitle = "Admins";
+  useDocumentTitle(pageTitle);
   const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({
     queryKey: ["admins"],
@@ -65,7 +68,7 @@ export const AdminUsersPage = () => {
     <PageLayout isLoading={isLoading}>
       <Outlet />
       <section className="flex flex-col gap-4">
-        <Heading heading="Admins" />
+        <Heading heading={pageTitle} />
         {currentUser?.userRole === USER_ROLES.SUPER_ADMIN && (
           <section className="flex justify-end items-center">
             <Button variant="gradient" onClick={goToNewUser}>

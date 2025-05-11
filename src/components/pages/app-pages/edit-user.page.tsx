@@ -4,8 +4,11 @@ import { PageLayout } from "@project/components/layouts";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
+import { useDocumentTitle } from "@project/hooks";
 
 export const EditUserPage = () => {
+  const pageTitle = "Edit User";
+  useDocumentTitle(pageTitle);
   const location = useLocation();
   const { userId } = useParams({ strict: false });
 
@@ -24,7 +27,7 @@ export const EditUserPage = () => {
         <button className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
-        <Heading heading="Edit User" />
+        <Heading heading={pageTitle} />
         <EditUserForm />
       </section>
     </PageLayout>

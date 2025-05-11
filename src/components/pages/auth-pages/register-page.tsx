@@ -1,7 +1,10 @@
 import { IntroSection } from "../../common";
 import { RegisterForm } from "../../forms";
+import { useDocumentTitle } from "../../../hooks";
 
 export const RegisterPage = () => {
+  const pageTitle = "Register";
+  useDocumentTitle(pageTitle);
   return (
     <section className="w-full flex h-screen">
       <section className="w-[60%] grid place-items-center h-full bg-gradient-to-r from-tertiary to-[#3A49F9]">

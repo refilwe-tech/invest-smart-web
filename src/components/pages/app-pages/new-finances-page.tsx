@@ -5,8 +5,11 @@ import { MdOutlineCloseFullscreen } from "react-icons/md";
 import { FinancesForm, Heading, PageLayout } from "@project/components";
 import { financialService, userProfileModel } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
+import { useDocumentTitle } from "@project/hooks";
 
 export const AddFinancesPage = () => {
+  const pageTitle = "Add Financial Data";
+  useDocumentTitle(pageTitle);
   const location = useLocation();
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -36,7 +39,7 @@ export const AddFinancesPage = () => {
         <button type="button" className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
-        <Heading heading={`${isEdit ? "Edit" : "Add"} Financial Data`} />
+        <Heading heading={pageTitle} />
         <FinancesForm initialValues={initialValues} isEdit={isEdit} />
       </section>
     </PageLayout>

@@ -16,8 +16,11 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { USER_ROLES } from "@project/store/user-store";
 import { FaUserClock } from "react-icons/fa6";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { useDocumentTitle } from "@project/hooks";
 
 export const ProfilePage = () => {
+  const pageTitle = "Profile";
+  useDocumentTitle(pageTitle);
   const { setIsAuthenticated, setToken } = useAuthStore();
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);

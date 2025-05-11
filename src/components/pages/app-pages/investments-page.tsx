@@ -5,8 +5,11 @@ import { Heading, Table } from "../../common";
 import { createColumnHelper } from "@tanstack/react-table";
 import { GoTrash } from "react-icons/go";
 import toast from "react-hot-toast";
+import { useDocumentTitle } from "@project/hooks";
 
 export const InvestmentsPage = () => {
+  const pageTitle = "Investment Options";
+  useDocumentTitle(pageTitle);
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (id: string) => investmentService.deleteInvestment(id),
@@ -62,7 +65,7 @@ export const InvestmentsPage = () => {
   return (
     <PageLayout isLoading={isLoading}>
       <section className="flex flex-col gap-4">
-        <Heading heading="Investment Options" />
+        <Heading heading={pageTitle} />
         {false && (
           <section className="flex justify-end items-center">
             <button

@@ -29,8 +29,11 @@ import {
   type SavedInvestmentPlan,
 } from "@project/services";
 import { InvestmentSchema } from "@project/schemas";
+import { useDocumentTitle } from "@project/hooks";
 
 export const InvestPage = () => {
+  const pageTitle = "Investment Calculator";
+  useDocumentTitle(pageTitle);
   const [result, setResult] = useState<InvestmentPlanResponse | null>(null);
   const [activeTab, setActiveTab] = useState<"calculator" | "saved">(
     "calculator"
@@ -91,7 +94,7 @@ export const InvestPage = () => {
 
   return (
     <PageLayout>
-      <Heading heading="Investment Calculator" />
+      <Heading heading={pageTitle} />
 
       <div className="flex gap-4 mb-6">
         <Button

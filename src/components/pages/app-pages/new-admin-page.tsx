@@ -4,8 +4,11 @@ import { PageLayout } from "@project/components/layouts";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
+import { useDocumentTitle } from "@project/hooks";
 
 export const NewAdminPage = () => {
+  const pageTitle = "Add New Admin";
+  useDocumentTitle(pageTitle);
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
@@ -22,7 +25,7 @@ export const NewAdminPage = () => {
         <button className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
-        <Heading heading="Add New Admin" />
+        <Heading heading={pageTitle} />
         <UserForm userRole="admin" />
       </section>
     </PageLayout>

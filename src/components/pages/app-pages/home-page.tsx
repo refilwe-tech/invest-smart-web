@@ -11,8 +11,10 @@ import { BsPiggyBankFill } from "react-icons/bs";
 
 import { LineGraph } from "@project/components/common/line-graph";
 import { COLORS, Heading, PieGraph } from "@project/components";
+import { useDocumentTitle } from '@project/hooks'
 
 export const HomePage = () => {
+  useDocumentTitle("Dashboard");
   const { user } = useUserStore();
   const { token } = useAuthStore();
   const { data: financialData, isLoading:financialDataLoading } = useQuery({
@@ -20,6 +22,8 @@ export const HomePage = () => {
     queryFn: () => financialService.getFinancialGraph(user?.id ?? ""),
     enabled: !!token && user.userRole === USER_ROLES.USER,
   });
+
+  
 
   const graph = [
     { name: "Salary", value: 18000 },

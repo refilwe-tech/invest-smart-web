@@ -7,8 +7,11 @@ import { Container, PageLayout } from "../../layouts";
 import { type UserApi, userService } from "../../../services";
 import { Button, DeleteButton, Heading, Table } from "../../common";
 import { useUserStore } from "@project/store/user-store";
+import { useDocumentTitle } from "@project/hooks";
 
 export const UsersPage = () => {
+  const pageTitle = "Users";
+  useDocumentTitle(pageTitle);
   const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
@@ -67,7 +70,7 @@ export const UsersPage = () => {
     <PageLayout isLoading={isLoading}>
       <Outlet />
       <section className="flex flex-col gap-4">
-        <Heading heading="Users" />
+        <Heading heading={pageTitle} />
         <section className="flex justify-end items-center">
           <Button variant="gradient" onClick={goToNewUser}>
             Add User

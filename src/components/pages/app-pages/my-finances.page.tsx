@@ -14,8 +14,11 @@ import { userProfileModel, financialService } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { GiPiggyBank, GiReceiveMoney } from "react-icons/gi";
+import { useDocumentTitle } from "@project/hooks";
 
 export const MyFinancesPage = () => {
+  const pageTitle = "My Finances";
+  useDocumentTitle(pageTitle);
   const { user } = useUserStore();
   const navigate = useNavigate({ from: "/finances" });
   const { data, isLoading } = useQuery({
@@ -31,7 +34,7 @@ export const MyFinancesPage = () => {
 
   return (
     <PageLayout isLoading={isLoading}>
-      <Heading heading="My Finances" />
+      <Heading heading={pageTitle} />
       {data?.profileId ? (
         <section className="flex justify-start w-4/11"> <EditButton
         title="Finances"
