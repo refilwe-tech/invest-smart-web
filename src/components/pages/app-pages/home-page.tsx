@@ -11,19 +11,17 @@ import { BsPiggyBankFill } from "react-icons/bs";
 
 import { LineGraph } from "@project/components/common/line-graph";
 import { COLORS, Heading, PieGraph } from "@project/components";
-import { useDocumentTitle } from '@project/hooks'
+import { useDocumentTitle } from "@project/hooks";
 
 export const HomePage = () => {
   useDocumentTitle("Dashboard");
   const { user } = useUserStore();
   const { token } = useAuthStore();
-  const { data: financialData, isLoading:financialDataLoading } = useQuery({
+  const { data: financialData, isLoading: financialDataLoading } = useQuery({
     queryKey: ["financialData"],
     queryFn: () => financialService.getFinancialGraph(user?.id ?? ""),
     enabled: !!token && user.userRole === USER_ROLES.USER,
   });
-
-  
 
   const graph = [
     { name: "Salary", value: 18000 },
@@ -38,7 +36,7 @@ export const HomePage = () => {
   });
 
   return (
-    <PageLayout isLoading={isLoading||financialDataLoading}>
+    <PageLayout isLoading={isLoading || financialDataLoading}>
       <section>
         <h3 className="text-lg">
           Welcome back, <strong>{`${user?.firstName ?? ""}`}</strong>
@@ -179,28 +177,32 @@ export const HomePage = () => {
               <p className="text-xs">Check how your money can grow</p>
             </section>
           </section>
-          <Heading heading="Financial Overview" />
-          <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
-            <PieGraph data={financialData?.categories ?? []} />
-            <section className="flex flex-col w-full gap-2">
-              <ul className="flex flex-col gap-2">
-                {
-                  financialData?.categories?.map(({name},index:number) => (
-                    <li
-                      key={name}
-                      className="flex text-xs gap-2 items-center"
-                    >
-                      <div
-                        className="rounded-full h-5 w-5"
-                        style={{ backgroundColor: COLORS[index] }}
-                      />
-                      {name}
-                    </li>
-                  ))
-                }
-              </ul>
-            </section>
-          </section>
+          {financialData?.categories && (
+            <>
+              <Heading heading="Financial Overview" />
+              <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
+                <PieGraph data={financialData?.categories ?? []} />
+                <section className="flex flex-col w-full gap-2">
+                  <ul className="flex flex-col gap-2">
+                    {financialData?.categories?.map(
+                      ({ name }, index: number) => (
+                        <li
+                          key={name}
+                          className="flex text-xs gap-2 items-center"
+                        >
+                          <div
+                            className="rounded-full h-5 w-5"
+                            style={{ backgroundColor: COLORS[index] }}
+                          />
+                          {name}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </section>
+              </section>
+            </>
+          )}
         </section>
       )}
     </PageLayout>
