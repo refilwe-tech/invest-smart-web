@@ -6,12 +6,20 @@ import { FinancesForm, Heading, PageLayout } from "@project/components";
 import { financialService, userProfileModel } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 
-export const AddFinancesPage = () => {
+export const EditFinancesPage = () => {
   const location = useLocation();
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  const initialValues = {
+  const { data, isLoading } = useQuery({
+    queryKey: ["financialProfile"],
+    queryFn: () => financialService.getUserFinancialProfile(user?.id ?? ""),
+    enabled: !!localStorage.getItem("token"),
+    select: userProfileModel,
+    retry: 1,
+  });
+
+  const initialValues = data?? {
     grossSalary: 0,
     monthlyExpenses: 0,
     netSalary: 0,
@@ -22,7 +30,7 @@ export const AddFinancesPage = () => {
   };
 
   const { pathname } = location;
-  const isOpen = pathname === "/finances/new" || pathname === "/finances/edit";
+  const isOpen = pathname === "/finances/edit";
   const isEdit = pathname === "/finances/edit";
   const close = () => navigate({ to: "/finances", from: "/" });
 

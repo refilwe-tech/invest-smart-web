@@ -21,7 +21,7 @@ export const LoginForm = () => {
       mutationFn: authService.login,
       onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
-        const { token } = data;
+        const { access_token : token } = data;
         setToken(token);
         localStorage.setItem("token", token);
         setIsAuthenticated(!!token);

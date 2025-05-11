@@ -17,7 +17,9 @@ const FinancesUrls = {
 const createFinancialProfile = (user: UserFinances) => {
   const dto = newUserFinancialDto(user);
   return axios
-    .post(FinancesUrls.finances, dto)
+    .post(FinancesUrls.finances, dto,{headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    }})
     .then((response) => response.data);
 };
 

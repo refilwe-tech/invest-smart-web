@@ -40,7 +40,7 @@ export const MyFinancesPage = () => {
       /></section>
        
       ) : (
-        <Button variant="outline" onClick={addFinancialInfo}>
+        <Button variant="solid" onClick={addFinancialInfo}>
           <section className="flex items-center gap-2">
             <CiCirclePlus /> Add Financial Info
           </section>
