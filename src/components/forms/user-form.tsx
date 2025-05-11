@@ -34,6 +34,7 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
     defaultValues: {
       firstName: "",
       lastName: "",
+      idNumber: "",
       email: "",
       password: "",
       userRole: userRole
@@ -95,6 +96,14 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
             },
           }}
           children={(field) => <InputField field={field} label="Last Name" />}
+        />
+      </div>
+      <div>
+        <form.Field
+          name="idNumber"
+          children={(field) => (
+            <InputField field={field} label="ID Number" type="text" />
+          )}
         />
       </div>
       <div>
