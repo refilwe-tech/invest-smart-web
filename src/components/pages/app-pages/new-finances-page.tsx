@@ -1,9 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { MdOutlineCloseFullscreen } from "react-icons/md";
 
 import { FinancesForm, Heading, PageLayout } from "@project/components";
-import { financialService, userProfileModel } from "@project/services";
 import { useUserStore } from "@project/store/user-store";
 import { useDocumentTitle } from "@project/hooks";
 
@@ -19,7 +17,7 @@ export const AddFinancesPage = () => {
     monthlyExpenses: 0,
     netSalary: 0,
     currentSavings: 0,
-    investmentGoal: "",
+    goalId: 0,
     userId: Number(user?.id) ?? -1,
     profileId: 0,
   };

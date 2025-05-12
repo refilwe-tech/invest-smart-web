@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Button, InputField } from "../common";
 import { financialService, type UserFinances } from "@project/services";
@@ -25,6 +25,11 @@ export const FinancesForm = ({
     () => !initialValues?.profileId,
     [initialValues]
   );
+  const {data:goals} = useQuery({
+    queryKey: ["investmentGoals"],
+    queryFn: financialService.getInvestmentGoals,
+    onError: () => toast.error("Failed to fetch investment goals"),
+  })
   const { mutateAsync } = useMutation({
     mutationFn: isNewProfile
       ? financialService.createFinancialProfile
@@ -40,6 +45,8 @@ export const FinancesForm = ({
     },
     onError: () => toast.error("Failed to update investment details"),
   });
+
+  console.log(goals)
 
   const onSubmit = async (data: UserFinances) => mutateAsync(data);
 
