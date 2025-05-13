@@ -10,7 +10,7 @@ import { AxiosError } from "axios";
 export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const goBack = () => navigate({ to: `${userRole}s` });
+  const goBack = () => navigate({ to: `/${userRole}s` });
   const { mutateAsync } = useMutation({
     mutationFn: userService.updateUser,
     onSuccess: () => {

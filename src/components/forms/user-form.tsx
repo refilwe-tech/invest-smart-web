@@ -9,7 +9,7 @@ import {  NewUser, userService } from "../../services";
 export const UserForm = ({userRole='user'}:{userRole?:string}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const goBack = () => navigate({ to: `${userRole}s` });
+  const goBack = () => navigate({ to: `/${userRole}s` });
   const { mutateAsync } = useMutation(
     {
       mutationFn: userService.createUser,
