@@ -44,6 +44,7 @@ const getUserById = (id: string) => {
     .get(`${UsersUrls.users}/${id}`, {
       headers: {
         "ngrok-skip-browser-warning": true,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => response.data);
