@@ -1,47 +1,80 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useDocumentTitle } from "@project/hooks";
 import { Heading } from "@project/components";
 import { PageLayout } from "@project/components/layouts";
 import { Button } from "@project/components/ui/button";
 import { Calendar } from "@project/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@project/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@project/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@project/lib/utils";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@project/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@project/components/ui/card";
-import { useDownloadReport, useGenerateReport, useInvestmentGoals } from '@project/queries';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@project/components/ui/table';
-import { Skeleton } from '@project/components/ui/skeleton';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@project/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@project/components/ui/card";
+import {
+  useDownloadReport,
+  useGenerateReport,
+  useInvestmentGoals,
+  useReportTemplates,
+} from "@project/queries";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@project/components/ui/table";
+import { Skeleton } from "@project/components/ui/skeleton";
 
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
-  const [selectedGoal, setSelectedGoal] = useState<number>(1);
-  
+  const [selectedGoal, setSelectedGoal] = useState<number>("1");
+
   // Fetch available investment goals
   const { data: goalsData, isLoading: goalsLoading } = useInvestmentGoals();
-  
+
   // Report generation
-  const { mutate: generateReport, isPending: isGenerating } = useGenerateReport();
-  const { mutate: downloadReport, isPending: isDownloading } = useDownloadReport();
-  
+  const { mutate: generateReport, isPending: isGenerating } =
+    useGenerateReport();
+  const { mutate: downloadReport, isPending: isDownloading } =
+    useDownloadReport();
+  const { data: reportTemplates, isPendingTemplate } = useReportTemplates();
+
   // Sample report data - replace with actual data from your API
   const [reportData, setReportData] = useState<any>(null);
 
   const handleGenerateReport = () => {
-    generateReport({
-      template_id: 2, // Assuming 2 is the user detailed report
-      period_start: dateRange.from?.toISOString(),
-      period_end: dateRange.to?.toISOString(),
-      filters: {
-        goal_id: selectedGoal
+    generateReport(
+      {
+        template_id: 2, // Assuming 2 is the user detailed report
+        period_start: dateRange.from?.toISOString(),
+        period_end: dateRange.to?.toISOString(),
+        filters: {
+          goal_id: selectedGoal,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          setReportData(data);
+        },
       }
-    }, {
-      onSuccess: (data) => {
-        setReportData(data);
-      }
-    });
+    );
   };
 
   const handleDownloadReport = () => {
@@ -60,7 +93,7 @@ export const UserReportPage = () => {
               Check your data and see how your finances are set up
             </p>
           </div>
-          <Button 
+          <Button
             onClick={handleDownloadReport}
             disabled={!reportData || isDownloading}
           >
@@ -89,14 +122,18 @@ export const UserReportPage = () => {
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dateRange.from ? format(dateRange.from, "PPP") : "From"}
+                        {dateRange.from
+                          ? format(dateRange.from, "PPP")
+                          : "From"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
                       <Calendar
                         mode="single"
                         selected={dateRange.from}
-                        onSelect={(date) => setDateRange(prev => ({ ...prev, from: date }))}
+                        onSelect={(date) =>
+                          setDateRange((prev) => ({ ...prev, from: date }))
+                        }
                         initialFocus
                       />
                     </PopoverContent>
@@ -118,9 +155,13 @@ export const UserReportPage = () => {
                       <Calendar
                         mode="single"
                         selected={dateRange.to}
-                        onSelect={(date) => setDateRange(prev => ({ ...prev, to: date }))}
+                        onSelect={(date) =>
+                          setDateRange((prev) => ({ ...prev, to: date }))
+                        }
                         initialFocus
-                        disabled={(date) => dateRange.from ? date < dateRange.from : false}
+                        disabled={(date) =>
+                          dateRange.from ? date < dateRange.from : false
+                        }
                       />
                     </PopoverContent>
                   </Popover>
@@ -133,17 +174,25 @@ export const UserReportPage = () => {
                 {goalsLoading ? (
                   <Skeleton className="h-10 w-full" />
                 ) : (
-                  <Select value={selectedGoal} onValueChange={setSelectedGoal}>
+                  <Select
+                    value={selectedGoal}
+                    onValueChange={(value) => setSelectedGoal(value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a goal" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Goals</SelectItem>
-                      {!goalsLoading && goalsData.map((goal) => (
-                        <SelectItem key={goal.goal_id} value={goal.goal_id.toString()}>
-                          {goal.goal_name}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="all">All Goals</SelectItem>{" "}
+                      {/* Changed from "" to "all" */}
+                      {!goalsLoading &&
+                        goalsData.map((goal) => (
+                          <SelectItem
+                            key={goal.goal_id}
+                            value={goal.goal_id.toString()}
+                          >
+                            {goal.goal_name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                 )}
@@ -151,7 +200,7 @@ export const UserReportPage = () => {
 
               {/* Generate Report Button */}
               <div className="flex items-end">
-                <Button 
+                <Button
                   onClick={handleGenerateReport}
                   className="w-full"
                   disabled={isGenerating}
@@ -172,24 +221,36 @@ export const UserReportPage = () => {
             <CardContent>
               {/* Financial Summary */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">Financial Summary</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  Financial Summary
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="border rounded-lg p-4">
                     <p className="text-sm text-muted-foreground">Net Salary</p>
                     <p className="text-xl font-semibold">
-                      ${reportData.user_finances?.net_salary?.toLocaleString() || '0.00'}
+                      $
+                      {reportData.user_finances?.net_salary?.toLocaleString() ||
+                        "0.00"}
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm text-muted-foreground">Monthly Expenses</p>
+                    <p className="text-sm text-muted-foreground">
+                      Monthly Expenses
+                    </p>
                     <p className="text-xl font-semibold">
-                      ${reportData.user_finances?.monthly_expenses?.toLocaleString() || '0.00'}
+                      $
+                      {reportData.user_finances?.monthly_expenses?.toLocaleString() ||
+                        "0.00"}
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm text-muted-foreground">Current Savings</p>
+                    <p className="text-sm text-muted-foreground">
+                      Current Savings
+                    </p>
                     <p className="text-xl font-semibold">
-                      ${reportData.user_finances?.current_savings?.toLocaleString() || '0.00'}
+                      $
+                      {reportData.user_finances?.current_savings?.toLocaleString() ||
+                        "0.00"}
                     </p>
                   </div>
                 </div>
@@ -197,7 +258,9 @@ export const UserReportPage = () => {
 
               {/* Investment Portfolio */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">Investment Portfolio</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  Investment Portfolio
+                </h3>
                 {reportData.user_investments?.length > 0 ? (
                   <Table>
                     <TableHeader>
@@ -213,13 +276,19 @@ export const UserReportPage = () => {
                         <TableRow key={investment.investment_id}>
                           <TableCell>{investment.investment_name}</TableCell>
                           <TableCell>{investment.type_name}</TableCell>
-                          <TableCell>${investment.amount?.toLocaleString()}</TableCell>
                           <TableCell>
-                            <span className={`px-2 py-1 rounded-full text-xs ${
-                              investment.risk_level === 'High' ? 'bg-red-100 text-red-800' :
-                              investment.risk_level === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-green-100 text-green-800'
-                            }`}>
+                            ${investment.amount?.toLocaleString()}
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs ${
+                                investment.risk_level === "High"
+                                  ? "bg-red-100 text-red-800"
+                                  : investment.risk_level === "Medium"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
+                              }`}
+                            >
                               {investment.risk_level}
                             </span>
                           </TableCell>
@@ -235,14 +304,23 @@ export const UserReportPage = () => {
               {/* Recommendations */}
               {reportData.recommendations?.length > 0 && (
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Recommendations</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Recommendations
+                  </h3>
                   <div className="space-y-3">
-                    {reportData.recommendations.map((rec: any, index: number) => (
-                      <div key={rec.title} className="border-l-4 border-primary pl-4 py-2">
-                        <h4 className="font-medium">{rec.title}</h4>
-                        <p className="text-sm text-muted-foreground">{rec.description}</p>
-                      </div>
-                    ))}
+                    {reportData.recommendations.map(
+                      (rec: any, index: number) => (
+                        <div
+                          key={rec.title}
+                          className="border-l-4 border-primary pl-4 py-2"
+                        >
+                          <h4 className="font-medium">{rec.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {rec.description}
+                          </p>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               )}

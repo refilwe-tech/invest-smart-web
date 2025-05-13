@@ -9,6 +9,16 @@ export const useInvestmentGoals = () => {
     });
 };
 
+export const useReportTemplates = () => {
+  return useQuery({
+    queryKey: ["reportTemplates"],
+    queryFn: reportService.getTemplates,
+    onSuccess: (data) => {
+      // You can add any success handling here
+    },
+  });
+}
+
 export const useGenerateReport = () => {
   return useMutation({
     mutationFn: reportService.generateReport,
