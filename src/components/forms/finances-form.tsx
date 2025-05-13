@@ -200,7 +200,7 @@ export const FinancesForm = ({
         </form.Field>
         <div className="flex flex-col">
           <p className="text-sm font-medium text-gray-400 mb-1">
-            Estimated Tax Rate
+            Estimated Deduction Rate
           </p>
           <div className="h-10 flex items-center px-3 text-lg font-medium">
             {Number(form.getFieldValue("grossSalary")) > 0 &&
