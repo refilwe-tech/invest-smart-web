@@ -12,11 +12,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@project/components/ui/card";
 import { useDownloadReport, useGenerateReport, useInvestmentGoals } from '@project/queries';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@project/components/ui/table';
+import { Skeleton } from '@project/components/ui/skeleton';
 
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
-  const [selectedGoal, setSelectedGoal] = useState<string>("");
+  const [selectedGoal, setSelectedGoal] = useState<number>(1);
   
   // Fetch available investment goals
   const { data: goalsData, isLoading: goalsLoading } = useInvestmentGoals();
@@ -138,7 +139,7 @@ export const UserReportPage = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">All Goals</SelectItem>
-                      {goalsData?.goals.map((goal) => (
+                      {!goalsLoading && goalsData.map((goal) => (
                         <SelectItem key={goal.goal_id} value={goal.goal_id.toString()}>
                           {goal.goal_name}
                         </SelectItem>

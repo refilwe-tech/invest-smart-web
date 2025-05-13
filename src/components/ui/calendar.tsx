@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button";
+import { cn } from "@project/lib/utils";
 
 function Calendar({
   className,
@@ -12,7 +12,7 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: React.ComponentProps<typeof DayPicker>) {
-  const defaultClassNames = getDefaultClassNames();
+  const defaultClassNames = {};
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}

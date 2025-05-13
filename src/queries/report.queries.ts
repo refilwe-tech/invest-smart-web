@@ -4,10 +4,9 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 
 export const useInvestmentGoals = () => {
   return useQuery({
-    queryKey: ['investmentGoals'],
-    queryFn: financialService.getInvestmentGoals,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+      queryKey: ["investmentGoals"],
+      queryFn: financialService.getInvestmentGoals,
+    });
 };
 
 export const useGenerateReport = () => {
