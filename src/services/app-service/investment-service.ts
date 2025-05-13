@@ -17,6 +17,7 @@ const getInvestments = () => {
     .get(`${InvestmentUrls.investments}`, {
       headers: {
         "ngrok-skip-browser-warning": true,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => response.data);
