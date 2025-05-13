@@ -15,6 +15,15 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
       mutationFn: userService.createUser,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
+        goBack();
+      },
+    },
+    queryClient
+  );
+  const { mutateAsync:adminMutateAsync } = useMutation(
+    {
+      mutationFn: userService.createAdminUser,
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["admins"] });
         goBack();
       },
@@ -23,8 +32,16 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
   );
   const onSubmit = async (data: NewUser) => {
     try {
-      await mutateAsync(data);
-      toast.success("Added new user successfully");
+      if (userRole === "admin") {
+        await adminMutateAsync(data);
+        toast.success("Added new admin successfully");
+        return;
+      }
+      if (userRole === "user") {
+        await mutateAsync(data);
+        toast.success("Added new user successfully");
+        return;
+      }
     } catch (error) {
       toast.error("Error adding user.");
     }
@@ -37,6 +54,7 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
       idNumber: "",
       email: "",
       password: "",
+      confirmPassword: "",
       userRole: userRole
     },
     onSubmit: ({ value }) => {
@@ -123,6 +141,18 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
           )}
         />
       </div>
+      <div>
+              <form.Field name="confirmPassword">
+                {(field) => (
+                  <InputField
+                    maxLength={16}
+                    field={field}
+                    label="Confirm Password"
+                    type="password"
+                  />
+                )}
+              </form.Field>
+            </div>
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
         children={([canSubmit, isSubmitting]) => (

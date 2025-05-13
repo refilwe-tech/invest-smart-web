@@ -74,8 +74,23 @@ const createUser = (formData: NewUser) => {
     });
 };
 
+const createAdminUser = (formData: NewUser) => {
+  const dto = newUserDto(formData);
+  return axios
+    .post(UsersUrls.admins, dto, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+
 export default {
   getUsers,
+  createAdminUser,
   createUser,
   updateUser,
   deleteUser,
