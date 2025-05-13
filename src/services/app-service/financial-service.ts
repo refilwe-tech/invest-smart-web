@@ -9,6 +9,7 @@ const baseUrl = `${hostUrl}/finances`;
 
 const FinancesUrls = {
   finances: baseUrl,
+  goals:`${baseUrl}/goals`,
   userFinances: (id: string) => `${baseUrl}/${id}`,
   userFinancialProfile: (id: string) => `${baseUrl}/profile/${id}`,
   userFinancialGraph: (id: string) => `${baseUrl}/${id}/data`,
@@ -57,8 +58,20 @@ const getFinancialGraph = (id: string) => {
     .then((response) => response.data);
 };
 
+const getInvestmentGoals = ()=>{
+  return axios
+    .get(FinancesUrls.goals, {
+      headers: {
+        "ngrok-skip-browser-warning": true,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => response.data); 
+}
+
 export default {
   getFinancialGraph,
+  getInvestmentGoals,
   createFinancialProfile,
   updateFinancialProfile,
   getUserFinancialProfile,
