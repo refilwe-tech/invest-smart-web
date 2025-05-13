@@ -28,7 +28,7 @@ export interface UserFinancesAPI {
   net_salary: string;
   current_savings: string;
   monthly_expenses: string;
-  investment_goal: string;
+  goal_id: number;
 }
 
 export interface UserFinances {
@@ -38,7 +38,7 @@ export interface UserFinances {
   netSalary: number;
   currentSavings: number;
   monthlyExpenses: number;
-  investmentGoal?: string;
+  goalId?: number;
 }
 
 export type User = {
@@ -91,14 +91,14 @@ export const userModel = ({
 export const userProfileModel = ({
   gross_salary,
   net_salary,
-  investment_goal,
+  goal_id,
   monthly_expenses,
   ...data
 }: UserFinancesAPI): UserFinances => ({
   grossSalary: Number(gross_salary) ?? 0,
   netSalary: Number(net_salary) ?? 0,
   monthlyExpenses: Number(monthly_expenses) ?? 0,
-  investmentGoal: investment_goal ?? "",
+  goalId: goal_id ?? "",
   currentSavings: Number(data?.current_savings) ?? 0,
   userId: data?.user_id,
   profileId: data?.profile_id,

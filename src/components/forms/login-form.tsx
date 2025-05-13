@@ -36,14 +36,16 @@ export const LoginForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: "user@investsmart.com",
-      password: "P@ssword1",
+      email: "",
+      password: "",
     },
     validators: {
       onChange: LoginSchema,
     },
     onSubmit: ({ value }) => onSubmit(value),
   });
+
+
 
   return (
     <form

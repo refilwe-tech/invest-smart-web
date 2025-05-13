@@ -10,7 +10,7 @@ export const profileDto = (user: User) => ({
 
 export const newUserFinancialDto = (user: UserFinances) => ({
   monthly_expenses: user?.monthlyExpenses,
-  investment_goal: user?.investmentGoal ?? "",
+  investment_goal: user?.goalId ?? "",
   gross_salary: user?.grossSalary,
   net_salary: user?.netSalary,
   current_savings: user?.currentSavings,
@@ -19,7 +19,7 @@ export const newUserFinancialDto = (user: UserFinances) => ({
 
 export const userFinancialDto = (user: UserFinances) => ({
   monthly_expenses: user?.monthlyExpenses,
-  investment_goal: user?.investmentGoal ?? "",
+  goal_id: user?.goalId ?? "",
   gross_salary: user?.grossSalary,
   net_salary: user?.netSalary,
   current_savings: user?.currentSavings,

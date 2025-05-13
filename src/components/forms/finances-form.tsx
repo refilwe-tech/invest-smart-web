@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
@@ -51,7 +51,10 @@ export const FinancesForm = ({
 
   const investmentGoals = useMemo(() => {
     return (
-      goals?.map((goal) => ({
+      goals?.map((goal:{
+        goal_id: number;
+        goal_name: string;
+      }) => ({
         value: goal?.goal_id,
         label: goal?.goal_name,
       })) || []
@@ -76,7 +79,6 @@ export const FinancesForm = ({
     onError: () => toast.error("Failed to update investment details"),
   });
 
-
   const onSubmit = async (data: UserFinances) => mutateAsync(data);
 
   const form = useForm({
@@ -93,7 +95,7 @@ export const FinancesForm = ({
   const setFieldValue = form.setFieldValue;
 
   // Example usage of setFieldValue
-  const updateFieldValue = (fieldName: string, value: any) => {
+  const updateFieldValue = (fieldName: "grossSalary" | "monthlyExpenses" | "netSalary" | "currentSavings" | "goalId" | "userId" | "profileId", value: any) => {
     setFieldValue(fieldName, value);
   };
 
@@ -142,23 +144,23 @@ export const FinancesForm = ({
             <InputField field={field} label="Current Savings" type="number" />
           )}
         </form.Field>
-        <form.Field name="investmentGoal">
+        <form.Field name="goalId">
           {(field) => (
-            <div>
+            <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">
                 Investment Goal
               </label>
               <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
+                <PopoverTrigger asChild className="w-full">
                   <ButtonUI
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className="w-full justify-between rounded-xl h-10"
                   >
                     {value
                       ? investmentGoals.find(
-                          (investmentGoals) => investmentGoals.value === value
+                          (goal) => goal.value === value
                         )?.label
                       : "Select Investment Goal..."}
                     <ChevronsUpDown className="opacity-50" />
@@ -176,19 +178,19 @@ export const FinancesForm = ({
                         {investmentGoals.map((goal) => (
                           <CommandItem
                             key={goal.value}
-                            value={goal.label}
-                           onSelect={(currentValue) => {
-  updateFieldValue("investmentGoal", currentValue);
-  setValue(goal.value);
-  setOpen(false);
-  field.setValue(currentValue);
-}}
+                            value={goal.value.toString()}
+                            onSelect={(currentValue) => {
+                              const numericValue = Number(currentValue);
+                              setValue(numericValue);
+                              setOpen(false);
+                              field.setValue(numericValue); 
+                            }}
                           >
                             {goal.label}
                             <Check
                               className={cn(
                                 "ml-auto",
-                                value === investmentGoals.value
+                                value === goal.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}

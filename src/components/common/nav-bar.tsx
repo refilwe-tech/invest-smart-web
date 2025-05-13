@@ -98,6 +98,11 @@ export const NavBar = () => {
         icon: <IoPieChartOutline />,
         name: "My Plans",
       },
+      {
+        path: "/user/report",
+        icon: <IoPieChartOutline />,
+        name: "My Report",
+      },
     ],
   };
 

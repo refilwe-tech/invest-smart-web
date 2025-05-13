@@ -24,6 +24,7 @@ import { Route as FinancesImport } from './routes/finances'
 import { Route as AdminsImport } from './routes/admins'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersNewImport } from './routes/users.new'
+import { Route as UserReportImport } from './routes/user.report'
 import { Route as FinancesNewImport } from './routes/finances.new'
 import { Route as FinancesEditImport } from './routes/finances.edit'
 import { Route as AdminsNewImport } from './routes/admins.new'
@@ -108,6 +109,12 @@ const UsersNewRoute = UsersNewImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => UsersRoute,
+} as any)
+
+const UserReportRoute = UserReportImport.update({
+  id: '/user/report',
+  path: '/user/report',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const FinancesNewRoute = FinancesNewImport.update({
@@ -249,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinancesNewImport
       parentRoute: typeof FinancesImport
     }
+    '/user/report': {
+      id: '/user/report'
+      path: '/user/report'
+      fullPath: '/user/report'
+      preLoaderRoute: typeof UserReportImport
+      parentRoute: typeof rootRoute
+    }
     '/users/new': {
       id: '/users/new'
       path: '/new'
@@ -330,6 +344,7 @@ export interface FileRoutesByFullPath {
   '/admins/new': typeof AdminsNewRoute
   '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
+  '/user/report': typeof UserReportRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -351,6 +366,7 @@ export interface FileRoutesByTo {
   '/admins/new': typeof AdminsNewRoute
   '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
+  '/user/report': typeof UserReportRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -373,6 +389,7 @@ export interface FileRoutesById {
   '/admins/new': typeof AdminsNewRoute
   '/finances/edit': typeof FinancesEditRoute
   '/finances/new': typeof FinancesNewRoute
+  '/user/report': typeof UserReportRoute
   '/users/new': typeof UsersNewRoute
   '/admins/$userId/edit': typeof AdminsUserIdEditRoute
   '/users/$userId/edit': typeof UsersUserIdEditRoute
@@ -396,6 +413,7 @@ export interface FileRouteTypes {
     | '/admins/new'
     | '/finances/edit'
     | '/finances/new'
+    | '/user/report'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -416,6 +434,7 @@ export interface FileRouteTypes {
     | '/admins/new'
     | '/finances/edit'
     | '/finances/new'
+    | '/user/report'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -436,6 +455,7 @@ export interface FileRouteTypes {
     | '/admins/new'
     | '/finances/edit'
     | '/finances/new'
+    | '/user/report'
     | '/users/new'
     | '/admins/$userId/edit'
     | '/users/$userId/edit'
@@ -455,6 +475,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ReportsRoute: typeof ReportsRoute
   UsersRoute: typeof UsersRouteWithChildren
+  UserReportRoute: typeof UserReportRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -470,6 +491,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ReportsRoute: ReportsRoute,
   UsersRoute: UsersRouteWithChildren,
+  UserReportRoute: UserReportRoute,
 }
 
 export const routeTree = rootRoute
@@ -493,7 +515,8 @@ export const routeTree = rootRoute
         "/profile",
         "/register",
         "/reports",
-        "/users"
+        "/users",
+        "/user/report"
       ]
     },
     "/": {
@@ -555,6 +578,9 @@ export const routeTree = rootRoute
     "/finances/new": {
       "filePath": "finances.new.tsx",
       "parent": "/finances"
+    },
+    "/user/report": {
+      "filePath": "user.report.tsx"
     },
     "/users/new": {
       "filePath": "users.new.tsx",
