@@ -100,7 +100,7 @@ export const NavBar = () => {
       },
       {
         path: "/user/report",
-        icon: <IoPieChartOutline />,
+        icon: <HiDocument />,
         name: "My Report",
       },
     ],
@@ -114,7 +114,7 @@ export const NavBar = () => {
             to="/home"
             className="border-b-2 flex items-center gap-2 hover:text-blue-500 pb-1"
           >
-            <img src={Logo} />
+            <img src={Logo} alt="logo" />
           </Link>
         </li>
 
@@ -123,7 +123,7 @@ export const NavBar = () => {
             ? USER_ROLES.ADMIN
             : currentUser?.userRole) as keyof typeof ROUTES) ?? "user"
         ]?.map(({ path, icon, name }, index) => (
-          <li key={index + 1}>
+          <li key={name}>
             <Link
               activeOptions={{ exact: true }}
               to={path}
