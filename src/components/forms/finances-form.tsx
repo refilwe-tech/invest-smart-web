@@ -94,13 +94,6 @@ export const FinancesForm = ({
   // Export or use setFieldValue from the form instance
   const setFieldValue = form.setFieldValue;
 
-  // Example usage of setFieldValue
-  const updateFieldValue = (fieldName: "grossSalary" | "monthlyExpenses" | "netSalary" | "currentSavings" | "goalId" | "userId" | "profileId", value: any) => {
-    setFieldValue(fieldName, value);
-  };
-
-  // Export setFieldValue if needed
-
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<number | undefined>();
 

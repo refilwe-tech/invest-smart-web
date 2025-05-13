@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {IoReceiptSharp } from "react-icons/io5";
+import { IoReceiptSharp } from "react-icons/io5";
 import { CiCirclePlus } from "react-icons/ci";
 
 import {
@@ -28,6 +28,10 @@ export const MyFinancesPage = () => {
     select: userProfileModel,
     retry: 1,
   });
+  const { data: goals } = useQuery({
+    queryKey: ["investmentGoals"],
+    queryFn: financialService.getInvestmentGoals,
+  });
 
   const addFinancialInfo = () => navigate({ to: "/finances/new" });
   const editFinancialInfo = () => navigate({ to: "/finances/edit", from: "/" });
@@ -36,12 +40,14 @@ export const MyFinancesPage = () => {
     <PageLayout isLoading={isLoading}>
       <Heading heading={pageTitle} />
       {data?.profileId ? (
-        <section className="flex justify-start w-4/11"> <EditButton
-        title="Finances"
-        onClick={editFinancialInfo}
-        isEdit={false}
-      /></section>
-       
+        <section className="flex justify-start w-4/11">
+          {" "}
+          <EditButton
+            title="Finances"
+            onClick={editFinancialInfo}
+            isEdit={false}
+          />
+        </section>
       ) : (
         <Button variant="solid" onClick={addFinancialInfo}>
           <section className="flex items-center gap-2">
@@ -62,7 +68,8 @@ export const MyFinancesPage = () => {
               🏆 Your Goal 🏆
             </h3>
             <p className="text-sm font-bold text-gray-500">
-              {data?.investmentGoal ?? "No goal set yet."}
+              {goals?.find((goal) => goal.goal_id === data?.goalId)?.goal_name ??
+                "No goal set yet."}
             </p>
           </section>
         </section>
