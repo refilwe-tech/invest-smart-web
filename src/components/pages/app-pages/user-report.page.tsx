@@ -13,13 +13,6 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@project/lib/utils";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@project/components/ui/select";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -29,7 +22,6 @@ import {
   useDownloadReport,
   useGenerateReport,
   useInvestmentGoals,
-  useReportTemplates,
 } from "@project/queries";
 import {
   Table,
@@ -44,7 +36,7 @@ import { Skeleton } from "@project/components/ui/skeleton";
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
-  const [selectedGoal, setSelectedGoal] = useState<number>("1");
+  const [selectedGoal, setSelectedGoal] = useState<number>(1);
 
   // Fetch available investment goals
   const { data: goalsData, isLoading: goalsLoading } = useInvestmentGoals();
@@ -54,7 +46,6 @@ export const UserReportPage = () => {
     useGenerateReport();
   const { mutate: downloadReport, isPending: isDownloading } =
     useDownloadReport();
-  const { data: reportTemplates, isPendingTemplate } = useReportTemplates();
 
   // Sample report data - replace with actual data from your API
   const [reportData, setReportData] = useState<any>(null);
@@ -65,9 +56,7 @@ export const UserReportPage = () => {
         template_id: 2, // Assuming 2 is the user detailed report
         period_start: dateRange.from?.toISOString(),
         period_end: dateRange.to?.toISOString(),
-        filters: {
-          goal_id: selectedGoal,
-        },
+        filters: {},
       },
       {
         onSuccess: (data) => {
@@ -78,6 +67,7 @@ export const UserReportPage = () => {
   };
 
   const handleDownloadReport = () => {
+    console.log(reportData);
     if (reportData?.report_id) {
       downloadReport(reportData.report_id);
     }
@@ -166,36 +156,6 @@ export const UserReportPage = () => {
                     </PopoverContent>
                   </Popover>
                 </div>
-              </div>
-
-              {/* Investment Goal Selector */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Investment Goal</label>
-                {goalsLoading ? (
-                  <Skeleton className="h-10 w-full" />
-                ) : (
-                  <Select
-                    value={selectedGoal}
-                    onValueChange={(value) => setSelectedGoal(value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a goal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Goals</SelectItem>{" "}
-                      {/* Changed from "" to "all" */}
-                      {!goalsLoading &&
-                        goalsData.map((goal) => (
-                          <SelectItem
-                            key={goal.goal_id}
-                            value={goal.goal_id.toString()}
-                          >
-                            {goal.goal_name}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                )}
               </div>
 
               {/* Generate Report Button */}

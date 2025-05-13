@@ -1,12 +1,11 @@
-
 import { financialService, reportService } from "@project/services";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 export const useInvestmentGoals = () => {
   return useQuery({
-      queryKey: ["investmentGoals"],
-      queryFn: financialService.getInvestmentGoals,
-    });
+    queryKey: ["investmentGoals"],
+    queryFn: financialService.getInvestmentGoals,
+  });
 };
 
 export const useReportTemplates = () => {
@@ -17,7 +16,7 @@ export const useReportTemplates = () => {
       // You can add any success handling here
     },
   });
-}
+};
 
 export const useGenerateReport = () => {
   return useMutation({
@@ -32,9 +31,22 @@ export const useDownloadReport = () => {
   return useMutation({
     mutationFn: reportService.downloadReport,
     onSuccess: (data) => {
-      // Trigger download automatically when successful
       if (data?.download_url) {
-        window.open(data.download_url, '_blank');
+        // Create a hidden anchor element
+        const link = document.createElement("a");
+        link.href = data.download_url;
+
+        // Suggest a filename for the download
+        link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+
+        // Append to the DOM (required for Firefox)
+        document.body.appendChild(link);
+
+        // Trigger the click
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
       }
     },
   });
