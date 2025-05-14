@@ -5,7 +5,7 @@ export type CountsData = {
 };
 
 export type UserApi = {
-  user_id: string;
+  account_id: string;
   first_name: string;
   gross_salary?: string;
   net_salary?: string;
@@ -75,7 +75,7 @@ export const userModel = ({
   updated_at,
   ...data
 }: UserApi): User => ({
-  id: data?.user_id ?? "",
+  id: data?.account_id ?? "",
   userRole: user_role ?? "",
   firstName: first_name ?? "",
   lastName: last_name ?? "",
