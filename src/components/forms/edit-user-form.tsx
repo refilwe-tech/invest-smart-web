@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { Button, InputField } from "../common";
 import { User, userModel, userService } from "../../services";
 import { AxiosError } from "axios";
+import { ClipLoader } from "react-spinners";
+import { RegisterSchema } from "@project/schemas";
 
 export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
   const queryClient = useQueryClient();
@@ -26,7 +28,7 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
   });
   const { userId } = useParams({ strict: false });
 
-  const { data: userData } = useQuery({
+  const { data: userData, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => userService.getUserById(userId ?? ""),
     enabled: !!userId,
@@ -41,9 +43,14 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
       isActive: userData?.isActive ?? true,
       firstName: userData?.firstName ?? "",
       lastName: userData?.lastName ?? "",
+      idNumber: userData?.idNumber ?? "",
       email: userData?.email ?? "",
       password: "",
+      confirmPassword: "",
       userRole: userData?.userRole ?? userRole,
+    },
+     validators: {
+      onChange: RegisterSchema,
     },
     onSubmit: ({ value }) => {
       onSubmit(value);
@@ -64,6 +71,13 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
         form.handleSubmit(onSubmit);
       }}
     >
+      {
+        isLoading && (
+          <section className="flex justify-center gap-2">
+            <ClipLoader className=" text-primary" /> Loading...
+          </section>
+        ) 
+      }
       <div>
         <form.Field
           name="firstName"
@@ -104,12 +118,20 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
           children={(field) => <InputField field={field} label="Last Name" />}
         />
       </div>
+       <div>
+        <form.Field
+          name="idNumber"
+          children={(field) => (
+            <InputField field={field} label="ID Number (Optional)" type="text" />
+          )}
+        />
+      </div>
       <div>
         {/* A type-safe field component*/}
         <form.Field
           name="email"
           children={(field) => (
-            <InputField field={field} label="Email" type="email" />
+            <InputField field={field} label="Email (Optional)" type="email" />
           )}
         />
       </div>
@@ -117,7 +139,15 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
         <form.Field
           name="password"
           children={(field) => (
-            <InputField field={field} label="Password" type="password" />
+            <InputField field={field} label="Password (Optional)" type="password" />
+          )}
+        />
+      </div>
+      <div>
+        <form.Field
+          name="confirmPassword"
+          children={(field) => (
+            <InputField field={field} label="Confirm Password" type="password" />
           )}
         />
       </div>

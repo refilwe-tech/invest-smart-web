@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { isIdNumberValid } from "@project/helpers";
 import { commonSchema } from "./common-schemas";
 
 export const LoginSchema = z.object({
@@ -21,23 +20,7 @@ export const RegisterSchema = z
       .min(3)
       .max(30)
       .nonempty({ message: "Last name is required" }),
-    idNumber: z
-      .string()
-      .min(13, "ID number must be exactly 13 characters")
-      .max(13, "ID number must be exactly 13 characters")
-      .nonempty({
-        message: "ID number is required",
-      })
-      .regex(/^\d+$/, "ID number must contain only digits")
-      .refine(
-        (val) => {
-          if (!isIdNumberValid(val)) {
-            return false;
-          }
-          return true;
-        },
-        { message: "Invalid South African ID number" }
-      ),
+    idNumber: commonSchema.shape.idNumber,
     email: z.string().email().nonempty({ message: "Email is required" }),
     password: commonSchema.shape.password,
     confirmPassword: z.string().nonempty({

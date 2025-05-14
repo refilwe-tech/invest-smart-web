@@ -43,6 +43,7 @@ export interface UserFinances {
 
 export type User = {
   id?: string;
+  idNumber?:string;
   firstName: string;
   lastName: string;
   email: string;
