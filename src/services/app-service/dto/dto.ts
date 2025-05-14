@@ -5,7 +5,8 @@ export const profileDto = (user: User) => ({
   first_name: user?.firstName,
   phone_number: user?.phoneNumber,
   email: user?.email,
-  age: user.age,
+  password: user.password,
+  id_number: user?.idNumber,
 });
 
 export const newUserFinancialDto = (user: UserFinances) => ({

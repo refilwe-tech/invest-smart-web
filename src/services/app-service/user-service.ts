@@ -57,7 +57,13 @@ const deleteUser = (id: string) => {
 const updateUser = (user: User) => {
   const dto = profileDto(user);
   return axios
-    .patch(UsersUrls.user(user?.id ?? ""), dto)
+    .patch(UsersUrls.user(user?.id ?? ""), dto,{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "ngrok-skip-browser-warning": true,
+      },
+    })
     .then((response) => response.data);
 };
 

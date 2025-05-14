@@ -7,7 +7,7 @@ import { Button, InputField } from "../common";
 import { User, userModel, userService } from "../../services";
 import { AxiosError } from "axios";
 import { ClipLoader } from "react-spinners";
-import { RegisterSchema } from "@project/schemas";
+import { RegisterSchema, userSchema } from "@project/schemas";
 
 export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
   const queryClient = useQueryClient();
@@ -50,7 +50,7 @@ export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
       userRole: userData?.userRole ?? userRole,
     },
      validators: {
-      onChange: RegisterSchema,
+      onChange: userSchema,
     },
     onSubmit: ({ value }) => {
       onSubmit(value);

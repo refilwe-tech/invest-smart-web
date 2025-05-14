@@ -50,3 +50,29 @@ export const FinancesSchema = z.object({
   userId: z.number(),
   profileId: z.number().optional(),
 });
+
+export const userSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(3)
+      .max(30)
+      .regex(/^[a-zA-Z]+$/, "First name must contain only letters")
+      .nonempty({ message: "First name is required" }),
+    lastName: z
+      .string()
+      .regex(/^[a-zA-Z]+$/, "Last name must contain only letters")
+      .min(3)
+      .max(30)
+      .nonempty({ message: "Last name is required" }),
+    idNumber: commonSchema.shape.idNumber.optional(),
+    email: z.string().email().nonempty({ message: "Email is required" }),
+    password: commonSchema.shape.password.optional(),
+    confirmPassword: z.string().nonempty({
+      message: "Confirm password is required",
+    }).optional(),
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
