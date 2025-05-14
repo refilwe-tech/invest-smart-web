@@ -51,3 +51,13 @@ export const useDownloadReport = () => {
     },
   });
 };
+
+export const useDetailedReport = () => {
+  return useMutation({
+    mutationFn: reportService.detailedReport,
+    onSuccess: (data) => {
+      console.log(data)
+      // You can add any success handling here
+    },
+  });
+};

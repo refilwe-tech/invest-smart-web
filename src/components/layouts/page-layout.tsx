@@ -11,5 +11,5 @@ export const PageLayout: FC<PageLayoutProps> = ({
 }) => {
   return isLoading? <section className="flex justify-center gap-2">
   <ClipLoader className=" text-primary" /> Loading...
-</section>:<section className="flex py-4 flex-col gap-3">{children}</section>;
+</section>:<section className="flex py-4 flex-col gap-3 overflow-auto">{children}</section>;
 };

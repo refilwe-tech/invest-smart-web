@@ -7,6 +7,7 @@ const baseUrl = `${hostUrl}/reports`;
 const ReportsUrls = {
   templates: `${baseUrl}/templates`,
   generate: `${baseUrl}/generate`,
+  detailed: `${baseUrl}/detailed`,
   download: (id: string | number) => `${baseUrl}/download/${id}`,
 };
 
@@ -40,10 +41,11 @@ export interface ReportTemplate {
   // Add other template properties as needed
 }
 
-export interface GenerateReportRequest {
+export interface ReportRequest {
   template_id: number;
   period_start: string; // ISO format date "YYYY-MM-DD"
-  period_end: string; // ISO format date "YYYY-MM-DD"
+  period_end: string; 
+  user_id: number;// ISO format date "YYYY-MM-DD"
   filters: {
     investment_type?: string;
     // Add other filter options as needed
@@ -56,7 +58,7 @@ export default {
 
   // Generate a new report
   generateReport: (
-    data: GenerateReportRequest
+    data: ReportRequest
   ): Promise<{ report_id: number }> => post(ReportsUrls.generate, data),
 
   // Download a generated report
@@ -71,4 +73,6 @@ export default {
       })
       .then((response) => response.data);
   },
+
+  detailedReport: (data:ReportRequest)=> post(ReportsUrls.detailed,data),
 };
