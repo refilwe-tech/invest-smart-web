@@ -7,7 +7,7 @@ import { Button, InputField } from "../common";
 import { User, userModel, userService } from "../../services";
 import { AxiosError } from "axios";
 import { ClipLoader } from "react-spinners";
-import { RegisterSchema, userSchema } from "@project/schemas";
+import { userSchema } from "@project/schemas";
 
 export const EditUserForm = ({ userRole = "user" }: { userRole?: string }) => {
   const queryClient = useQueryClient();

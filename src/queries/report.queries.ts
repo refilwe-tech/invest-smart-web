@@ -1,6 +1,8 @@
 import { financialService, reportService } from "@project/services";
 import { useQuery, useMutation } from "@tanstack/react-query";
-
+import config from '../../config';
+const { hostUrl } = config;
+const baseUrl = hostUrl.replace("api", "reports");
 export const useInvestmentGoals = () => {
   return useQuery({
     queryKey: ["investmentGoals"],
@@ -34,8 +36,8 @@ export const useDownloadReport = () => {
       if (data?.download_url) {
         // Create a hidden anchor element
         const link = document.createElement("a");
-        link.href = data.download_url;
-
+        link.href = `${baseUrl}.${data.download_url}.pdf`;
+        console.log(`${baseUrl}.${data.download_url}.pdf`)
         // Suggest a filename for the download
         link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
 

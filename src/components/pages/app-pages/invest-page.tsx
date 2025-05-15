@@ -283,7 +283,7 @@ export const InvestPage = () => {
                       R{result?.totalInvested?.toLocaleString()}
                     </p>
                   </div>
-                  <div className="bg-gray-100 p-4 rounded-lg">
+                  {/* <div className="bg-gray-100 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">Projected Value</p>
                     <p className="text-xl font-bold">
                       R
@@ -291,8 +291,8 @@ export const InvestPage = () => {
                         maximumFractionDigits: 2,
                       })}
                     </p>
-                  </div>
-                  <div className="bg-gray-100 p-4 rounded-lg">
+                  </div> */}
+                  {/* <div className="bg-gray-100 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">Projected Growth</p>
                     <p className="text-xl font-bold">
                       R
@@ -300,7 +300,7 @@ export const InvestPage = () => {
                         maximumFractionDigits: 2,
                       })}
                     </p>
-                  </div>
+                  </div> */}
                   <div className="bg-gray-100 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">Duration</p>
                     <p className="text-xl font-bold">
@@ -309,7 +309,7 @@ export const InvestPage = () => {
                   </div>
                 </div>
 
-                <h4 className="font-medium mb-2">Investment Allocation</h4>
+                <h4 className="font-medium mb-2">Investment Banks / Institutions</h4>
                 <div className="space-y-4">
                   {result.items.map((item, index) => (
                     <div key={index} className="border rounded-lg p-4">
@@ -416,7 +416,7 @@ export const InvestPage = () => {
                     <div className="mb-4">
                       <p className="text-sm text-gray-600">Total Invested</p>
                       <p className="text-xl font-bold">
-                        R{plan.totalInvested?.toLocaleString()}
+                        R{plan.totalInvested}
                       </p>
                     </div>
 

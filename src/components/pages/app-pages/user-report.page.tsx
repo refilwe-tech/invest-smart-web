@@ -32,9 +32,11 @@ import {
   TableRow,
 } from "@project/components/ui/table";
 import { Skeleton } from "@project/components/ui/skeleton";
+import { useUserStore } from "@project/store";
 
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
+  const {user} = useUserStore()
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
   const [selectedGoal, setSelectedGoal] = useState<number>(1);
 
@@ -54,8 +56,9 @@ export const UserReportPage = () => {
     generateReport(
       {
         template_id: 2, // Assuming 2 is the user detailed report
-        period_start: dateRange.from?.toISOString(),
-        period_end: dateRange.to?.toISOString(),
+        user_id: Number(user?.id), // Replace with actual user ID
+        period_start: dateRange.from?.toISOString() || new Date().toISOString(),
+        period_end: dateRange.to?.toISOString() || new Date().toISOString(),
         filters: {},
       },
       {
