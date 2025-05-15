@@ -31,8 +31,10 @@ import {
   TableHeader,
   TableRow,
 } from "@project/components/ui/table";
-import { Skeleton } from "@project/components/ui/skeleton";
 import { useUserStore } from "@project/store";
+import config from '../../../../config';
+const { hostUrl } = config;
+const baseUrl = hostUrl.replace("/api", "");
 
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
@@ -70,11 +72,22 @@ export const UserReportPage = () => {
   };
 
   const handleDownloadReport = () => {
-    console.log(reportData);
-    if (reportData?.report_id) {
-      downloadReport(reportData.report_id);
-    }
+    console.log('On Download',reportData);
+    if (reportData?.download_url) {
+        // Create a hidden anchor element
+        const link = document.createElement("a");
+        link.href = `${baseUrl}${reportData.download_url}`;
+        console.log(`${baseUrl}${reportData.download_url}`)
+        // Suggest a filename for the download
+        link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+
+        // Append to the DOM (required for Firefox)
+        document.body.appendChild(link);
+
+        // Trigger the click
+        link.click();
   };
+}
 
   return (
     <PageLayout>
@@ -191,7 +204,7 @@ export const UserReportPage = () => {
                   <div className="border rounded-lg p-4">
                     <p className="text-sm text-muted-foreground">Net Salary</p>
                     <p className="text-xl font-semibold">
-                      $
+                      R
                       {reportData.user_finances?.net_salary?.toLocaleString() ||
                         "0.00"}
                     </p>
@@ -201,7 +214,7 @@ export const UserReportPage = () => {
                       Monthly Expenses
                     </p>
                     <p className="text-xl font-semibold">
-                      $
+                      R
                       {reportData.user_finances?.monthly_expenses?.toLocaleString() ||
                         "0.00"}
                     </p>
@@ -211,7 +224,7 @@ export const UserReportPage = () => {
                       Current Savings
                     </p>
                     <p className="text-xl font-semibold">
-                      $
+                      R
                       {reportData.user_finances?.current_savings?.toLocaleString() ||
                         "0.00"}
                     </p>
