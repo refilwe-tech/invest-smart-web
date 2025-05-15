@@ -49,7 +49,28 @@ export const FinancesSchema = z.object({
   goalId: z.number().optional(),
   userId: z.number(),
   profileId: z.number().optional(),
-});
+})
+.refine(
+  ({ grossSalary, monthlyExpenses }) => grossSalary > monthlyExpenses,
+  {
+    path: ["monthlyExpenses"],
+    message: "Gross salary must be greater than monthly expenses",
+  },
+)
+.refine(
+  ({ grossSalary, netSalary }) => grossSalary > netSalary,
+  {
+    path: ["netSalary"],
+    message: "Gross salary must be greater than net salary",
+  },
+)
+.refine(
+  ({ netSalary, monthlyExpenses }) => netSalary > monthlyExpenses,
+  {
+    path: ["monthlyExpenses"],
+    message: "Net salary must be greater than monthly expenses",
+  },
+);
 
 export const userSchema = z
   .object({

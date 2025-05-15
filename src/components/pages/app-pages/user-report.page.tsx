@@ -72,7 +72,6 @@ export const UserReportPage = () => {
   };
 
   const handleDownloadReport = () => {
-    console.log('On Download',reportData);
     if (reportData?.download_url) {
         // Create a hidden anchor element
         const link = document.createElement("a");
