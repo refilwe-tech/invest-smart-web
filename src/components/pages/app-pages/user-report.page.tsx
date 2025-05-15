@@ -77,6 +77,7 @@ export const UserReportPage = () => {
         // Create a hidden anchor element
         const link = document.createElement("a");
         link.href = `${baseUrl}${reportData.download_url}`;
+        link.target = '_blank'
         console.log(`${baseUrl}${reportData.download_url}`)
         // Suggest a filename for the download
         link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
