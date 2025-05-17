@@ -91,10 +91,10 @@ export const UserReportPage = () => {
 
   return (
     <PageLayout>
+      <Heading heading="User Report" />
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <Heading heading="User Report" />
             <p className="text-sm text-muted-foreground">
               Check your data and see how your finances are set up
             </p>

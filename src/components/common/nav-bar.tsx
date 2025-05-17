@@ -64,7 +64,7 @@ export const NavBar = () => {
       {
         path: "/users",
         icon: <HiOutlineUsers />,
-        name: "Users",
+        name: "Clients",
       },
       {
         path: "/investments",

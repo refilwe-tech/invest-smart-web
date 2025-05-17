@@ -10,7 +10,7 @@ import { useUserStore } from "@project/store/user-store";
 import { useDocumentTitle } from "@project/hooks";
 
 export const UsersPage = () => {
-  const pageTitle = "Users";
+  const pageTitle = "Clients";
   useDocumentTitle(pageTitle);
   const { user: currentUser } = useUserStore();
   const { data, isLoading } = useQuery({

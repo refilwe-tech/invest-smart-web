@@ -233,7 +233,7 @@ export const InvestPage = () => {
                           value={field.state.value}
                           onValueChange={(value) =>
                             field.handleChange(
-                              value as "low" | "medium" | "high"
+                              value as typeof field.state.value
                             )
                           }
                           className="flex gap-4"
