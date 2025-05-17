@@ -1,4 +1,4 @@
-import { Heading } from "@project/components/common";
+import { Button, Heading } from "@project/components/common";
 import { EditUserForm, } from "@project/components/forms";
 import { PageLayout } from "@project/components/layouts";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
@@ -24,9 +24,9 @@ export const EditUserPage = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         } sm:w-full sm:max-w-md`}
       >
-        <button className="absolute top-0 right-0 p-5" onClick={close}>
+        <Button variant="clear" type="button" className="absolute top-0 right-0 p-5" onClick={close}>
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
-        </button>
+        </Button>
         <Heading heading={pageTitle} />
         <EditUserForm />
       </section>

@@ -91,7 +91,7 @@ export const NavBar = () => {
       {
         path: "/invest",
         icon: <GiReceiveMoney />,
-        name: "Investment Analysis",
+        name: "Investment Calculator",
       },
       {
         path: "/plan",
