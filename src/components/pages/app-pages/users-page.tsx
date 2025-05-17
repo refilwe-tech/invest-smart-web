@@ -73,7 +73,7 @@ export const UsersPage = () => {
         <Heading heading={pageTitle} />
         <section className="flex justify-end items-center">
           <Button variant="gradient" onClick={goToNewUser}>
-            Add User
+            Add Client
           </Button>
         </section>
         <Container>

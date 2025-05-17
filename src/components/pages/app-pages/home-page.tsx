@@ -73,14 +73,14 @@ export const HomePage = () => {
             <Container>
               <>
                 <section className="flex justify-between items-center">
-                  <h4 className="text-2xl text-center">Total Users</h4>
+                  <h4 className="text-2xl text-center">Total Clients</h4>
                   <HiUsers className="w-5 h-5" />
                 </section>
                 <section className="flex flex-col gap-1 justify-center items-center p-4">
                   <h2 className="text-center font-medium text-7xl">
                     {data?.totalUsers}
                   </h2>
-                  <p>Total Active Users</p>
+                  <p>Total Active Clients</p>
                 </section>
               </>
             </Container>

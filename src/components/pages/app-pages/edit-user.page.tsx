@@ -7,7 +7,7 @@ import { MdOutlineCloseFullscreen } from "react-icons/md";
 import { useDocumentTitle } from "@project/hooks";
 
 export const EditUserPage = () => {
-  const pageTitle = "Edit User";
+  const pageTitle = "Edit Client";
   useDocumentTitle(pageTitle);
   const location = useLocation();
   const { userId } = useParams({ strict: false });

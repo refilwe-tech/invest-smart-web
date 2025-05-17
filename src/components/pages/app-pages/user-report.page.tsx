@@ -91,7 +91,7 @@ export const UserReportPage = () => {
 
   return (
     <PageLayout>
-      <Heading heading="User Report" />
+      <Heading heading="Financials Report" />
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>

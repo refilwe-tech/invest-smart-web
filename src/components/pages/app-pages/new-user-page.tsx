@@ -7,7 +7,7 @@ import { MdOutlineCloseFullscreen } from "react-icons/md";
 import { useDocumentTitle } from "@project/hooks";
 
 export const NewUserPage = () => {
-  const pageTitle = "Add New User";
+  const pageTitle = "Add New Client";
   useDocumentTitle(pageTitle);
   const location = useLocation();
   const navigate = useNavigate();
