@@ -34,7 +34,12 @@ export const AddFinancesPage = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         } sm:w-full sm:max-w-md`}
       >
-        <button type="button" className="absolute top-0 right-0 p-5" onClick={close}>
+        <button
+          title="Close"
+          type="button"
+          className="absolute top-0 right-0 p-5"
+          onClick={close}
+        >
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
         <Heading heading={pageTitle} />

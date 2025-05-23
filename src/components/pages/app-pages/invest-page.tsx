@@ -39,10 +39,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@project/components/ui/dialog";
+import { useUserStore } from "@project/store";
 
 export const InvestPage = () => {
   const pageTitle = "Investment Calculator";
   useDocumentTitle(pageTitle);
+  const { setStep } = useUserStore();
   const [result, setResult] = useState<InvestmentPlanResponse | null>(null);
   const [activeTab, setActiveTab] = useState<"calculator" | "saved">(
     "calculator"
@@ -71,6 +73,7 @@ export const InvestPage = () => {
     mutationFn: investmentService.calculateInvestmentPlan,
     onSuccess: (data) => {
       setResult(data?.plan);
+      setStep(2);
     },
   });
 
@@ -79,6 +82,7 @@ export const InvestPage = () => {
     onSuccess: () => {
       plansQuery.refetch();
       setActiveTab("saved");
+      setStep(3);
     },
   });
 
@@ -146,54 +150,55 @@ export const InvestPage = () => {
                 className="space-y-4"
               >
                 <div>
-                  <form.Field
-                    name="amount"
-                    >{(field) => (
+                  <form.Field name="amount">
+                    {(field) => (
                       <div className="space-y-2">
-                        <InputField type="number" field={field} label=" Investment Amount (R)"/>
+                        <InputField
+                          type="number"
+                          field={field}
+                          label=" Investment Amount (R)"
+                        />
                       </div>
                     )}
                   </form.Field>
                 </div>
 
                 <div>
-                  <form.Field
-                    name="durationMonths"
-                    >{(field) => (
+                  <form.Field name="durationMonths">
+                    {(field) => (
                       <div className="space-y-2">
-                        
                         <Label htmlFor={field.name}>Investment Duration</Label>
                         <div className="flex gap-2 items-center">
-                        <InputField
-                          type="number"
-                          field={field}
-                          label='Duration'
-                        />
-                        <SelectGroup className="w-full">
-                        <SelectLabel> Unit</SelectLabel>
-                          <Select
-                            onValueChange={(value) => {
-                              const multiplier = value === "years" ? 12 : 1;
-                              field.handleChange(
-                                Math.floor(field.state.value / multiplier) *
-                                  multiplier
-                              );
-                            }}
-                            defaultValue="months"
-                          >
-                            <SelectTrigger className="placeholder:text-gray-300 w-full px-3 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black">
-                              <SelectValue placeholder="Months" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="months">Months</SelectItem>
-                              <SelectItem value="years">Years</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <InputField
+                            type="number"
+                            field={field}
+                            label="Duration"
+                          />
+                          <SelectGroup className="w-full">
+                            <SelectLabel> Unit</SelectLabel>
+                            <Select
+                              onValueChange={(value) => {
+                                const multiplier = value === "years" ? 12 : 1;
+                                field.handleChange(
+                                  Math.floor(field.state.value / multiplier) *
+                                    multiplier
+                                );
+                              }}
+                              defaultValue="months"
+                            >
+                              <SelectTrigger className="placeholder:text-gray-300 w-full px-3 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black">
+                                <SelectValue placeholder="Months" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="months">Months</SelectItem>
+                                <SelectItem value="years">Years</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </SelectGroup>
                         </div>
                       </div>
                     )}
-                 </form.Field>
+                  </form.Field>
                 </div>
 
                 <div>
@@ -210,7 +215,9 @@ export const InvestPage = () => {
                           value={field.state.value}
                           type="number"
                           onChange={(e) =>
-                            field.handleChange(Number.parseFloat(e.target.value) || 0)
+                            field.handleChange(
+                              Number.parseFloat(e.target.value) || 0
+                            )
                           }
                         />
                         {field.state.meta.errors ? (
@@ -309,7 +316,9 @@ export const InvestPage = () => {
                   </div>
                 </div>
 
-                <h4 className="font-medium mb-2">Investment Banks / Institutions</h4>
+                <h4 className="font-medium mb-2">
+                  Investment Banks / Institutions
+                </h4>
                 <div className="space-y-4">
                   {result.items.map((item, index) => (
                     <div key={index} className="border rounded-lg p-4">
@@ -335,15 +344,15 @@ export const InvestPage = () => {
                         </div>
                       </div>
                       <p className="text-sm mt-1">
-                        Expected return: {item?.expected_return}% •
-                        Duration: {item.expected_duration_months} months
+                        Expected return: {item?.expected_return}% • Duration:{" "}
+                        {item.expected_duration_months} months
                       </p>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-6">
-                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
                       <Button disabled={savePlanMutation.isPending}>
                         {savePlanMutation.isPending
@@ -415,9 +424,7 @@ export const InvestPage = () => {
                   <CardContent>
                     <div className="mb-4">
                       <p className="text-sm text-gray-600">Total Invested</p>
-                      <p className="text-xl font-bold">
-                        R{plan.totalInvested}
-                      </p>
+                      <p className="text-xl font-bold">R{plan.totalInvested}</p>
                     </div>
 
                     <h4 className="font-medium mb-2">Investments</h4>

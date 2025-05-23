@@ -27,6 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
+import { useUserStore } from "@project/store";
 
 export type FinancesFormProps = {
   initialValues: UserFinances;
@@ -39,6 +40,7 @@ export const FinancesForm = ({
 }: FinancesFormProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { setStep } = useUserStore();
   const refresh = () => navigate({ to: "/finances" });
   const isNewProfile = useMemo(
     () => !initialValues?.profileId,
@@ -51,10 +53,7 @@ export const FinancesForm = ({
 
   const investmentGoals = useMemo(() => {
     return (
-      goals?.map((goal:{
-        goal_id: number;
-        goal_name: string;
-      }) => ({
+      goals?.map((goal: { goal_id: number; goal_name: string }) => ({
         value: goal?.goal_id,
         label: goal?.goal_name,
       })) || []
@@ -74,6 +73,7 @@ export const FinancesForm = ({
           ? "Financial profile updated successfully"
           : "Investment profile created successfully"
       );
+      setStep(1);
       refresh();
     },
     onError: () => toast.error("Failed to update investment details"),
@@ -90,9 +90,6 @@ export const FinancesForm = ({
       onSubmit(value);
     },
   });
-
-  // Export or use setFieldValue from the form instance
-  const setFieldValue = form.setFieldValue;
 
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<number | undefined>();
@@ -152,9 +149,8 @@ export const FinancesForm = ({
                     className="w-full justify-between rounded-xl h-10"
                   >
                     {value
-                      ? investmentGoals.find(
-                          (goal) => goal.value === value
-                        )?.label
+                      ? investmentGoals.find((goal) => goal.value === value)
+                          ?.label
                       : "Select Investment Goal..."}
                     <ChevronsUpDown className="opacity-50" />
                   </ButtonUI>
@@ -176,7 +172,7 @@ export const FinancesForm = ({
                               const numericValue = Number(currentValue);
                               setValue(numericValue);
                               setOpen(false);
-                              field.setValue(numericValue); 
+                              field.setValue(numericValue);
                             }}
                           >
                             {goal.label}
