@@ -21,15 +21,6 @@ export const UsersPage = () => {
   const goToNewUser = () => navigate({ to: "/users/new" });
   const openProfile = (id: string) => navigate({ to: `/users/${id}/edit` });
 
-  const EditBtn = ({ onClick }: { onClick: () => void }) => (
-    <button
-      className={`text-tertiary hover:text-blue-700 p-2 font-medium flex gap-2`}
-      onClick={onClick}
-    >
-      <LiaUserEditSolid className="w-5 h-5" />
-    </button>
-  );
-
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
     columnHelper.accessor("user_id", {
@@ -56,10 +47,7 @@ export const UsersPage = () => {
         const { user_id, user_role } = row.original;
         return (
           currentUser?.id !== row?.original.user_id && (
-            <div className={`flex items-center gap-2`}>
-              <EditBtn onClick={() => openProfile(user_id)} /> |
-              <DeleteButton id={user_id} userRole={user_role} />
-            </div>
+            <DeleteButton id={user_id ?? ""} userRole={user_role} />
           )
         );
       },
