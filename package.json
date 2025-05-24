@@ -7,7 +7,8 @@
     "web": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -29,6 +30,7 @@
     "cmdk": "^1.1.1",
     "dayjs": "^1.11.13",
     "formik": "^2.4.5",
+    "husky": "^9.1.7",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.503.0",
