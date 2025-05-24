@@ -1,4 +1,4 @@
-import { User, UserFinances } from "../models/models";
+import type { User, UserFinances } from "../models/models";
 
 export const profileDto = (user: User) => ({
   last_name: user?.lastName,

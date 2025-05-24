@@ -16,6 +16,7 @@ export const AddFinancesPage = () => {
     grossSalary: 0,
     monthlyExpenses: 0,
     netSalary: 0,
+    totalDeductions: 0,
     currentSavings: 0,
     goalId: 0,
     userId: Number(user?.id) ?? -1,

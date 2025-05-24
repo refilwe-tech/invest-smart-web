@@ -1,16 +1,14 @@
-import { useMemo } from "react";
 import toast from "react-hot-toast";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Button, InputField } from "../common";
 import { financialService, type UserFinances } from "@project/services";
-import { PageLayout } from "../layouts";
 import { FinancesSchema } from "@project/schemas";
-
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Button, InputField } from "../common";
+import { PageLayout } from "../layouts";
 
 import { cn } from "../../lib/utils";
 import { Button as ButtonUI } from "../../components/ui/button";
@@ -28,6 +26,7 @@ import {
   PopoverTrigger,
 } from "../../components/ui/popover";
 import { useUserStore } from "@project/store";
+import { BsInfoCircle } from "react-icons/bs";
 
 export type FinancesFormProps = {
   initialValues: UserFinances;
@@ -81,18 +80,19 @@ export const FinancesForm = ({
 
   const onSubmit = async (data: UserFinances) => mutateAsync(data);
 
-  const form = useForm({
-    validators: {
-      onChange: FinancesSchema,
-    },
-    defaultValues: initialValues,
-    onSubmit: ({ value }) => {
-      onSubmit(value);
-    },
-  });
+  const { setFieldValue, state, store, getFieldValue, handleSubmit, ...form } =
+    useForm({
+      validators: {
+        onChange: FinancesSchema,
+      },
+      defaultValues: initialValues,
+      onSubmit: ({ value }) => {
+        onSubmit(value);
+      },
+    });
 
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<number | undefined>();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<number | undefined>();
 
   return (
     <PageLayout>
@@ -106,7 +106,7 @@ export const FinancesForm = ({
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          form.handleSubmit(onSubmit);
+          handleSubmit(onSubmit);
         }}
       >
         <form.Field name="grossSalary">
@@ -124,9 +124,9 @@ export const FinancesForm = ({
             />
           )}
         </form.Field>
-        <form.Field name="netSalary">
+        <form.Field name="totalDeductions">
           {(field) => (
-            <InputField field={field} label="Net Salary" type="number" />
+            <InputField field={field} label="Total Deductions" type="number" />
           )}
         </form.Field>
         <form.Field name="currentSavings">
@@ -137,14 +137,13 @@ export const FinancesForm = ({
         <form.Field name="goalId">
           {(field) => (
             <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700">
+              <p className="block text-sm font-medium text-gray-700">
                 Investment Goal
-              </label>
+              </p>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild className="w-full">
                   <ButtonUI
                     variant="outline"
-                    role="combobox"
                     aria-expanded={open}
                     className="w-full justify-between rounded-xl h-10"
                   >
@@ -170,6 +169,7 @@ export const FinancesForm = ({
                             value={goal.value.toString()}
                             onSelect={(currentValue) => {
                               const numericValue = Number(currentValue);
+                              setFieldValue("goalId", numericValue);
                               setValue(numericValue);
                               setOpen(false);
                               field.setValue(numericValue);
@@ -194,17 +194,44 @@ export const FinancesForm = ({
             </div>
           )}
         </form.Field>
-        <div className="flex flex-col">
-          <p className="text-sm font-medium text-gray-400 mb-1">
-            Estimated Deduction Rate
+        <form.Field name="netSalary">
+          {(field) => (
+            <InputField
+              disabled
+              field={field}
+              label="Net Salary"
+              type="number"
+            />
+          )}
+        </form.Field>
+        <div className="flex gap-3 items-center">
+          <BsInfoCircle className="text-primary" />
+          <p className="text-sm font-medium text-black">
+            Deduction Percentage:
           </p>
-          <div className="h-10 flex items-center px-3 text-lg font-medium">
-            {Number(form.getFieldValue("grossSalary")) > 0 &&
-            Number(form.getFieldValue("netSalary")) > 0
-              ? `${(100 - (Number(form.getFieldValue("netSalary")) / Number(form.getFieldValue("grossSalary"))) * 100).toFixed(2)}%`
-              : "N/A"}
+          <div className="h-10 flex items-center px-3 text-sm font-medium">
+            {Number(getFieldValue("grossSalary")) > 0 &&
+            Number(getFieldValue("netSalary")) > 0
+              ? `${(100 - (Number(getFieldValue("netSalary")) / Number(getFieldValue("grossSalary"))) * 100).toFixed(2)}%`
+              : "0.00%"}
           </div>
         </div>
+        <form.Subscribe
+          selector={(state) => [
+            state.values.grossSalary,
+            state.values.totalDeductions,
+          ]}
+        >
+          {([grossSalary, totalDeductions]) => {
+            const netSalary = Number.parseFloat(
+              (Number(grossSalary || 0) - Number(totalDeductions || 0)).toFixed(
+                2
+              )
+            );
+            setFieldValue("netSalary", netSalary);
+            return null;
+          }}
+        </form.Subscribe>
 
         <form.Subscribe
           selector={({ canSubmit, isSubmitting }) => [canSubmit, isSubmitting]}

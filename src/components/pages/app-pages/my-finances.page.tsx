@@ -44,7 +44,6 @@ export const MyFinancesPage = () => {
       <Heading heading={pageTitle} />
       {data?.profileId ? (
         <section className="flex justify-start w-4/11">
-          {" "}
           <EditButton
             title="Finances"
             onClick={editFinancialInfo}
@@ -52,11 +51,13 @@ export const MyFinancesPage = () => {
           />
         </section>
       ) : (
-        <Button variant="solid" onClick={addFinancialInfo}>
-          <section className="flex items-center gap-2">
-            <CiCirclePlus /> Add Financial Info
-          </section>
-        </Button>
+        <section className="flex justify-start w-4/11">
+          <Button variant="solid" onClick={addFinancialInfo}>
+            <section className="flex items-center gap-2">
+              <CiCirclePlus /> Add Financial Info
+            </section>
+          </Button>
+        </section>
       )}
       <Container color="bg-gray-100">
         <section className="grid place-items-center gap-3">

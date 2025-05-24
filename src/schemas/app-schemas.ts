@@ -39,13 +39,21 @@ export const InvestmentSchema = z.object({
 
 export const FinancesSchema = z
   .object({
-    grossSalary: z.number().min(0, "Gross salary must be a positive number"),
+    grossSalary: z
+      .number({ invalid_type_error: "Gross salary must be a number" })
+      .min(0, "Gross salary must be a positive number"),
+    totalDeductions: z
+      .number({
+        required_error: "Total deductions is required",
+        invalid_type_error: "Total deductions must be a number",
+      })
+      .min(0, "Total deductions must be a positive number"),
     monthlyExpenses: z
-      .number()
+      .number({ invalid_type_error: "Monthly expenses must be a number" })
       .min(0, "Monthly expenses must be a positive number"),
     netSalary: z.number().min(0, "Net salary must be a positive number"),
     currentSavings: z
-      .number()
+      .number({ invalid_type_error: "Current savings must be a number" })
       .min(0, "Current savings must be a positive number"),
     goalId: z.number().optional(),
     userId: z.number(),
@@ -55,14 +63,21 @@ export const FinancesSchema = z
     path: ["monthlyExpenses"],
     message: "Gross salary must be greater than monthly expenses",
   })
-  .refine(({ grossSalary, netSalary }) => grossSalary > netSalary, {
+  .refine(({ grossSalary, netSalary }) => grossSalary >= netSalary, {
     path: ["netSalary"],
     message: "Gross salary must be greater than net salary",
   })
   .refine(({ netSalary, monthlyExpenses }) => netSalary > monthlyExpenses, {
     path: ["monthlyExpenses"],
     message: "Net salary must be greater than monthly expenses",
-  });
+  })
+  .refine(
+    ({ grossSalary, totalDeductions }) => grossSalary > totalDeductions,
+    {
+      path: ["totalDeductions"],
+      message: "Total Deductions must be less than gross salary",
+    }
+  );
 
 export const userSchema = z
   .object({
