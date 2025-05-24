@@ -1,4 +1,4 @@
-import { Button, Heading } from "@project/components/common";
+import { Heading } from "@project/components/common";
 import { UserForm } from "@project/components/forms";
 import { PageLayout } from "@project/components/layouts";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -12,7 +12,7 @@ export const NewUserPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
-  const isOpen = useMemo(() => pathname == "/users/new", [pathname]);
+  const isOpen = useMemo(() => pathname === "/users/new", [pathname]);
   const close = () => navigate({ to: "/users", from: "/" });
 
   return (
@@ -22,9 +22,14 @@ export const NewUserPage = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         } sm:w-full sm:max-w-md`}
       >
-        <Button variant="clear" type="button" className="absolute top-0 right-0 p-5" onClick={close}>
+        <button
+          title="close"
+          type="button"
+          className="absolute top-0 right-0 p-5"
+          onClick={close}
+        >
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
-        </Button>
+        </button>
         <Heading heading={pageTitle} />
         <UserForm />
       </section>

@@ -17,6 +17,7 @@ import { useAuthStore } from "../../store";
 import { useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../services";
 import { USER_ROLES, useUserStore } from "../../store/user-store";
+import { filter } from "lodash";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
@@ -48,35 +49,32 @@ export const NavBar = () => {
       });
     }
   }, [currentUser]);
+  const sharedRoutes = [
+    {
+      path: "/home",
+      icon: <HiHome />,
+      name: "Dashboard",
+    },
+    {
+      path: "/admins",
+      icon: <HiOutlineUserGroup />,
+      name: "Admins",
+    },
+    {
+      path: "/users",
+      icon: <HiOutlineUsers />,
+      name: "Clients",
+    },
+    {
+      path: "/reports",
+      icon: <HiDocument />,
+      name: "Reports",
+    },
+  ];
 
   const ROUTES = {
-    admin: [
-      {
-        path: "/home",
-        icon: <HiHome />,
-        name: "Dashboard",
-      },
-      {
-        path: "/admins",
-        icon: <HiOutlineUserGroup />,
-        name: "Admins",
-      },
-      {
-        path: "/users",
-        icon: <HiOutlineUsers />,
-        name: "Clients",
-      },
-      {
-        path: "/investments",
-        icon: <HiOutlineBanknotes />,
-        name: "Investments",
-      },
-      {
-        path: "/reports",
-        icon: <HiDocument />,
-        name: "Reports",
-      },
-    ],
+    admin: sharedRoutes,
+    super_admin: sharedRoutes,
     user: [
       {
         path: "/home",
@@ -119,9 +117,7 @@ export const NavBar = () => {
         </li>
 
         {ROUTES?.[
-          ((currentUser?.userRole === USER_ROLES.SUPER_ADMIN
-            ? USER_ROLES.ADMIN
-            : currentUser?.userRole) as keyof typeof ROUTES) ?? "user"
+          (currentUser?.userRole as keyof typeof ROUTES) ?? "user"
         ]?.map(({ path, icon, name }) => (
           <li key={name}>
             <Link
