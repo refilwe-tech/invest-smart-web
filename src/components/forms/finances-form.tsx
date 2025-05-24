@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { Check, ChevronsUpDown } from "lucide-react";
