@@ -44,8 +44,8 @@ export interface ReportTemplate {
 export interface ReportRequest {
   template_id: number;
   period_start: string; // ISO format date "YYYY-MM-DD"
-  period_end: string; 
-  user_id: number;// ISO format date "YYYY-MM-DD"
+  period_end: string;
+  user_id: number; // ISO format date "YYYY-MM-DD"
   filters: {
     investment_type?: string;
     // Add other filter options as needed
@@ -57,22 +57,20 @@ export default {
   getTemplates: (): Promise<ReportTemplate[]> => get(ReportsUrls.templates),
 
   // Generate a new report
-  generateReport: (
-    data: ReportRequest
-  ): Promise<{ report_id: number }> => post(ReportsUrls.generate, data),
+  generateReport: (data: ReportRequest): Promise<{ report_id: number }> =>
+    post(ReportsUrls.generate, data),
 
   // Download a generated report
-  downloadReport: (id: number): Promise<Blob> => {
+  downloadReport: (id: number): Promise<{ download_url: string }> => {
     return axios
       .get(ReportsUrls.download(id), {
         headers: {
           "ngrok-skip-browser-warning": true,
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        responseType: "blob",
       })
       .then((response) => response.data);
   },
 
-  detailedReport: (data:ReportRequest)=> post(ReportsUrls.detailed,data),
+  detailedReport: (data: ReportRequest) => post(ReportsUrls.detailed, data),
 };

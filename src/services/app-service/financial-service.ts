@@ -9,26 +9,27 @@ const baseUrl = `${hostUrl}/finances`;
 
 const FinancesUrls = {
   finances: baseUrl,
-  goals:`${baseUrl}/goals`,
+  goals: `${baseUrl}/goals`,
   userFinances: (id: string) => `${baseUrl}/${id}`,
   userFinancialProfile: (id: string) => `${baseUrl}/profile/${id}`,
   userFinancialGraph: (id: string) => `${baseUrl}/${id}/data`,
-}
+};
 
 const createFinancialProfile = (user: UserFinances) => {
   const dto = newUserFinancialDto(user);
   return axios
-    .post(FinancesUrls.finances, dto,{headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    }})
+    .post(FinancesUrls.finances, dto, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
     .then((response) => response.data);
 };
-
 
 const updateFinancialProfile = (user: UserFinances) => {
   const dto = userFinancialDto(user);
   return axios
-    .put(FinancesUrls.userFinances(user?.userId ?? ""), dto, {
+    .put(FinancesUrls.userFinances(user?.userId.toString() ?? ""), dto, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -51,14 +52,14 @@ const getFinancialGraph = (id: string) => {
   return axios
     .get(FinancesUrls.userFinancialGraph(id), {
       headers: {
-        "ngrok-skip-browser-warning": true,   
+        "ngrok-skip-browser-warning": true,
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => response.data);
 };
 
-const getInvestmentGoals = ()=>{
+const getInvestmentGoals = () => {
   return axios
     .get(FinancesUrls.goals, {
       headers: {
@@ -66,8 +67,8 @@ const getInvestmentGoals = ()=>{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-    .then((response) => response.data); 
-}
+    .then((response) => response.data);
+};
 
 export default {
   getFinancialGraph,

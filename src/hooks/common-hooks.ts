@@ -3,20 +3,20 @@ import { useAuthStore } from "../store";
 
 export const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useAuthStore();
+  const { setIsAuthenticated } = useAuthStore();
 
   useEffect(() => {
     setIsAuth(isAuth);
-    setIsAuthenticated(isAuth)
+    setIsAuthenticated(isAuth);
   }, []);
 
-  const authenticateUser =(state:boolean)=>{
+  const authenticateUser = (state: boolean) => {
     setIsAuthenticated(state);
-    setIsAuth(state)
-  }
+    setIsAuth(state);
+  };
 
   return {
     isAuth,
-    authenticateUser
+    authenticateUser,
   };
 };

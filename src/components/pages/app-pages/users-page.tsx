@@ -1,6 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
-import { LiaUserEditSolid } from "react-icons/lia";
 import { useQuery } from "@tanstack/react-query";
 
 import { Container, PageLayout } from "../../layouts";
@@ -19,7 +18,6 @@ export const UsersPage = () => {
   });
   const navigate = useNavigate({ from: "/users" });
   const goToNewUser = () => navigate({ to: "/users/new" });
-  const openProfile = (id: string) => navigate({ to: `/users/${id}/edit` });
 
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
