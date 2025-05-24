@@ -16,8 +16,7 @@ import Logo from "../../assets/logo.png";
 import { useAuthStore } from "../../store";
 import { useQuery } from "@tanstack/react-query";
 import { userModel, userService } from "../../services";
-import { USER_ROLES, useUserStore } from "../../store/user-store";
-import { filter } from "lodash";
+import { useUserStore } from "../../store/user-store";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
