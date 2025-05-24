@@ -22,6 +22,10 @@ export type UserApi = {
   is_active: boolean;
 };
 
+export type AdminAPI = UserApi & {
+  admin_id: string;
+};
+
 export interface UserFinancesAPI {
   user_id: number;
   profile_id?: number;
@@ -45,7 +49,7 @@ export interface UserFinances {
 export type User = {
   id?: string;
   password?: string;
-  idNumber?:string;
+  idNumber?: string;
   firstName: string;
   lastName: string;
   email: string;

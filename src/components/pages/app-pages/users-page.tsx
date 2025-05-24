@@ -22,7 +22,7 @@ export const UsersPage = () => {
   const columnHelper = createColumnHelper<UserApi>();
   const columns = [
     columnHelper.accessor("user_id", {
-      header: "ID",
+      header: "Client ID",
     }),
     columnHelper.accessor("first_name", {
       header: "First Name",

@@ -5,7 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { USER_ROLES, useUserStore } from "@project/store/user-store";
 import { useDocumentTitle } from "@project/hooks";
-import { type UserApi, userService } from "@project/services";
+import { type AdminAPI, userService } from "@project/services";
 
 export const AdminUsersPage = () => {
   const pageTitle = "Admins";
@@ -18,23 +18,10 @@ export const AdminUsersPage = () => {
   const navigate = useNavigate({ from: "/admins" });
   const goToNewUser = () => navigate({ to: "/admins/new" });
 
-  /* const EditBtn = ({ onClick }: { onClick: () => void }) => (
-    <button
-      title="Edit"
-      type="button"
-      className={"text-tertiary hover:text-blue-700 p-2 font-medium flex gap-2"}
-      onClick={onClick}
-    >
-      <LiaUserEditSolid className="w-5 h-5" />
-    </button>
-  ); 
-
-  const openProfile = (id: string) => navigate({ to: `/admins/${id}/edit` });*/
-
-  const columnHelper = createColumnHelper<UserApi>();
+  const columnHelper = createColumnHelper<AdminAPI>();
   const columns = [
-    columnHelper.accessor("user_id", {
-      header: "ID",
+    columnHelper.accessor("admin_id", {
+      header: "Admin ID",
     }),
     columnHelper.accessor("first_name", {
       header: "First Name",

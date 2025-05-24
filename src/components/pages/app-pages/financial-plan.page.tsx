@@ -18,7 +18,7 @@ export const FinancialPlanPage = () => {
   const columnHelper = createColumnHelper<Plan>();
   const columns = [
     columnHelper.accessor("plan_id", {
-      header: "ID",
+      header: "Investment ID",
     }),
     columnHelper.accessor("plan_name", {
       header: "Plan Name",
