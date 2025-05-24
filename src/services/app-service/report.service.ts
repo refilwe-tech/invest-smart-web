@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../../../config";
+import type { Report } from "@project/components";
 
 const { hostUrl } = config;
 const baseUrl = `${hostUrl}/reports`;
@@ -22,6 +23,7 @@ const get = (url: string) => {
     .then((response) => response.data);
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const post = (url: string, data: any) => {
   return axios
     .post(url, data, {
@@ -57,7 +59,7 @@ export default {
   getTemplates: (): Promise<ReportTemplate[]> => get(ReportsUrls.templates),
 
   // Generate a new report
-  generateReport: (data: ReportRequest): Promise<{ report_id: number }> =>
+  generateReport: (data: ReportRequest): Promise<Report> =>
     post(ReportsUrls.generate, data),
 
   // Download a generated report

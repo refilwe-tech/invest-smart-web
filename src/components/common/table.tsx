@@ -1,6 +1,5 @@
-
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -8,13 +7,17 @@ import {
 import { ClipLoader } from "react-spinners";
 
 export type TableProps<Value> = {
- data: Value[];
+  data: Value[];
   dataCy?: string;
   pageCount?: number;
   loading?: boolean;
   columns: ColumnDef<Value, unknown>[];
-}
-export const Table = <T extends Record<string, unknown>>({ data, columns, loading }:TableProps<T>) => {
+};
+export const Table = <T extends Record<string, unknown>>({
+  data,
+  columns,
+  loading,
+}: TableProps<T>) => {
   const table = useReactTable({
     data,
     columns,
@@ -26,7 +29,10 @@ export const Table = <T extends Record<string, unknown>>({ data, columns, loadin
         <table className="min-w-full table-auto border-separate border-spacing-y-1 text-left">
           <thead className="rounded-lg">
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="bg-gradient-to-r from-secondary-2 to-primary-dark">
+              <tr
+                key={headerGroup.id}
+                className="bg-gradient-to-r from-secondary-2 to-primary-dark"
+              >
                 {headerGroup.headers.map((header) => (
                   <th className="text-white px-3" key={header.id}>
                     {header.isPlaceholder

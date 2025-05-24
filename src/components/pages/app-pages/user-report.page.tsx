@@ -18,11 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@project/components/ui/card";
-import {
-  useDownloadReport,
-  useGenerateReport,
-  useInvestmentGoals,
-} from "@project/queries";
+import { useGenerateReport } from "@project/queries";
 import {
   Table,
   TableBody,
@@ -32,39 +28,55 @@ import {
   TableRow,
 } from "@project/components/ui/table";
 import { useUserStore } from "@project/store";
-import config from '../../../../config';
+import config from "../../../../config";
 const { hostUrl } = config;
 const baseUrl = hostUrl.replace("/api", "");
 
+export type Investment = {
+  investment_id: number;
+  investment_name: string;
+  type_name: string;
+  amount: number;
+  risk_level: "Low" | "Medium" | "High";
+};
+
+export type Recommendation = {
+  title: string;
+  description: string;
+};
+
+export type Report = {
+  download_url?: string;
+  user_finances?: {
+    net_salary?: number;
+    monthly_expenses?: number;
+    current_savings?: number;
+  };
+  user_investments?: Array<Investment>;
+  recommendations?: Array<Recommendation>;
+} | null;
+
 export const UserReportPage = () => {
   useDocumentTitle("User Report");
-  const {user} = useUserStore()
+  const { user } = useUserStore();
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
-  const [selectedGoal, setSelectedGoal] = useState<number>(1);
 
-  // Fetch available investment goals
-  const { data: goalsData, isLoading: goalsLoading } = useInvestmentGoals();
-
-  // Report generation
   const { mutate: generateReport, isPending: isGenerating } =
     useGenerateReport();
-  const { mutate: downloadReport, isPending: isDownloading } =
-    useDownloadReport();
 
-  // Sample report data - replace with actual data from your API
-  const [reportData, setReportData] = useState<any>(null);
+  const [reportData, setReportData] = useState<Report>(null);
 
   const handleGenerateReport = () => {
     generateReport(
       {
-        template_id: 2, // Assuming 2 is the user detailed report
-        user_id: Number(user?.id), // Replace with actual user ID
+        template_id: 2,
+        user_id: Number(user?.id),
         period_start: dateRange.from?.toISOString() || new Date().toISOString(),
         period_end: dateRange.to?.toISOString() || new Date().toISOString(),
         filters: {},
       },
       {
-        onSuccess: (data) => {
+        onSuccess: (data: Report) => {
           setReportData(data);
         },
       }
@@ -73,21 +85,14 @@ export const UserReportPage = () => {
 
   const handleDownloadReport = () => {
     if (reportData?.download_url) {
-        // Create a hidden anchor element
-        const link = document.createElement("a");
-        link.href = `${baseUrl}${reportData.download_url}`;
-        link.target = '_blank'
-        console.log(`${baseUrl}${reportData.download_url}`)
-        // Suggest a filename for the download
-        link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
-
-        // Append to the DOM (required for Firefox)
-        document.body.appendChild(link);
-
-        // Trigger the click
-        link.click();
+      const link = document.createElement("a");
+      link.href = `${baseUrl}${reportData.download_url}`;
+      link.target = "_blank";
+      link.download = `financial-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+    }
   };
-}
 
   return (
     <PageLayout>
@@ -99,24 +104,18 @@ export const UserReportPage = () => {
               Check your data and see how your finances are set up
             </p>
           </div>
-          <Button
-            onClick={handleDownloadReport}
-            disabled={!reportData || isDownloading}
-          >
-            {isDownloading ? "Downloading..." : "Download PDF"}
+          <Button onClick={handleDownloadReport} disabled={!reportData}>
+            {"Download PDF"}
           </Button>
         </div>
-
-        {/* Filters Section */}
         <Card>
           <CardHeader>
             <CardTitle>Report Filters</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Date Range Picker */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Date Range</label>
+                <p className="text-sm font-medium">Date Range</p>
                 <div className="grid grid-cols-2 gap-2">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -174,7 +173,6 @@ export const UserReportPage = () => {
                 </div>
               </div>
 
-              {/* Generate Report Button */}
               <div className="flex items-end">
                 <Button
                   onClick={handleGenerateReport}
@@ -188,14 +186,12 @@ export const UserReportPage = () => {
           </CardContent>
         </Card>
 
-        {/* Report Display Section */}
         {reportData && (
           <Card>
             <CardHeader>
               <CardTitle>Your Financial Report</CardTitle>
             </CardHeader>
             <CardContent>
-              {/* Financial Summary */}
               <div className="mb-8">
                 <h3 className="text-lg font-semibold mb-4">
                   Financial Summary
@@ -232,12 +228,11 @@ export const UserReportPage = () => {
                 </div>
               </div>
 
-              {/* Investment Portfolio */}
               <div className="mb-8">
                 <h3 className="text-lg font-semibold mb-4">
                   Investment Portfolio
                 </h3>
-                {reportData.user_investments?.length > 0 ? (
+                {(reportData?.user_investments?.length ?? 0) > 0 ? (
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -248,28 +243,30 @@ export const UserReportPage = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {reportData.user_investments.map((investment: any) => (
-                        <TableRow key={investment.investment_id}>
-                          <TableCell>{investment.investment_name}</TableCell>
-                          <TableCell>{investment.type_name}</TableCell>
-                          <TableCell>
-                            ${investment.amount?.toLocaleString()}
-                          </TableCell>
-                          <TableCell>
-                            <span
-                              className={`px-2 py-1 rounded-full text-xs ${
-                                investment.risk_level === "High"
-                                  ? "bg-red-100 text-red-800"
-                                  : investment.risk_level === "Medium"
-                                    ? "bg-yellow-100 text-yellow-800"
-                                    : "bg-green-100 text-green-800"
-                              }`}
-                            >
-                              {investment.risk_level}
-                            </span>
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {reportData?.user_investments?.map(
+                        (investment: Investment) => (
+                          <TableRow key={investment.investment_id}>
+                            <TableCell>{investment.investment_name}</TableCell>
+                            <TableCell>{investment.type_name}</TableCell>
+                            <TableCell>
+                              ${investment.amount?.toLocaleString()}
+                            </TableCell>
+                            <TableCell>
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs ${
+                                  investment.risk_level === "High"
+                                    ? "bg-red-100 text-red-800"
+                                    : investment.risk_level === "Medium"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : "bg-green-100 text-green-800"
+                                }`}
+                              >
+                                {investment.risk_level}
+                              </span>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
                     </TableBody>
                   </Table>
                 ) : (
@@ -277,26 +274,23 @@ export const UserReportPage = () => {
                 )}
               </div>
 
-              {/* Recommendations */}
-              {reportData.recommendations?.length > 0 && (
+              {(reportData?.recommendations?.length ?? 0) > 0 && (
                 <div>
                   <h3 className="text-lg font-semibold mb-4">
                     Recommendations
                   </h3>
                   <div className="space-y-3">
-                    {reportData.recommendations.map(
-                      (rec: any, index: number) => (
-                        <div
-                          key={rec.title}
-                          className="border-l-4 border-primary pl-4 py-2"
-                        >
-                          <h4 className="font-medium">{rec.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {rec.description}
-                          </p>
-                        </div>
-                      )
-                    )}
+                    {reportData?.recommendations?.map((rec: Recommendation) => (
+                      <div
+                        key={rec.title}
+                        className="border-l-4 border-primary pl-4 py-2"
+                      >
+                        <h4 className="font-medium">{rec.title}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {rec.description}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

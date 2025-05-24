@@ -21,7 +21,7 @@ export const ProfileSchema = z.object({
     .max(120, { message: "Age must be less than 120" })
     .optional(),
   userRole: z.enum(["admin", "user"]),
-  phoneNumber: commonSchema.shape.phoneNumber
+  phoneNumber: commonSchema.shape.phoneNumber,
 });
 
 export const InvestmentSchema = z.object({
@@ -33,44 +33,36 @@ export const InvestmentSchema = z.object({
     .number()
     .min(1, "Minimum duration is 1 month")
     .max(360, "Maximum duration is 30 years"),
-  monthlyContribution: z.number().min(0).optional(),
-  riskTolerance: z.enum(["low", "medium", "high"]).optional(),
+  monthlyContribution: z.number().min(0),
+  riskTolerance: z.enum(["low", "medium", "high"]),
 });
 
-export const FinancesSchema = z.object({
-  grossSalary: z.number().min(0, "Gross salary must be a positive number"),
-  monthlyExpenses: z
-    .number()
-    .min(0, "Monthly expenses must be a positive number"),
-  netSalary: z.number().min(0, "Net salary must be a positive number"),
-  currentSavings: z
-    .number()
-    .min(0, "Current savings must be a positive number"),
-  goalId: z.number().optional(),
-  userId: z.number(),
-  profileId: z.number().optional(),
-})
-.refine(
-  ({ grossSalary, monthlyExpenses }) => grossSalary > monthlyExpenses,
-  {
+export const FinancesSchema = z
+  .object({
+    grossSalary: z.number().min(0, "Gross salary must be a positive number"),
+    monthlyExpenses: z
+      .number()
+      .min(0, "Monthly expenses must be a positive number"),
+    netSalary: z.number().min(0, "Net salary must be a positive number"),
+    currentSavings: z
+      .number()
+      .min(0, "Current savings must be a positive number"),
+    goalId: z.number().optional(),
+    userId: z.number(),
+    profileId: z.number().optional(),
+  })
+  .refine(({ grossSalary, monthlyExpenses }) => grossSalary > monthlyExpenses, {
     path: ["monthlyExpenses"],
     message: "Gross salary must be greater than monthly expenses",
-  },
-)
-.refine(
-  ({ grossSalary, netSalary }) => grossSalary > netSalary,
-  {
+  })
+  .refine(({ grossSalary, netSalary }) => grossSalary > netSalary, {
     path: ["netSalary"],
     message: "Gross salary must be greater than net salary",
-  },
-)
-.refine(
-  ({ netSalary, monthlyExpenses }) => netSalary > monthlyExpenses,
-  {
+  })
+  .refine(({ netSalary, monthlyExpenses }) => netSalary > monthlyExpenses, {
     path: ["monthlyExpenses"],
     message: "Net salary must be greater than monthly expenses",
-  },
-);
+  });
 
 export const userSchema = z
   .object({
@@ -89,9 +81,12 @@ export const userSchema = z
     idNumber: commonSchema.shape.idNumber.optional(),
     email: z.string().email().nonempty({ message: "Email is required" }),
     password: commonSchema.shape.password.optional(),
-    confirmPassword: z.string().nonempty({
-      message: "Confirm password is required",
-    }).optional(),
+    confirmPassword: z
+      .string()
+      .nonempty({
+        message: "Confirm password is required",
+      })
+      .optional(),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     path: ["confirmPassword"],

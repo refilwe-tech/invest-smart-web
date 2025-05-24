@@ -1,4 +1,4 @@
-import { Container, PageLayout, StepContainer } from "../../layouts";
+import { Container, PageLayout } from "../../layouts";
 import { useQuery } from "@tanstack/react-query";
 import { dashboardService, financialService } from "../../../services";
 import { TfiStatsUp } from "react-icons/tfi";
@@ -7,40 +7,21 @@ import { ClipLoader } from "react-spinners";
 
 import { USER_ROLES, useUserStore } from "../../../store/user-store";
 import { useAuthStore } from "../../../store";
-import { BsPiggyBankFill } from "react-icons/bs";
 
 import { LineGraph } from "@project/components/common/line-graph";
-import {
-  Button,
-  COLORS,
-  Heading,
-  PieGraph,
-  UserSteps,
-} from "@project/components";
+import { COLORS, Heading, PieGraph, UserSteps } from "@project/components";
 import { useDocumentTitle } from "@project/hooks";
-import { useNavigate } from "@tanstack/react-router";
 
 export const HomePage = () => {
   useDocumentTitle("Dashboard");
-  const { user, step } = useUserStore();
+  const { user } = useUserStore();
   const { token } = useAuthStore();
   const { data: financialData, isLoading: financialDataLoading } = useQuery({
     queryKey: ["financialData"],
     queryFn: () => financialService.getFinancialGraph(user?.id ?? ""),
     enabled: !!token && user.userRole === USER_ROLES.USER,
   });
-  const navigate = useNavigate({ from: "/home" });
 
-  const goToStep1 = () => navigate({ to: "/finances" });
-  const goToStep2 = () => navigate({ to: "/invest" });
-  const goToStep3 = () => navigate({ to: "/plan" });
-
-  const graph = [
-    { name: "Salary", value: 18000 },
-    { name: "Expenses", value: 2300 },
-    { name: "Loans", value: 1780 },
-    { name: "Savings/Investments", value: 5000 },
-  ];
   const { data, isLoading } = useQuery({
     queryKey: ["counts"],
     queryFn: () => dashboardService.getCounts(token ?? ""),
@@ -181,7 +162,7 @@ export const HomePage = () => {
                 <section className="flex flex-col w-full gap-2">
                   <ul className="flex flex-col gap-2">
                     {financialData?.categories?.map(
-                      ({ name }, index: number) => (
+                      ({ name }: { name: string }, index: number) => (
                         <li
                           key={name}
                           className="flex text-xs gap-2 items-center"

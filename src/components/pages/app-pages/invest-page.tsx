@@ -41,6 +41,22 @@ import {
 } from "@project/components/ui/dialog";
 import { useUserStore } from "@project/store";
 
+export type Item = {
+  investment_id: string;
+  amount: string;
+  expected_return: string;
+  name: string;
+  type: string;
+  risk_level: string;
+};
+export type Plan = {
+  plan_id: number;
+  plan_name: string;
+  created_at: string;
+  totalInvested: string;
+  items: Array<Item>;
+};
+
 export const InvestPage = () => {
   const pageTitle = "Investment Calculator";
   useDocumentTitle(pageTitle);
@@ -54,12 +70,11 @@ export const InvestPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const form = useForm({
-    id: "investment-form",
     defaultValues: {
       amount: 1000,
       durationMonths: 12,
       monthlyContribution: 0,
-      riskTolerance: "medium" as const,
+      riskTolerance: "medium" as "low" | "medium" | "high",
     },
     validators: {
       onChange: InvestmentSchema,
@@ -202,9 +217,8 @@ export const InvestPage = () => {
                 </div>
 
                 <div>
-                  <form.Field
-                    name="monthlyContribution"
-                    children={(field) => (
+                  <form.Field name="monthlyContribution">
+                    {(field) => (
                       <div className="space-y-2">
                         <Label htmlFor={field.name}>
                           Monthly Contribution (R) - Optional
@@ -227,20 +241,19 @@ export const InvestPage = () => {
                         ) : null}
                       </div>
                     )}
-                  />
+                  </form.Field>
                 </div>
 
                 <div>
-                  <form.Field
-                    name="riskTolerance"
-                    children={(field) => (
+                  <form.Field name="riskTolerance">
+                    {(field) => (
                       <div className="space-y-2">
                         <Label>Risk Tolerance</Label>
                         <RadioGroup
                           value={field.state.value}
                           onValueChange={(value) =>
                             field.handleChange(
-                              value as typeof field.state.value
+                              value as "low" | "medium" | "high"
                             )
                           }
                           className="flex gap-4"
@@ -260,7 +273,7 @@ export const InvestPage = () => {
                         </RadioGroup>
                       </div>
                     )}
-                  />
+                  </form.Field>
                 </div>
 
                 <Button type="submit" disabled={calculateMutation.isPending}>
@@ -321,7 +334,10 @@ export const InvestPage = () => {
                 </h4>
                 <div className="space-y-4">
                   {result.items.map((item, index) => (
-                    <div key={index} className="border rounded-lg p-4">
+                    <div
+                      key={index.toString()}
+                      className="border rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start">
                         <div>
                           <h5 className="font-medium">{item.name}</h5>
@@ -412,7 +428,7 @@ export const InvestPage = () => {
             <p>You don't have any saved plans yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {plansQuery.data?.plans.map((plan) => (
+              {plansQuery.data?.plans.map((plan: Plan) => (
                 <Card key={plan.plan_id}>
                   <CardHeader>
                     <CardTitle>{plan.plan_name}</CardTitle>
