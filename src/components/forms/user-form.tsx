@@ -1,12 +1,12 @@
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import toast from "react-hot-toast";
 
 import { Button, InputField } from "../common";
-import {  NewUser, userService } from "../../services";
+import { type NewUser, userService } from "../../services";
 
-export const UserForm = ({userRole='user'}:{userRole?:string}) => {
+export const UserForm = ({ userRole = "user" }: { userRole?: string }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const goBack = () => navigate({ to: `/${userRole}s` });
@@ -20,7 +20,7 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
     },
     queryClient
   );
-  const { mutateAsync:adminMutateAsync } = useMutation(
+  const { mutateAsync: adminMutateAsync } = useMutation(
     {
       mutationFn: userService.createAdminUser,
       onSuccess: () => {
@@ -55,7 +55,7 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
       email: "",
       password: "",
       confirmPassword: "",
-      userRole: userRole
+      userRole: userRole,
     },
     onSubmit: ({ value }) => {
       onSubmit(value);
@@ -93,8 +93,9 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
               );
             },
           }}
-          children={(field) => <InputField field={field} label="First Name" />}
-        />
+        >
+          {(field) => <InputField field={field} label="First Name" />}
+        </form.Field>
       </div>
       <div>
         <form.Field
@@ -113,49 +114,45 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
               );
             },
           }}
-          children={(field) => <InputField field={field} label="Last Name" />}
-        />
+        >
+          {(field) => <InputField field={field} label="Last Name" />}
+        </form.Field>
       </div>
       <div>
-        <form.Field
-          name="idNumber"
-          children={(field) => (
+        <form.Field name="idNumber">
+          {(field) => (
             <InputField field={field} label="ID Number" type="text" />
           )}
-        />
+        </form.Field>
       </div>
       <div>
-        {/* A type-safe field component*/}
-        <form.Field
-          name="email"
-          children={(field) => (
+        <form.Field name="email">
+          {(field) => (
             <InputField field={field} label="Email" type="email" />
           )}
-        />
+        </form.Field>
       </div>
       <div>
-        <form.Field
-          name="password"
-          children={(field) => (
+        <form.Field name="password">
+          {(field) => (
             <InputField field={field} label="Password" type="password" />
           )}
-        />
+        </form.Field>
       </div>
       <div>
-              <form.Field name="confirmPassword">
-                {(field) => (
-                  <InputField
-                    maxLength={16}
-                    field={field}
-                    label="Confirm Password"
-                    type="password"
-                  />
-                )}
-              </form.Field>
-            </div>
-      <form.Subscribe
-        selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
+        <form.Field name="confirmPassword">
+          {(field) => (
+            <InputField
+              maxLength={16}
+              field={field}
+              label="Confirm Password"
+              type="password"
+            />
+          )}
+        </form.Field>
+      </div>
+      <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+        {([canSubmit, isSubmitting]) => (
           <section
             id="submit"
             className="flex items-center w-full flex-col gap-2"
@@ -165,7 +162,7 @@ export const UserForm = ({userRole='user'}:{userRole?:string}) => {
             </Button>
           </section>
         )}
-      />
+      </form.Subscribe>
     </form>
   );
 };

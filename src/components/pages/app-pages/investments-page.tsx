@@ -7,6 +7,12 @@ import { GoTrash } from "react-icons/go";
 import toast from "react-hot-toast";
 import { useDocumentTitle } from "@project/hooks";
 
+export type InvestmentAPI = {
+  investment_id: number;
+  investment_name: string;
+  expected_return_min: number;
+  expected_return_max: number;
+};
 export const InvestmentsPage = () => {
   const pageTitle = "Investment Options";
   useDocumentTitle(pageTitle);
@@ -30,7 +36,7 @@ export const InvestmentsPage = () => {
     queryFn: investmentService.getInvestments,
   });
 
-  const columnHelper = createColumnHelper();
+  const columnHelper = createColumnHelper<InvestmentAPI>();
   const columns = [
     columnHelper.accessor("investment_name", {
       header: "Name",
@@ -44,16 +50,21 @@ export const InvestmentsPage = () => {
     columnHelper.display({
       id: "Actions",
       cell: ({ row }) => {
-        const { investment_id } = row.original;
+        const { investment_id } = row.original as InvestmentAPI;
 
         return (
-          <div className={`flex items-center gap-2`}>
+          <div className={"flex items-center gap-2"}>
             {/*  <EditButton
                       onEdit={() => onEdit(row.original)}
                       id={user_id} userRole={user_role}
                     />{" "}
                     | */}
-            <button className="p-2" onClick={() => onDelete(investment_id)}>
+            <button
+              title="Delete"
+              type="button"
+              className="p-2"
+              onClick={() => onDelete(investment_id.toString())}
+            >
               <GoTrash className="hover:text-red-500" />
             </button>
           </div>
@@ -69,6 +80,7 @@ export const InvestmentsPage = () => {
         {false && (
           <section className="flex justify-end items-center">
             <button
+              type="button"
               onClick={() => void 0}
               className="hover:text-[#1E3A8A] flex bg-[#1E3A8A] hover:bg-[#0D9488] text-white items-center gap-2 hover:border hover:border-primary rounded-lg py-2 px-3 font-medium"
             >

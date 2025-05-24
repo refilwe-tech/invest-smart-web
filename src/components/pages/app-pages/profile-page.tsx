@@ -44,7 +44,7 @@ export const ProfilePage = () => {
       navigate({ to: "/login" });
     },
     onError: ({ response }: AxiosError) => {
-      toast.error(response?.data?.error ?? "Check server connection.");
+      toast.error(response?.config.data ?? "Check server connection.");
     },
   });
 
@@ -63,7 +63,11 @@ export const ProfilePage = () => {
       {isDelete && (
         <div className="fixed top-[20%] right-[25%] w-1/3 h-46 rounded-lg shadow-lg bg-white z-50">
           <section className="flex justify-end p-4">
-            <button onClick={() => setIsDelete(false)}>
+            <button
+              title="Close"
+              type="button"
+              onClick={() => setIsDelete(false)}
+            >
               <IoMdCloseCircleOutline className="w-8 h-8 hover:text-blue-500" />
             </button>
           </section>
@@ -101,7 +105,7 @@ export const ProfilePage = () => {
             </div>
           )}
           <EditButton onClick={toggleEdit} isEdit={isEdit} />
-          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} ${data?.gender ? (data?.gender ?? ""):''}`}</h3>
+          <h3 className="text-xl font-semibold">{`${data?.firstName} ${data?.lastName} ${data?.gender ? (data?.gender ?? "") : ""}`}</h3>
           {isAdmin && (
             <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
               <MdOutlineAdminPanelSettings />
@@ -109,7 +113,7 @@ export const ProfilePage = () => {
             </span>
           )}
           <section className="flex items-center gap-2">
-          <FaUserClock />
+            <FaUserClock />
             <p className="text-xs text-green-400">
               Joined {dayjs(data?.createdAt).format("DD MMMM YYYY")}
             </p>

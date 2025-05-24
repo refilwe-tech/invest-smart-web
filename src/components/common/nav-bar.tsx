@@ -122,7 +122,7 @@ export const NavBar = () => {
           ((currentUser?.userRole === USER_ROLES.SUPER_ADMIN
             ? USER_ROLES.ADMIN
             : currentUser?.userRole) as keyof typeof ROUTES) ?? "user"
-        ]?.map(({ path, icon, name }, index) => (
+        ]?.map(({ path, icon, name }) => (
           <li key={name}>
             <Link
               activeOptions={{ exact: true }}

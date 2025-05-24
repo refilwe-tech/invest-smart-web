@@ -66,6 +66,9 @@ export const FinancesSchema = z
 
 export const userSchema = z
   .object({
+    id: z.string(),
+    isActive: z.boolean(),
+    userRole: z.string(),
     firstName: z
       .string()
       .min(3)
@@ -78,15 +81,12 @@ export const userSchema = z
       .min(3)
       .max(30)
       .nonempty({ message: "Last name is required" }),
-    idNumber: commonSchema.shape.idNumber.optional(),
+    idNumber: commonSchema.shape.idNumber,
     email: z.string().email().nonempty({ message: "Email is required" }),
-    password: commonSchema.shape.password.optional(),
-    confirmPassword: z
-      .string()
-      .nonempty({
-        message: "Confirm password is required",
-      })
-      .optional(),
+    password: commonSchema.shape.password,
+    confirmPassword: z.string().nonempty({
+      message: "Confirm password is required",
+    }),
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     path: ["confirmPassword"],

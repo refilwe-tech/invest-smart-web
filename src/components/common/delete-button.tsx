@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { GoTrash } from "react-icons/go";
 import { userService } from "../../services";
 import { toast } from "react-hot-toast";
@@ -15,14 +15,13 @@ export const DeleteButton: FC<DeleteButtonProps> = ({ id, userRole }) => {
       });
     },
     onError: () => {
-      //toast.error(error);
       toast.error("Failed to delete user. Please try again.");
     },
   });
   const onDelete = () => mutate();
 
   return (
-    <button className="p-2" onClick={onDelete}>
+    <button title="Delete" type="button" className="p-2" onClick={onDelete}>
       <GoTrash className="hover:text-red-500" />
     </button>
   );

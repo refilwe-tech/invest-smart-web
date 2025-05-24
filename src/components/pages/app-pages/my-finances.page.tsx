@@ -16,6 +16,9 @@ import { Outlet, useNavigate } from "@tanstack/react-router";
 import { GiPiggyBank, GiReceiveMoney } from "react-icons/gi";
 import { useDocumentTitle } from "@project/hooks";
 
+export type Goal = {
+  goal_id: number;
+};
 export const MyFinancesPage = () => {
   const pageTitle = "My Finances";
   useDocumentTitle(pageTitle);
@@ -68,8 +71,8 @@ export const MyFinancesPage = () => {
               🏆 Your Goal 🏆
             </h3>
             <p className="text-sm font-bold text-gray-500">
-              {goals?.find((goal) => goal.goal_id === data?.goalId)?.goal_name ??
-                "No goal set yet."}
+              {goals?.find((goal: Goal) => goal.goal_id === data?.goalId)
+                ?.goal_name ?? "No goal set yet."}
             </p>
           </section>
         </section>

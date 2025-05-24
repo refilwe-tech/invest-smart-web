@@ -2,15 +2,15 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 import { Button, InputField } from "../common";
-import { User, userModel, userService } from "../../services";
-import { AxiosError } from "axios";
+import { type User, userModel, userService } from "../../services";
 
 export const EditAdminForm = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const goBack = () => navigate({ to: '/admins' });
+  const goBack = () => navigate({ to: "/admins" });
   const { mutateAsync } = useMutation({
     mutationFn: userService.updateUser,
     onSuccess: () => {
@@ -19,10 +19,10 @@ export const EditAdminForm = () => {
       queryClient.invalidateQueries({ queryKey: ["admins"] });
       goBack();
     },
-    onError: ({response}:AxiosError) =>{
+    onError: ({ response }: AxiosError) => {
       toast.error("Error updating admin user.");
-      toast.error(response?.data?.error);
-    }
+      toast.error((response?.data as { error: string })?.error);
+    },
   });
   const { userId } = useParams({ strict: false });
 
@@ -43,7 +43,7 @@ export const EditAdminForm = () => {
       lastName: userData?.lastName ?? "",
       email: userData?.email ?? "",
       password: "",
-      userRole: userData?.userRole ?? 'admin',
+      userRole: userData?.userRole ?? "admin",
     },
     onSubmit: ({ value }) => {
       onSubmit(value);
@@ -81,8 +81,9 @@ export const EditAdminForm = () => {
               );
             },
           }}
-          children={(field) => <InputField field={field} label="First Name" />}
-        />
+        >
+          {(field) => <InputField field={field} label="First Name" />}
+        </form.Field>
       </div>
       <div>
         <form.Field
@@ -90,8 +91,8 @@ export const EditAdminForm = () => {
           validators={{
             onChange: ({ value }) =>
               !value
-            ? "Last name must be at least 3 characters"
-            : value.length < 3
+                ? "Last name must be at least 3 characters"
+                : value.length < 3
                   ? "Last name must be at least 3 characters"
                   : undefined,
             onChangeAsync: async ({ value }) => {
@@ -101,29 +102,26 @@ export const EditAdminForm = () => {
               );
             },
           }}
-          children={(field) => <InputField field={field} label="Last Name" />}
-        />
+        >
+          {(field) => <InputField field={field} label="Last Name" />}
+        </form.Field>
       </div>
       <div>
-        {/* A type-safe field component*/}
-        <form.Field
-          name="email"
-          children={(field) => (
-            <InputField field={field} label="Email" type="email" />
-          )}
-        />
+        <form.Field name="email">
+          {(field) => <InputField field={field} label="Email" type="email" />}
+        </form.Field>
       </div>
       <div>
-        <form.Field
-          name="password"
-          children={(field) => (
+        <form.Field name="password">
+          {(field) => (
             <InputField field={field} label="Password" type="password" />
           )}
-        />
+        </form.Field>
       </div>
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
+      >
+        {([canSubmit, isSubmitting]) => (
           <section
             id="submit"
             className="flex items-center w-full flex-col gap-2"
@@ -133,7 +131,7 @@ export const EditAdminForm = () => {
             </Button>
           </section>
         )}
-      />
+      </form.Subscribe>
     </form>
   );
 };

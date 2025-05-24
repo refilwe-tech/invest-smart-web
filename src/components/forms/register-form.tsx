@@ -21,7 +21,7 @@ export const RegisterForm = () => {
         goToLogin();
       },
       onError: ({ response }: AxiosError) => {
-        toast.error(response?.data?.error);
+        toast.error((response?.data as { error: string })?.error);
       },
     },
     queryClient

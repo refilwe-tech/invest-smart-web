@@ -9,7 +9,6 @@ import { authService, type LoginUser } from "../../services";
 import { useAuthStore } from "../../store";
 import { LoginSchema } from "@project/schemas";
 
-
 export const LoginForm = () => {
   const queryClient = useQueryClient();
   const { setToken, setIsAuthenticated } = useAuthStore();
@@ -21,14 +20,17 @@ export const LoginForm = () => {
       mutationFn: authService.login,
       onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
-        const { access_token : token } = data;
+        const { access_token: token } = data;
         setToken(token);
         localStorage.setItem("token", token);
         setIsAuthenticated(!!token);
         goToHome();
       },
       onError: ({ response }: AxiosError) =>
-        toast.error(response?.data?.error ?? "Check that you're connected."),
+        toast.error(
+          (response?.data as { error: string })?.error ??
+            "Check that you're connected."
+        ),
     },
     queryClient
   );
@@ -44,8 +46,6 @@ export const LoginForm = () => {
     },
     onSubmit: ({ value }) => onSubmit(value),
   });
-
-
 
   return (
     <form

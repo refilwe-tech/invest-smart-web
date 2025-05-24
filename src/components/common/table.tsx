@@ -11,9 +11,11 @@ export type TableProps<Value> = {
   dataCy?: string;
   pageCount?: number;
   loading?: boolean;
-  columns: ColumnDef<Value, unknown>[];
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  columns: ColumnDef<Value, any>[];
 };
-export const Table = <T extends Record<string, unknown>>({
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const Table = <T extends Record<string, any>>({
   data,
   columns,
   loading,

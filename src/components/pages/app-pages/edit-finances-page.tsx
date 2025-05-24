@@ -22,7 +22,7 @@ export const EditFinancesPage = () => {
     retry: 1,
   });
 
-  const initialValues = data?? {
+  const initialValues = data ?? {
     grossSalary: 0,
     monthlyExpenses: 0,
     netSalary: 0,
@@ -38,13 +38,18 @@ export const EditFinancesPage = () => {
   const close = () => navigate({ to: "/finances", from: "/" });
 
   return (
-    <PageLayout>
+    <PageLayout isLoading={isLoading}>
       <section
         className={`fixed flex flex-col gap-4 h-screen py-4 px-3 top-0 bottom-0 bg-slate-50 right-0 w-300 z-50 transition-all duration-300 ease-in-out transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } sm:w-full sm:max-w-md`}
       >
-        <button type="button" className="absolute top-0 right-0 p-5" onClick={close}>
+        <button
+          title="Close"
+          type="button"
+          className="absolute top-0 right-0 p-5"
+          onClick={close}
+        >
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
         <Heading heading={pageTitle} />
