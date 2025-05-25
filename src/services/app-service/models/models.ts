@@ -115,6 +115,7 @@ export const userProfileModel = ({
 });
 
 export interface InvestmentPlanRequest {
+  unit: "years" | "months";
   amount: number;
   durationMonths: number;
   monthlyContribution?: number;

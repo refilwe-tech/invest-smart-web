@@ -25,6 +25,7 @@ export const ProfileSchema = z.object({
 });
 
 export const InvestmentSchema = z.object({
+  unit: z.enum(["years", "months"]),
   amount: z
     .number()
     .min(100, "Minimum investment is R100")
@@ -71,13 +72,10 @@ export const FinancesSchema = z
     path: ["monthlyExpenses"],
     message: "Net salary must be greater than monthly expenses",
   })
-  .refine(
-    ({ grossSalary, totalDeductions }) => grossSalary > totalDeductions,
-    {
-      path: ["totalDeductions"],
-      message: "Total Deductions must be less than gross salary",
-    }
-  );
+  .refine(({ grossSalary, totalDeductions }) => grossSalary > totalDeductions, {
+    path: ["totalDeductions"],
+    message: "Total Deductions must be less than gross salary",
+  });
 
 export const userSchema = z
   .object({

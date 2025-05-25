@@ -71,6 +71,7 @@ export const InvestPage = () => {
 
   const form = useForm({
     defaultValues: {
+      unit: "months" as "years" | "months",
       amount: 1000,
       durationMonths: 12,
       monthlyContribution: 0,
@@ -134,14 +135,16 @@ export const InvestPage = () => {
     <PageLayout>
       <Heading heading={pageTitle} />
 
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 py-6 w-1/4 items-center">
         <Button
+          className="w-full"
           variant={activeTab === "calculator" ? "default" : "outline"}
           onClick={() => setActiveTab("calculator")}
         >
           Calculator
         </Button>
         <Button
+          className="w-full"
           variant={activeTab === "saved" ? "default" : "outline"}
           onClick={() => setActiveTab("saved")}
         >
@@ -193,10 +196,9 @@ export const InvestPage = () => {
                             <SelectLabel> Unit</SelectLabel>
                             <Select
                               onValueChange={(value) => {
-                                const multiplier = value === "years" ? 12 : 1;
-                                field.handleChange(
-                                  Math.floor(field.state.value / multiplier) *
-                                    multiplier
+                                form.setFieldValue(
+                                  "unit",
+                                  value as "months" | "years"
                                 );
                               }}
                               defaultValue="months"
@@ -215,7 +217,6 @@ export const InvestPage = () => {
                     )}
                   </form.Field>
                 </div>
-
                 <div>
                   <form.Field name="monthlyContribution">
                     {(field) => (
@@ -226,7 +227,6 @@ export const InvestPage = () => {
                         <Input
                           id={field.name}
                           name={field.name}
-                          value={field.state.value}
                           type="number"
                           onChange={(e) =>
                             field.handleChange(
