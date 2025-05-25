@@ -157,7 +157,7 @@ export const HomePage = () => {
           {financialData?.categories.length !== 0 && (
             <>
               <Heading heading="Financial Overview" />
-              <section className="w-full h-80 flex items-center drop-shadow-2xl rounded-xl bg-white">
+              <Container className="w-full h-80 flex items-center rounded-xl bg-white">
                 <PieGraph data={financialData?.categories ?? []} />
                 <section className="flex flex-col w-full gap-2">
                   <ul className="flex flex-col gap-2">
@@ -177,7 +177,7 @@ export const HomePage = () => {
                     )}
                   </ul>
                 </section>
-              </section>
+              </Container>
             </>
           )}
         </section>

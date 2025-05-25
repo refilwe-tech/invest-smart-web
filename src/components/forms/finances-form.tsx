@@ -92,7 +92,7 @@ export const FinancesForm = ({
     });
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<number | undefined>();
+  const [value, setValue] = useState<number | undefined>(initialValues?.goalId);
 
   return (
     <PageLayout>

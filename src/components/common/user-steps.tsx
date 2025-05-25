@@ -1,5 +1,4 @@
 import { StepContainer } from "../layouts";
-import { BsPiggyBankFill } from "react-icons/bs";
 import { Button } from "./button";
 import { useUserStore } from "@project/store";
 import { useNavigate } from "@tanstack/react-router";
@@ -45,10 +44,9 @@ export const UserSteps = () => {
       </StepContainer>
       <StepContainer currentStep={2} bgClassName="hover:bg-dark bg-tertiary">
         <section className="flex gap-2 items-center">
-          <BsPiggyBankFill className="text-primary w-5 h-5" />
-          <h4 className="font-semibold text-sm">Grow your money</h4>
+          <h4 className="font-semibold text-sm">Step 3: Grow your money</h4>
         </section>
-        <p className="text-xs">Check how your money can grow</p>
+        <p className="text-xs">Save Plans, and Start Growing your money.</p>
         {step === 2 && (
           <Button variant="solid" onClick={goToStep2}>
             Take Me There

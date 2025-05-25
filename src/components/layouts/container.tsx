@@ -1,12 +1,19 @@
 import type { FC, ReactNode } from "react";
 
 export type ContainerProps = {
-  children: ReactNode,
-  color?:string
-}
-export const Container:FC<ContainerProps> = ({ children, color = "bg-gray-50" }) => {
+  children: ReactNode;
+  color?: string;
+  className?: string;
+};
+export const Container: FC<ContainerProps> = ({
+  children,
+  color = "bg-gray-50",
+  className = "",
+}) => {
   return (
-    <section className={`${color} drop-shadow-lg border-gray-100 w-full rounded-xl p-5`}>
+    <section
+      className={`drop-shadow-lg ${color} ${className} border-gray-100 w-full rounded-xl p-5`}
+    >
       {children}
     </section>
   );

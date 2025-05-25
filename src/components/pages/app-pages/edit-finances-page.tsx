@@ -35,7 +35,6 @@ export const EditFinancesPage = () => {
 
   const { pathname } = location;
   const isOpen = pathname === "/finances/edit";
-  const isEdit = pathname === "/finances/edit";
   const close = () => navigate({ to: "/finances", from: "/" });
 
   return (
@@ -54,7 +53,7 @@ export const EditFinancesPage = () => {
           <MdOutlineCloseFullscreen className="w-8 h-8 hover:text-primary-dark" />
         </button>
         <Heading heading={pageTitle} />
-        <FinancesForm initialValues={initialValues} isEdit={isEdit} />
+        <FinancesForm initialValues={initialValues} isEdit={isOpen} />
       </section>
     </PageLayout>
   );
