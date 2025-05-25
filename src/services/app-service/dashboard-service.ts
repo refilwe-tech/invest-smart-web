@@ -1,21 +1,13 @@
-import axios from "axios";
-import config from "../../../config";
 import { countsModel } from "./models/models";
-const { hostUrl } = config;
+import { authNetService } from "../network-service";
 
 const DashboardUrls = {
-  counts: `${hostUrl}/counts`,
+  counts: "/counts",
 };
 
-const getCounts = (token:string) => {
-
-  return axios
-    .get(`${DashboardUrls.counts}`, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${token}`,
-      },
-    })
+const getCounts = () => {
+  return authNetService
+    .get(`${DashboardUrls.counts}`)
     .then((response) => countsModel(response.data));
 };
 

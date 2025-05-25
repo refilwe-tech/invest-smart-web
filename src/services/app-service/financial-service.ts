@@ -1,11 +1,8 @@
-import axios from "axios";
-
-import config from "../../../config";
 import { newUserFinancialDto, userFinancialDto } from "./dto/dto";
 import type { UserFinances } from "./models/models";
+import { authNetService } from "../network-service";
 
-const { hostUrl } = config;
-const baseUrl = `${hostUrl}/finances`;
+const baseUrl = "/finances";
 
 const FinancesUrls = {
   finances: baseUrl,
@@ -15,60 +12,34 @@ const FinancesUrls = {
   userFinancialGraph: (id: string) => `${baseUrl}/${id}/data`,
 };
 
-const createFinancialProfile = (user: UserFinances) => {
+const createFinancialProfile = async (user: UserFinances) => {
   const dto = newUserFinancialDto(user);
-  return axios
-    .post(FinancesUrls.finances, dto, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+  return authNetService
+    .post(FinancesUrls.finances, dto)
     .then((response) => response.data);
 };
 
-const updateFinancialProfile = (user: UserFinances) => {
+const updateFinancialProfile = async (user: UserFinances) => {
   const dto = userFinancialDto(user);
-  return axios
-    .put(FinancesUrls.userFinances(user?.userId.toString() ?? ""), dto, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+  return authNetService
+    .put(FinancesUrls.userFinances(user?.userId.toString() ?? ""), dto)
     .then((response) => response.data);
 };
 
-const getUserFinancialProfile = (id: string) => {
-  return axios
-    .get(`${FinancesUrls.finances}/${id}`, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+const getUserFinancialProfile = async (id: string) => {
+  return authNetService
+    .get(`${FinancesUrls.finances}/${id}`)
     .then((response) => response.data);
 };
 
-const getFinancialGraph = (id: string) => {
-  return axios
-    .get(FinancesUrls.userFinancialGraph(id), {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+const getFinancialGraph = async (id: string) => {
+  return authNetService
+    .get(FinancesUrls.userFinancialGraph(id))
     .then((response) => response.data);
 };
 
-const getInvestmentGoals = () => {
-  return axios
-    .get(FinancesUrls.goals, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => response.data);
-};
+const getInvestmentGoals = async () =>
+  authNetService.get(FinancesUrls.goals).then((response) => response.data);
 
 export default {
   getFinancialGraph,

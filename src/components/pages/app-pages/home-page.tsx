@@ -24,7 +24,7 @@ export const HomePage = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["counts"],
-    queryFn: () => dashboardService.getCounts(token ?? ""),
+    queryFn: dashboardService.getCounts,
     enabled: !!token && user.userRole !== USER_ROLES.USER,
   });
 

@@ -1,38 +1,22 @@
-import axios from "axios";
-import config from "../../../config";
+import { noAuthService } from "../network-service";
 import { type LoginUser, type NewUser, newUserDto } from "./DTOs";
-const { hostUrl } = config;
 
-const authBaseUrl = `${hostUrl}/auth`;
 const AuthUrls = {
-  register: `${authBaseUrl}/register`,
-  login: `${authBaseUrl}/login`,
+  register: "/register",
+  login: "/login",
 };
 
-const register = (formData: NewUser) => {
+const register = async (formData: NewUser) => {
   const dto = newUserDto(formData);
-  return axios
-    .post(AuthUrls.register, dto, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      return response.data;
-    });
+  return noAuthService
+    .post(AuthUrls.register, dto)
+    .then((response) => response.data);
 };
 
-const login = (formData: LoginUser) => {
-  return axios
-    .post(AuthUrls.login, formData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      return response.data;
-    });
-};
+const login = async (formData: LoginUser) =>
+  noAuthService
+    .post(AuthUrls.login, formData)
+    .then((response) => response.data);
 
 export default {
   login,

@@ -1,12 +1,10 @@
-import axios from "axios";
-import config from "../../../config";
 import type {
   InvestmentPlanRequest,
   SavedInvestmentPlan,
 } from "./models/models";
-const { hostUrl } = config;
+import { authNetService } from "../network-service";
 
-const investmentBaseUrl = `${hostUrl}/investments`;
+const investmentBaseUrl = "/investments";
 const InvestmentUrls = {
   investments: `${investmentBaseUrl}`,
   save: `${investmentBaseUrl}/save-plan`,
@@ -15,59 +13,41 @@ const InvestmentUrls = {
   investment: (id: string) => `${investmentBaseUrl}/${id}`,
 };
 
-const getInvestments = () => {
-  return axios
-    .get(`${InvestmentUrls.investments}`, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+const getInvestments = async () => {
+  return authNetService
+    .get(`${InvestmentUrls.investments}`)
     .then((response) => response.data);
 };
 
-const deleteInvestment = (id: string) => {
-  return axios
+const deleteInvestment = async (id: string) =>
+  authNetService
     .delete(InvestmentUrls.investment(id))
     .then((response) => response.data);
-};
 
-const getUserPlans = () => {
-  return axios
-    .get(InvestmentUrls.plans, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+const getUserPlans = async () => {
+  return authNetService
+    .get(InvestmentUrls.plans)
     .then((response) => response.data);
 };
 
-const saveInvestmentPlan = (data: SavedInvestmentPlan) => {
-  return axios
-    .post(InvestmentUrls.save, data, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+const saveInvestmentPlan = async (data: SavedInvestmentPlan) => {
+  return authNetService
+    .post(InvestmentUrls.save, data)
     .then((response) => response.data);
 };
 
-const calculateInvestmentPlan = ({ unit, ...data }: InvestmentPlanRequest) => {
+const calculateInvestmentPlan = async ({
+  unit,
+  ...data
+}: InvestmentPlanRequest) => {
   const duration = data?.durationMonths;
   const dto = {
     ...data,
     durationMonths: unit === "months" ? duration : duration * 12,
   };
 
-  return axios
-    .post(InvestmentUrls.calculator, dto, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+  return authNetService
+    .post(InvestmentUrls.calculator, dto)
     .then((response) => response.data);
 };
 

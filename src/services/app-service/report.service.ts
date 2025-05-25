@@ -1,9 +1,7 @@
-import axios from "axios";
-import config from "../../../config";
 import type { Report } from "@project/components";
+import { authNetService } from "../network-service";
 
-const { hostUrl } = config;
-const baseUrl = `${hostUrl}/reports`;
+const baseUrl = "/reports";
 
 const ReportsUrls = {
   templates: `${baseUrl}/templates`,
@@ -12,35 +10,19 @@ const ReportsUrls = {
   download: (id: string | number) => `${baseUrl}/download/${id}`,
 };
 
-const get = (url: string) => {
-  return axios
-    .get(url, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => response.data);
+const get = async (url: string) => {
+  return authNetService.get(url).then((response) => response.data);
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const post = (url: string, data: any) => {
-  return axios
-    .post(url, data, {
-      headers: {
-        "ngrok-skip-browser-warning": true,
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => response.data);
+const post = async (url: string, data: any) => {
+  return authNetService.post(url, data).then((response) => response.data);
 };
 
 export interface ReportTemplate {
   id: number;
   name: string;
   description?: string;
-  // Add other template properties as needed
 }
 
 export interface ReportRequest {
@@ -55,24 +37,13 @@ export interface ReportRequest {
 }
 
 export default {
-  // Get all available report templates for the user's role
   getTemplates: (): Promise<ReportTemplate[]> => get(ReportsUrls.templates),
-
-  // Generate a new report
   generateReport: (data: ReportRequest): Promise<Report> =>
     post(ReportsUrls.generate, data),
-
-  // Download a generated report
-  downloadReport: (id: number): Promise<{ download_url: string }> => {
-    return axios
-      .get(ReportsUrls.download(id), {
-        headers: {
-          "ngrok-skip-browser-warning": true,
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+  downloadReport: async (id: number): Promise<{ download_url: string }> => {
+    return authNetService
+      .get(ReportsUrls.download(id))
       .then((response) => response.data);
   },
-
   detailedReport: (data: ReportRequest) => post(ReportsUrls.detailed, data),
 };
