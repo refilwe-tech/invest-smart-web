@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@project/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@project/components/ui/radio-group";
 import { Button } from "@project/components/ui/button";
 import {
   Card,
@@ -221,56 +220,12 @@ export const InvestPage = () => {
                   <form.Field name="monthlyContribution">
                     {(field) => (
                       <div className="space-y-2">
-                        <Label htmlFor={field.name}>
-                          Monthly Contribution (R) - Optional
-                        </Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
+                        <Label htmlFor={field.name}>Monthly Contribution</Label>
+                        <InputField
                           type="number"
-                          onChange={(e) =>
-                            field.handleChange(
-                              Number.parseFloat(e.target.value) || 0
-                            )
-                          }
+                          field={field}
+                          label="Monthly Contribution (R) - Optional"
                         />
-                        {field.state.meta.errors ? (
-                          <p className="text-sm text-red-500">
-                            {field.state.meta.errors.join(", ")}
-                          </p>
-                        ) : null}
-                      </div>
-                    )}
-                  </form.Field>
-                </div>
-
-                <div>
-                  <form.Field name="riskTolerance">
-                    {(field) => (
-                      <div className="space-y-2">
-                        <Label>Risk Tolerance</Label>
-                        <RadioGroup
-                          value={field.state.value}
-                          onValueChange={(value) =>
-                            field.handleChange(
-                              value as "low" | "medium" | "high"
-                            )
-                          }
-                          className="flex gap-4"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="low" id="risk-low" />
-                            <Label htmlFor="risk-low">Low</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="medium" id="risk-medium" />
-                            <Label htmlFor="risk-medium">Medium</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="high" id="risk-high" />
-                            <Label htmlFor="risk-high">High</Label>
-                          </div>
-                        </RadioGroup>
                       </div>
                     )}
                   </form.Field>

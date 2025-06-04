@@ -8,7 +8,6 @@ import { ClipLoader } from "react-spinners";
 import { USER_ROLES, useUserStore } from "../../../store/user-store";
 import { useAuthStore } from "../../../store";
 
-import { LineGraph } from "@project/components/common/line-graph";
 import { COLORS, Heading, PieGraph, UserSteps } from "@project/components";
 import { useDocumentTitle } from "@project/hooks";
 
@@ -93,62 +92,6 @@ export const HomePage = () => {
                 </section>
               </>
             </Container>
-          </section>
-          <section className="grid place-items-center w-4/5">
-            <LineGraph
-              data={
-                /* data?.graphData ??  */ [
-                  {
-                    name: "Jan",
-                    amount: 0,
-                  },
-                  {
-                    name: "Feb",
-                    amount: 4,
-                  },
-                  {
-                    name: "Mar",
-                    amount: 2,
-                  },
-                  {
-                    name: "Apr",
-                    amount: 5,
-                  },
-                  {
-                    name: "May",
-                    amount: 3,
-                  },
-                  {
-                    name: "Jun",
-                    amount: 7,
-                  },
-                  {
-                    name: "Jul",
-                    amount: 1,
-                  },
-                  {
-                    name: "Aug",
-                    amount: 6,
-                  },
-                  {
-                    name: "Sep",
-                    amount: 4,
-                  },
-                  {
-                    name: "Oct",
-                    amount: 8,
-                  },
-                  {
-                    name: "Nov",
-                    amount: 9,
-                  },
-                  {
-                    name: "Dec",
-                    amount: 10,
-                  },
-                ]
-              }
-            />
           </section>
         </>
       ) : (
