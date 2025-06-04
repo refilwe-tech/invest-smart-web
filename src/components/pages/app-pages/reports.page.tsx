@@ -1,11 +1,22 @@
-import { Button, Heading } from "@project/components/common";
+import {
+  BarGraph,
+  BraGraph,
+  Button,
+  Heading,
+  PieGraph,
+} from "@project/components/common";
 import { Container, PageLayout } from "@project/components/layouts";
 import { useDocumentTitle } from "@project/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { reportService } from "../../../services";
 
-import { HiOutlineUserGroup, HiUsers } from "react-icons/hi2";
+import {
+  HiOutlineArchiveBoxArrowDown,
+  HiOutlineUserGroup,
+  HiUsers,
+} from "react-icons/hi2";
 import { TfiStatsUp } from "react-icons/tfi";
+import { useMemo } from "react";
 
 export const ReportsPage = () => {
   useDocumentTitle("Detailed Report");
@@ -13,7 +24,21 @@ export const ReportsPage = () => {
     queryKey: ["businessReport"],
     queryFn: reportService.getBusinessReport,
   });
+  const bankGraph = useMemo(() => {
+    data?.plans_per_bank.map((plan) => ({
+      name: plan.bank_name,
+      value: Number(plan.plans),
+    }));
+  }, [data?.plans_per_bank]);
 
+  const charts = useMemo(() => {
+    data?.banks_chart.map((bank) => ({
+      name: bank.bank_name,
+      interest_rates: Number(bank.interest_rate),
+    }));
+  }, [data?.banks_chart]);
+
+  console.log("bankGraph", data);
   return (
     <PageLayout isLoading={isLoading}>
       <Heading heading="Reports" />
@@ -69,6 +94,31 @@ export const ReportsPage = () => {
           </>
         </Container>
       </section>
+      <Container className="flex flex-col w-full h-80 items-center rounded-xl bg-white">
+        <section className="flex justify-between items-center">
+          <h4 className="text-2xl text-center">Bank Interests</h4>
+        </section>
+        <BarGraph data={data?.banks_chart ?? []} />
+      </Container>
+      <Container className="w-full h-80 flex items-center rounded-xl bg-white">
+        <PieGraph data={bankGraph ?? []} />
+        <section className="flex flex-col w-full gap-2">
+          <Container>
+            <>
+              <section className="flex justify-between items-center">
+                <h4 className="text-2xl text-center">Total Plans</h4>
+                <HiOutlineArchiveBoxArrowDown className="w-5 h-5" />
+              </section>
+              <section className="flex flex-col gap-1 justify-center items-center p-4">
+                <h2 className="text-center font-medium text-7xl">
+                  {data?.total_plans}
+                </h2>
+                <p>Total Saved Plans</p>
+              </section>
+            </>
+          </Container>
+        </section>
+      </Container>
     </PageLayout>
   );
 };
