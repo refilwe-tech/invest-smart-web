@@ -6,6 +6,7 @@ const baseUrl = "/reports";
 const ReportsUrls = {
   templates: `${baseUrl}/templates`,
   generate: `${baseUrl}/generate`,
+  business: `${baseUrl}/business`,
   detailed: `${baseUrl}/detailed`,
   download: (id: string | number) => `${baseUrl}/download/${id}`,
 };
@@ -37,6 +38,7 @@ export interface ReportRequest {
 }
 
 export default {
+  getBusinessReport: () => get(ReportsUrls.business),
   getTemplates: (): Promise<ReportTemplate[]> => get(ReportsUrls.templates),
   generateReport: (data: ReportRequest): Promise<Report> =>
     post(ReportsUrls.generate, data),
