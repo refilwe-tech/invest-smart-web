@@ -1,9 +1,12 @@
 import { Button, Heading } from "@project/components/common";
-import { PageLayout } from "@project/components/layouts";
+import { Container, PageLayout } from "@project/components/layouts";
 import { useDocumentTitle } from "@project/hooks";
 import { useDetailedReport } from "@project/queries";
-import { reportService } from "@project/services";
 import { useQuery } from "@tanstack/react-query";
+import { reportService } from "../../../services";
+
+import { HiOutlineUserGroup, HiUsers } from "react-icons/hi2";
+import { TfiStatsUp } from "react-icons/tfi";
 
 export const ReportsPage = () => {
   useDocumentTitle("Detailed Report");
@@ -37,9 +40,55 @@ export const ReportsPage = () => {
       <p className="text-xs font-semibold">
         Here's a Detailed Report for InvestSmart
       </p>
-      <Button variant="solid" onClick={handleDetailedReport}>
-        Generate Report
-      </Button>
+      <section className="flex justify-end items-center">
+        <Button variant="gradient" onClick={handleDetailedReport}>
+          Export Report
+        </Button>
+      </section>
+      <section className="flex gap-4 w-full">
+        <Container color="bg-primary">
+          <>
+            <section className="flex justify-between items-center ">
+              <h4 className="text-2xl text-center">Total Admins</h4>
+              <HiOutlineUserGroup className="w-5 h-5" />
+            </section>
+            <section className="flex flex-col gap-1 justify-center items-center p-4">
+              <h2 className="text-center font-medium text-7xl">
+                {data?.counts.total_admins}
+              </h2>
+              <p>Total Active Admins</p>
+            </section>
+          </>
+        </Container>
+        <Container color="bg-secondary">
+          <>
+            <section className="flex justify-between items-center">
+              <h4 className="text-2xl text-center">Total Clients</h4>
+              <HiUsers className="w-5 h-5" />
+            </section>
+            <section className="flex flex-col gap-1 justify-center items-center p-4">
+              <h2 className="text-center font-medium text-7xl">
+                {data?.counts.total_users}
+              </h2>
+              <p>Total Active Clients</p>
+            </section>
+          </>
+        </Container>
+        <Container color="bg-primary-dark">
+          <>
+            <section className="flex justify-between items-center">
+              <h4 className="text-2xl text-center">Total Investment Options</h4>
+              <TfiStatsUp className="w-5 h-5" />
+            </section>
+            <section className="flex flex-col gap-1 justify-center items-center p-4">
+              <h2 className="text-center font-medium text-7xl">
+                {data?.counts.total_investments}
+              </h2>
+              <p>Total Active Banks</p>
+            </section>
+          </>
+        </Container>
+      </section>
     </PageLayout>
   );
 };
