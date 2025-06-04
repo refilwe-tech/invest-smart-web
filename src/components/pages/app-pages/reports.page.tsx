@@ -1,7 +1,6 @@
 import { Button, Heading } from "@project/components/common";
 import { Container, PageLayout } from "@project/components/layouts";
 import { useDocumentTitle } from "@project/hooks";
-import { useDetailedReport } from "@project/queries";
 import { useQuery } from "@tanstack/react-query";
 import { reportService } from "../../../services";
 
@@ -10,38 +9,19 @@ import { TfiStatsUp } from "react-icons/tfi";
 
 export const ReportsPage = () => {
   useDocumentTitle("Detailed Report");
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["businessReport"],
     queryFn: reportService.getBusinessReport,
   });
 
-  console.log(data);
-  const { mutateAsync: detailedReportAsyn } = useDetailedReport();
-  const handleDetailedReport = async () => {
-    try {
-      const response = await detailedReportAsyn({
-        template_id: 1,
-        period_start: "2023-01-01",
-        period_end: "2023-12-31",
-        user_id: 1,
-        filters: {
-          investment_type: "stocks",
-        },
-      });
-      console.log(response);
-    } catch (error) {
-      console.error("Error generating detailed report:", error);
-    }
-  };
-
   return (
-    <PageLayout>
+    <PageLayout isLoading={isLoading}>
       <Heading heading="Reports" />
       <p className="text-xs font-semibold">
         Here's a Detailed Report for InvestSmart
       </p>
       <section className="flex justify-end items-center">
-        <Button variant="gradient" onClick={handleDetailedReport}>
+        <Button variant="gradient" onClick={() => void 0}>
           Export Report
         </Button>
       </section>
