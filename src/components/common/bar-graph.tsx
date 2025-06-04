@@ -1,4 +1,4 @@
-import React, { FC, PureComponent } from 'react';
+import  { FC } from 'react';
 import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export type BarGraphProps = {

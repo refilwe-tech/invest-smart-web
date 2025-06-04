@@ -1,6 +1,5 @@
 import {
   BarGraph,
-  BraGraph,
   Button,
   Heading,
   PieGraph,
@@ -16,7 +15,6 @@ import {
   HiUsers,
 } from "react-icons/hi2";
 import { TfiStatsUp } from "react-icons/tfi";
-import { useMemo } from "react";
 
 export const ReportsPage = () => {
   useDocumentTitle("Detailed Report");
@@ -24,19 +22,6 @@ export const ReportsPage = () => {
     queryKey: ["businessReport"],
     queryFn: reportService.getBusinessReport,
   });
-  const bankGraph = useMemo(() => {
-    data?.plans_per_bank.map((plan) => ({
-      name: plan.bank_name,
-      value: Number(plan.plans),
-    }));
-  }, [data?.plans_per_bank]);
-
-  const charts = useMemo(() => {
-    data?.banks_chart.map((bank) => ({
-      name: bank.bank_name,
-      interest_rates: Number(bank.interest_rate),
-    }));
-  }, [data?.banks_chart]);
 
   console.log("bankGraph", data);
   return (
@@ -101,7 +86,7 @@ export const ReportsPage = () => {
         <BarGraph data={data?.banks_chart ?? []} />
       </Container>
       <Container className="w-full h-80 flex items-center rounded-xl bg-white">
-        <PieGraph data={bankGraph ?? []} />
+        <PieGraph data={data?.plans_per_bank ?? []} />
         <section className="flex flex-col w-full gap-2">
           <Container>
             <>
