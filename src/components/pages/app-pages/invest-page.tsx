@@ -288,38 +288,35 @@ export const InvestPage = () => {
                   Investment Banks / Institutions
                 </h4>
                 <div className="space-y-4">
-                  {result.items.map((item, index) => (
-                    <div
-                      key={index.toString()}
-                      className="border rounded-lg p-4"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h5 className="font-medium">{item.name}</h5>
-                          <p className="text-sm text-gray-600">
-                            {item.type} • {item.risk_level} risk
-                          </p>
-                        </div>
-                        <span className="font-bold">
-                          R{item.amount?.toLocaleString()}
-                        </span>
+                  <div className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h5 className="font-medium">{result.items[0].name}</h5>
+                        <p className="text-sm text-gray-600">
+                          {result.items[0].type} • {result.items[0].risk_level}{" "}
+                          risk
+                        </p>
                       </div>
-                      <div className="mt-2">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                          <div
-                            className="bg-blue-600 h-2.5 rounded-full"
-                            style={{
-                              width: `${(item?.amount / result?.totalInvested) * 100}%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <p className="text-sm mt-1">
-                        Expected return: {item?.expected_return}% • Duration:{" "}
-                        {item.expected_duration_months} months
-                      </p>
+                      <span className="font-bold">
+                        R{result.items[0].amount?.toLocaleString()}
+                      </span>
                     </div>
-                  ))}
+                    <div className="mt-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div
+                          className="bg-blue-600 h-2.5 rounded-full"
+                          style={{
+                            width: `${(result.items[0]?.amount / result?.totalInvested) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-sm mt-1">
+                      Expected return: {result.items[0]?.expected_return}% •
+                      Duration: {result.items[0].expected_duration_months}{" "}
+                      months
+                    </p>
+                  </div>
                 </div>
 
                 <div className="mt-6">

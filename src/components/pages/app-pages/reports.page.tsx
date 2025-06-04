@@ -27,8 +27,6 @@ export const ReportsPage = () => {
   });
   const { user } = useUserStore();
   const contentRef = useRef<HTMLDivElement>(null);
-
-  console.log("bankGraph", data);
   return (
     <section ref={contentRef}>
       <PageLayout isLoading={isLoading}>
