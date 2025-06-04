@@ -1,6 +1,7 @@
 import { IntroSection } from "../../common";
 import { LoginForm } from "../../forms";
 import { useDocumentTitle } from "../../../hooks";
+import { Link } from "@tanstack/react-router";
 
 export const LoginPage = () => {
   const pageTitle = "Login";
@@ -22,9 +23,9 @@ export const LoginPage = () => {
           <LoginForm />
           <section className="flex gap-1">
             <p className="text-sm text-gray-500">Don't have an account?</p>
-            <a href="/register" className="text-primary text-sm font-semibold">
+            <Link to="/register" className="text-primary text-sm font-semibold">
               Register
-            </a>
+            </Link>
           </section>
         </section>
       </section>
