@@ -11,7 +11,7 @@ export const profileDto = (user: User) => ({
 
 export const newUserFinancialDto = (user: UserFinances) => ({
   monthly_expenses: user?.monthlyExpenses,
-  investment_goal: user?.goalId ?? "",
+  goal_id: user?.goalId ?? "",
   gross_salary: user?.grossSalary,
   net_salary: user?.netSalary,
   current_savings: user?.currentSavings,

@@ -19,3 +19,8 @@
 
 Download Git Bash here [Git Bash Windows](https://git-scm.com/downloads/win) NB! Change to the OS you're using
 Read more on this article on how to setup: [Installing and Configuring Git for the First Time](https://syllabus.africacode.net/topics/git/setting-up-git/)
+
+### Helper Sites
+
+- [Generate RSA ID Number](https://refilwe.dev/rsa-id-number/)
+- Generate ERDs FROM SQL []()
