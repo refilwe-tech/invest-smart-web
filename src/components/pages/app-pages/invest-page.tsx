@@ -28,7 +28,7 @@ import {
   type SavedInvestmentPlan,
 } from "@project/services";
 import { InvestmentSchema } from "@project/schemas";
-import { useDocumentTitle } from "@project/hooks";
+import { useDocumentTitle, useUserStepper } from "@project/hooks";
 import {
   Dialog,
   DialogContent,
@@ -38,7 +38,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@project/components/ui/dialog";
-import { useUserStore } from "@project/store";
+import { useNavigate } from "@tanstack/react-router";
 
 export type Item = {
   investment_id: string;
@@ -59,11 +59,9 @@ export type Plan = {
 export const InvestPage = () => {
   const pageTitle = "Investment Calculator";
   useDocumentTitle(pageTitle);
-  const { setStep } = useUserStore();
+  const navigate = useNavigate({ from: "/invest" });
+  const { setStep } = useUserStepper();
   const [result, setResult] = useState<InvestmentPlanResponse | null>(null);
-  const [activeTab, setActiveTab] = useState<"calculator" | "saved">(
-    "calculator"
-  );
 
   const [planName, setPlanName] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -96,8 +94,9 @@ export const InvestPage = () => {
     mutationFn: investmentService.saveInvestmentPlan,
     onSuccess: () => {
       plansQuery.refetch();
-      setActiveTab("saved");
       setStep(3);
+      setDialogOpen(false);
+      navigate({ to: "/plan" });
     },
   });
 
@@ -134,131 +133,113 @@ export const InvestPage = () => {
     <PageLayout>
       <Heading heading={pageTitle} />
 
-      <div className="flex gap-4 py-6 w-1/4 items-center">
-        <Button
-          className="w-full"
-          variant={activeTab === "calculator" ? "default" : "outline"}
-          onClick={() => setActiveTab("calculator")}
-        >
-          Calculator
-        </Button>
-        <Button
-          className="w-full"
-          variant={activeTab === "saved" ? "default" : "outline"}
-          onClick={() => setActiveTab("saved")}
-        >
-          My Saved Plans
-        </Button>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <Card>
+          <CardHeader>
+            <CardTitle>Investment Parameters</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                void form.handleSubmit();
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <form.Field name="amount">
+                  {(field) => (
+                    <div className="space-y-2">
+                      <InputField
+                        type="number"
+                        field={field}
+                        label=" Investment Amount (R)"
+                      />
+                    </div>
+                  )}
+                </form.Field>
+              </div>
 
-      {activeTab === "calculator" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <form.Field name="durationMonths">
+                  {(field) => (
+                    <div className="space-y-2">
+                      <Label htmlFor={field.name}>Investment Duration</Label>
+                      <div className="flex gap-2 items-center">
+                        <InputField
+                          type="number"
+                          field={field}
+                          label="Duration"
+                        />
+                        <SelectGroup className="w-full">
+                          <SelectLabel> Unit</SelectLabel>
+                          <Select
+                            onValueChange={(value) => {
+                              form.setFieldValue(
+                                "unit",
+                                value as "months" | "years"
+                              );
+                            }}
+                            defaultValue="months"
+                          >
+                            <SelectTrigger className="placeholder:text-gray-300 w-full px-3 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black">
+                              <SelectValue placeholder="Months" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="months">Months</SelectItem>
+                              <SelectItem value="years">Years</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </SelectGroup>
+                      </div>
+                    </div>
+                  )}
+                </form.Field>
+              </div>
+              <div>
+                <form.Field name="monthlyContribution">
+                  {(field) => (
+                    <div className="space-y-2">
+                      <Label htmlFor={field.name}>Monthly Contribution</Label>
+                      <InputField
+                        type="number"
+                        field={field}
+                        label="Monthly Contribution (R) - Optional"
+                      />
+                    </div>
+                  )}
+                </form.Field>
+              </div>
+
+              <Button type="submit" disabled={calculateMutation.isPending}>
+                {calculateMutation.isPending
+                  ? "Calculating..."
+                  : "Calculate Plan"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {result && (
           <Card>
             <CardHeader>
-              <CardTitle>Investment Parameters</CardTitle>
+              <CardTitle>Recommended Investment Plan</CardTitle>
             </CardHeader>
             <CardContent>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  void form.handleSubmit();
-                }}
-                className="space-y-4"
-              >
-                <div>
-                  <form.Field name="amount">
-                    {(field) => (
-                      <div className="space-y-2">
-                        <InputField
-                          type="number"
-                          field={field}
-                          label=" Investment Amount (R)"
-                        />
-                      </div>
-                    )}
-                  </form.Field>
-                </div>
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold">{result.planName}</h3>
+                <p className="text-sm text-gray-600">{result.description}</p>
+              </div>
 
-                <div>
-                  <form.Field name="durationMonths">
-                    {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Investment Duration</Label>
-                        <div className="flex gap-2 items-center">
-                          <InputField
-                            type="number"
-                            field={field}
-                            label="Duration"
-                          />
-                          <SelectGroup className="w-full">
-                            <SelectLabel> Unit</SelectLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                form.setFieldValue(
-                                  "unit",
-                                  value as "months" | "years"
-                                );
-                              }}
-                              defaultValue="months"
-                            >
-                              <SelectTrigger className="placeholder:text-gray-300 w-full px-3 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black">
-                                <SelectValue placeholder="Months" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="months">Months</SelectItem>
-                                <SelectItem value="years">Years</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </SelectGroup>
-                        </div>
-                      </div>
-                    )}
-                  </form.Field>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-gray-100 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Total Invested</p>
+                  <p className="text-xl font-bold">
+                    R{result?.totalInvested?.toLocaleString()}
+                  </p>
                 </div>
-                <div>
-                  <form.Field name="monthlyContribution">
-                    {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Monthly Contribution</Label>
-                        <InputField
-                          type="number"
-                          field={field}
-                          label="Monthly Contribution (R) - Optional"
-                        />
-                      </div>
-                    )}
-                  </form.Field>
-                </div>
-
-                <Button type="submit" disabled={calculateMutation.isPending}>
-                  {calculateMutation.isPending
-                    ? "Calculating..."
-                    : "Calculate Plan"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {result && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Recommended Investment Plan</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold">{result.planName}</h3>
-                  <p className="text-sm text-gray-600">{result.description}</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-100 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Total Invested</p>
-                    <p className="text-xl font-bold">
-                      R{result?.totalInvested?.toLocaleString()}
-                    </p>
-                  </div>
-                  {/* <div className="bg-gray-100 p-4 rounded-lg">
+                {/* <div className="bg-gray-100 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">Projected Value</p>
                     <p className="text-xl font-bold">
                       R
@@ -267,7 +248,7 @@ export const InvestPage = () => {
                       })}
                     </p>
                   </div> */}
-                  {/* <div className="bg-gray-100 p-4 rounded-lg">
+                {/* <div className="bg-gray-100 p-4 rounded-lg">
                     <p className="text-sm text-gray-600">Projected Growth</p>
                     <p className="text-xl font-bold">
                       R
@@ -276,150 +257,100 @@ export const InvestPage = () => {
                       })}
                     </p>
                   </div> */}
-                  <div className="bg-gray-100 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Duration</p>
-                    <p className="text-xl font-bold">
-                      {result.durationMonths} months
-                    </p>
-                  </div>
+                <div className="bg-gray-100 p-4 rounded-lg">
+                  <p className="text-sm text-gray-600">Duration</p>
+                  <p className="text-xl font-bold">
+                    {result.durationMonths} months
+                  </p>
                 </div>
+              </div>
 
-                <h4 className="font-medium mb-2">
-                  Investment Banks / Institutions
-                </h4>
-                <div className="space-y-4">
-                  <div className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h5 className="font-medium">{result.items[0].name}</h5>
-                        <p className="text-sm text-gray-600">
-                          {result.items[0].type} • {result.items[0].risk_level}{" "}
-                          risk
-                        </p>
-                      </div>
-                      <span className="font-bold">
-                        R{result.items[0].amount?.toLocaleString()}
-                      </span>
+              <h4 className="font-medium mb-2">
+                Investment Banks / Institutions
+              </h4>
+              <div className="space-y-4">
+                <div className="border rounded-lg p-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h5 className="font-medium">{result.items[0].name}</h5>
+                      <p className="text-sm text-gray-600">
+                        {result.items[0].type} • {result.items[0].risk_level}{" "}
+                        risk
+                      </p>
                     </div>
-                    <div className="mt-2">
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div
-                          className="bg-blue-600 h-2.5 rounded-full"
-                          style={{
-                            width: `${(result.items[0]?.amount / result?.totalInvested) * 100}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <p className="text-sm mt-1">
-                      Expected return: {result.items[0]?.expected_return}% •
-                      Duration: {result.items[0].expected_duration_months}{" "}
-                      months
-                    </p>
+                    <span className="font-bold">
+                      R{result.items[0].amount?.toLocaleString()}
+                    </span>
                   </div>
+                  <div className="mt-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-blue-600 h-2.5 rounded-full"
+                        style={{
+                          width: `${(result.items[0]?.amount / result?.totalInvested) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-sm mt-1">
+                    Expected return: {result.items[0]?.expected_return}% •
+                    Duration: {result.items[0].expected_duration_months} months
+                  </p>
                 </div>
+              </div>
 
-                <div className="mt-6">
-                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button disabled={savePlanMutation.isPending}>
-                        {savePlanMutation.isPending
-                          ? "Saving..."
-                          : "Save This Plan"}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <form onSubmit={handleDialogSubmit}>
-                        <DialogHeader>
-                          <DialogTitle>Save Investment Plan</DialogTitle>
-                          <DialogDescription>
-                            Give your plan a name to save it for future
-                            reference.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="planName" className="text-right">
-                              Plan Name
-                            </Label>
-                            <Input
-                              id="planName"
-                              value={planName}
-                              onChange={(e) => setPlanName(e.target.value)}
-                              placeholder="e.g., Retirement Plan 2030"
-                              className="col-span-3"
-                              autoFocus
-                            />
-                          </div>
+              <div className="mt-6">
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button disabled={savePlanMutation.isPending}>
+                      {savePlanMutation.isPending
+                        ? "Saving..."
+                        : "Save This Plan"}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <form onSubmit={handleDialogSubmit}>
+                      <DialogHeader>
+                        <DialogTitle>Save Investment Plan</DialogTitle>
+                        <DialogDescription>
+                          Give your plan a name to save it for future reference.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="planName" className="text-right">
+                            Plan Name
+                          </Label>
+                          <Input
+                            id="planName"
+                            value={planName}
+                            onChange={(e) => setPlanName(e.target.value)}
+                            placeholder="e.g., Retirement Plan 2030"
+                            className="col-span-3"
+                            autoFocus
+                          />
                         </div>
-                        <DialogFooter>
-                          <Button
-                            type="submit"
-                            disabled={
-                              !planName.trim() || savePlanMutation.isPending
-                            }
-                          >
-                            {savePlanMutation.isPending
-                              ? "Saving..."
-                              : "Save Plan"}
-                          </Button>
-                        </DialogFooter>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      ) : (
-        <div>
-          {plansQuery.isLoading ? (
-            <p>Loading your plans...</p>
-          ) : plansQuery.data?.plans?.length === 0 ? (
-            <p>You don't have any saved plans yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {plansQuery.data?.plans.map((plan: Plan) => (
-                <Card key={plan.plan_id}>
-                  <CardHeader>
-                    <CardTitle>{plan.plan_name}</CardTitle>
-                    <p className="text-sm text-gray-600">
-                      Created on{" "}
-                      {new Date(plan.created_at)?.toLocaleDateString()}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-600">Total Invested</p>
-                      <p className="text-xl font-bold">R{plan.totalInvested}</p>
-                    </div>
-
-                    <h4 className="font-medium mb-2">Investments</h4>
-                    <div className="space-y-2">
-                      {plan.items.map((item) => (
-                        <div
-                          key={item.investment_id}
-                          className="border-b pb-2 last:border-b-0"
+                      </div>
+                      <DialogFooter>
+                        <Button
+                          type="submit"
+                          disabled={
+                            !planName.trim() || savePlanMutation.isPending
+                          }
                         >
-                          <div className="flex justify-between">
-                            <p className="font-medium">{item.name}</p>
-                            <p>R{item?.amount?.toLocaleString()}</p>
-                          </div>
-                          <p className="text-sm text-gray-600">
-                            {item?.type} • {item?.risk_level} risk •{" "}
-                            {item?.expected_return}% return
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+                          {savePlanMutation.isPending
+                            ? "Saving..."
+                            : "Save Plan"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </PageLayout>
   );
 };

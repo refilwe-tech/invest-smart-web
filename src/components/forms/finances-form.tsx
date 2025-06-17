@@ -25,8 +25,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
-import { useUserStore } from "@project/store";
 import { BsInfoCircle } from "react-icons/bs";
+import { useUserStepper } from "@project/hooks";
 
 export type FinancesFormProps = {
   initialValues: UserFinances;
@@ -39,7 +39,7 @@ export const FinancesForm = ({
 }: FinancesFormProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setStep } = useUserStore();
+  const { setStep } = useUserStepper();
   const refresh = () => navigate({ to: "/finances" });
   const isNewProfile = useMemo(
     () => !initialValues?.profileId,
