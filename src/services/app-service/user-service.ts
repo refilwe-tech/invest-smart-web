@@ -21,7 +21,12 @@ const getAdminUsers = () => get(UsersUrls.admins);
 
 const getCurrentUser = () => {
   return authNetService
-    .get(UsersUrls.currentUser)
+    .get(UsersUrls.currentUser, {
+      headers: {
+        Pragma: "no-cache",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    })
     .then((response) => response.data);
 };
 

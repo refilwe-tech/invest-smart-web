@@ -8,28 +8,30 @@ import {
   HiOutlineUserGroup,
   HiHome,
 } from "react-icons/hi2";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 
 import { Line } from "./line";
 import Logo from "../../assets/logo.png";
 import { useAuthStore } from "../../store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userModel, userService } from "../../services";
 import { useUserStore } from "../../store/user-store";
 
 export const NavBar = () => {
   const { setUser } = useUserStore();
   const { token } = useAuthStore();
+  const queryClient = useQueryClient();
   const { data: currentUser, isLoading: userLoading } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => userService.getCurrentUser(),
+    queryKey: ["currentUser", token],
+    queryFn: userService.getCurrentUser,
     select: userModel,
-    enabled: !!token,
+    refetchOnMount: "always",
   });
   const { pathname } = useLocation();
   const { setIsAuthenticated, setToken } = useAuthStore();
   const logout = () => {
+    queryClient.resetQueries();
     setIsAuthenticated(false);
     setToken(null);
   };
@@ -47,7 +49,8 @@ export const NavBar = () => {
         userRole: currentUser?.userRole ?? "user",
       });
     }
-  }, [currentUser?.id]);
+  }, [currentUser?.id, token]);
+
   const sharedRoutes = [
     {
       path: "/home",
@@ -103,6 +106,11 @@ export const NavBar = () => {
     ],
   };
 
+  const userRoutes = useMemo(
+    () => ROUTES?.[(currentUser?.userRole as keyof typeof ROUTES) ?? "user"],
+    [currentUser?.userRole, currentUser, ROUTES]
+  );
+
   return (
     <div className="bg-gradient-to-br to-[#812DE2] from-[#423EE0] text-white h-full w-56 flex-shrink-0 p-4">
       <ul className="flex flex-col gap-4">
@@ -115,9 +123,7 @@ export const NavBar = () => {
           </Link>
         </li>
 
-        {ROUTES?.[
-          (currentUser?.userRole as keyof typeof ROUTES) ?? "user"
-        ]?.map(({ path, icon, name }) => (
+        {userRoutes?.map(({ path, icon, name }) => (
           <li key={name}>
             <Link
               activeOptions={{ exact: true }}

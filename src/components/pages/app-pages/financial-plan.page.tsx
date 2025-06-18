@@ -7,19 +7,19 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { EyeIcon } from "lucide-react";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@project/components/ui/dialog";
+import { Dialog, DialogContent } from "@project/components/ui/dialog";
 
 export const FinancialPlanPage = () => {
+  const [selectedPlanId, setSelectedPlanId] = useState({
+    plan_id: 0,
+    plan_name: "",
+    created_at: "",
+  });
   const [isOpen, setIsOpen] = useState(false);
+
   const pageTitle = "My Financial Plans";
   useDocumentTitle(pageTitle);
+
   const { data, isLoading } = useQuery({
     queryKey: ["user-plans"],
     queryFn: () => investmentService.getUserPlans(),
@@ -41,31 +41,21 @@ export const FinancialPlanPage = () => {
     columnHelper.display({
       id: "actions",
       cell: ({ row }) => (
-        <>
-          <button
-            type="button"
-            title="view"
-            className="flex text-primary text-sm items-center gap-2"
-            onClick={() => setIsOpen(true)}
-          >
-            View Plan <EyeIcon />
-          </button>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>{`${row.original.plan_name} Plan`}</DialogTitle>
-                <DialogDescription>
-                  More details about your financial plan.
-                </DialogDescription>
-              </DialogHeader>
-              <PlanDetails {...row.original} />
-              <DialogFooter className="text-xs text-center text-black">
-                This information is a predicted data based on your input, true
-                results may vary.
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </>
+        <button
+          type="button"
+          title="view"
+          className="flex text-primary text-sm items-center gap-2"
+          onClick={() => {
+            setSelectedPlanId({
+              plan_id: row.original.plan_id,
+              plan_name: row.original.plan_name,
+              created_at: row.original.created_at,
+            });
+            setIsOpen(true);
+          }}
+        >
+          View Plan <EyeIcon />
+        </button>
       ),
     }),
   ];
@@ -76,6 +66,18 @@ export const FinancialPlanPage = () => {
       <Container>
         <Table data={data?.plans ?? []} columns={columns} />
       </Container>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="">
+          {selectedPlanId && (
+            <PlanDetails
+              created_at={selectedPlanId.created_at}
+              name={selectedPlanId.plan_name}
+              id={selectedPlanId.plan_id}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </PageLayout>
   );
 };

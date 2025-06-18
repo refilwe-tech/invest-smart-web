@@ -7,6 +7,7 @@ const baseUrl = "/finances";
 const FinancesUrls = {
   finances: baseUrl,
   goals: `${baseUrl}/goals`,
+  plan: (id: number) => `${baseUrl}/plans/${id}`,
   userFinances: (id: string) => `${baseUrl}/${id}`,
   userFinancialProfile: (id: string) => `${baseUrl}/profile/${id}`,
   userFinancialGraph: (id: string) => `${baseUrl}/${id}/data`,
@@ -41,7 +42,11 @@ const getFinancialGraph = async (id: string) => {
 const getInvestmentGoals = async () =>
   authNetService.get(FinancesUrls.goals).then((response) => response.data);
 
+const getPlanDetails = async (id: number) =>
+  authNetService.get(FinancesUrls.plan(id)).then((response) => response.data);
+
 export default {
+  getPlanDetails,
   getFinancialGraph,
   getInvestmentGoals,
   createFinancialProfile,
