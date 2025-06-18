@@ -14,3 +14,4 @@ export * from "./finance-card";
 export * from "./user-steps";
 export * from "./intro-section";
 export * from "./bar-graph";
+export * from "./plan";

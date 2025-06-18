@@ -47,7 +47,7 @@ export const NavBar = () => {
         userRole: currentUser?.userRole ?? "user",
       });
     }
-  }, [currentUser]);
+  }, [currentUser?.id]);
   const sharedRoutes = [
     {
       path: "/home",

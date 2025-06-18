@@ -38,13 +38,13 @@ export const AdminUsersPage = () => {
     columnHelper.display({
       id: "Actions",
       cell: ({ row }) => {
-        const { user_id, user_role } = row.original;
+        const { admin_id } = row.original;
         return (
           currentUser?.userRole === USER_ROLES.SUPER_ADMIN &&
-          currentUser?.id !== row?.original.user_id && (
+          currentUser?.id !== row?.original.admin_id && (
             <div className={"flex items-center gap-2"}>
               {/*  <EditBtn onClick={() => openProfile(user_id ?? "")} /> | */}
-              <DeleteButton id={user_id ?? ""} userRole={user_role} />
+              <DeleteButton id={admin_id ?? ""} />
             </div>
           )
         );

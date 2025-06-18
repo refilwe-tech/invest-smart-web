@@ -4,14 +4,17 @@ import { userService } from "../../services";
 import { toast } from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const DeleteButton: FC<DeleteButtonProps> = ({ id, userRole }) => {
+export const DeleteButton: FC<DeleteButtonProps> = ({ id }) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: () => userService.deleteUser(id),
     onSuccess: () => {
       toast.success("User deleted successfully.", { duration: 3000 });
       queryClient.invalidateQueries({
-        queryKey: [userRole === "admin" ? "admins" : "users"],
+        queryKey: ["users"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["admins"],
       });
     },
     onError: () => {
@@ -29,5 +32,4 @@ export const DeleteButton: FC<DeleteButtonProps> = ({ id, userRole }) => {
 
 export type DeleteButtonProps = {
   id: string;
-  userRole: string;
 };

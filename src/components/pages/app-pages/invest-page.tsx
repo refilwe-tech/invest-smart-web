@@ -51,6 +51,9 @@ export type Item = {
 export type Plan = {
   plan_id: number;
   plan_name: string;
+  usersSaved: number;
+  duration_months: number;
+  description: string;
   created_at: string;
   totalInvested: string;
   items: Array<Item>;

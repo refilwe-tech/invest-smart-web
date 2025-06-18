@@ -88,13 +88,13 @@ export const ReportsPage = () => {
             </>
           </Container>
         </section>
-        <Container className="flex flex-col w-full h-80 items-center rounded-xl bg-white">
+        <div className="flex flex-col w-full h-80 pt-10 items-center rounded-xl bg-white">
           <section className="flex justify-between items-center">
             <h4 className="text-2xl text-center">Bank Interests</h4>
           </section>
           <BarGraph data={data?.banks_chart ?? []} />
-        </Container>
-        <Container className="w-full h-80 flex items-center rounded-xl bg-white">
+        </div>
+        <div className="w-full h-80 flex items-center rounded-xl bg-white">
           <PieGraph data={data?.plans_per_bank ?? []} />
           <section className="flex flex-col w-full gap-2">
             <Container>
@@ -112,7 +112,7 @@ export const ReportsPage = () => {
               </>
             </Container>
           </section>
-        </Container>
+        </div>
       </PageLayout>
     </section>
   );

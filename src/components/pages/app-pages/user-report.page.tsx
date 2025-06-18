@@ -19,14 +19,6 @@ import {
   CardTitle,
 } from "@project/components/ui/card";
 import { useGenerateReport } from "@project/queries";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@project/components/ui/table";
 import { useUserStore } from "@project/store";
 import config from "../../../../config";
 const { hostUrl } = config;
@@ -189,111 +181,14 @@ export const UserReportPage = () => {
         {reportData && (
           <Card>
             <CardHeader>
-              <CardTitle>Your Financial Report</CardTitle>
+              <CardTitle>Your Financial Report Has Been Generated</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                  Financial Summary
+                <h3 className="text-sm font-semibold mb-4">
+                  You can download your Financial report.
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="border rounded-lg p-4">
-                    <p className="text-sm text-muted-foreground">Net Salary</p>
-                    <p className="text-xl font-semibold">
-                      R
-                      {reportData.user_finances?.net_salary?.toLocaleString() ||
-                        "0.00"}
-                    </p>
-                  </div>
-                  <div className="border rounded-lg p-4">
-                    <p className="text-sm text-muted-foreground">
-                      Monthly Expenses
-                    </p>
-                    <p className="text-xl font-semibold">
-                      R
-                      {reportData.user_finances?.monthly_expenses?.toLocaleString() ||
-                        "0.00"}
-                    </p>
-                  </div>
-                  <div className="border rounded-lg p-4">
-                    <p className="text-sm text-muted-foreground">
-                      Current Savings
-                    </p>
-                    <p className="text-xl font-semibold">
-                      R
-                      {reportData.user_finances?.current_savings?.toLocaleString() ||
-                        "0.00"}
-                    </p>
-                  </div>
-                </div>
               </div>
-
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4">
-                  Investment Portfolio
-                </h3>
-                {(reportData?.user_investments?.length ?? 0) > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Investment</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Risk Level</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {reportData?.user_investments?.map(
-                        (investment: Investment) => (
-                          <TableRow key={investment.investment_id}>
-                            <TableCell>{investment.investment_name}</TableCell>
-                            <TableCell>{investment.type_name}</TableCell>
-                            <TableCell>
-                              ${investment.amount?.toLocaleString()}
-                            </TableCell>
-                            <TableCell>
-                              <span
-                                className={`px-2 py-1 rounded-full text-xs ${
-                                  investment.risk_level === "High"
-                                    ? "bg-red-100 text-red-800"
-                                    : investment.risk_level === "Medium"
-                                      ? "bg-yellow-100 text-yellow-800"
-                                      : "bg-green-100 text-green-800"
-                                }`}
-                              >
-                                {investment.risk_level}
-                              </span>
-                            </TableCell>
-                          </TableRow>
-                        )
-                      )}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <p className="text-muted-foreground">No investments found</p>
-                )}
-              </div>
-
-              {(reportData?.recommendations?.length ?? 0) > 0 && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">
-                    Recommendations
-                  </h3>
-                  <div className="space-y-3">
-                    {reportData?.recommendations?.map((rec: Recommendation) => (
-                      <div
-                        key={rec.title}
-                        className="border-l-4 border-primary pl-4 py-2"
-                      >
-                        <h4 className="font-medium">{rec.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {rec.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </CardContent>
           </Card>
         )}

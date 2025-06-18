@@ -1,24 +1,36 @@
-import  { FC } from 'react';
-import { BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import type { FC } from "react";
+import {
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  LineChart,
+  Line,
+} from "recharts";
 
 export type BarGraphProps = {
-    data: {
-      name: string;
-      interest_rate: number;
-    }[];
-  };
+  data: {
+    name: string;
+    value: number;
+  }[];
+};
 
-export const BarGraph: FC<BarGraphProps> = ({ data }) => {  
-
-    return (
+export const BarGraph: FC<BarGraphProps> = ({ data }) => {
+  return (
+    <div className="w-full h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart width={150} height={40} data={data} barSize={20}>
-          <Bar dataKey="interest_rate" fill="#8884d8" />
-          <XAxis dataKey="interest_rate" scale="point" padding={{ left: 10, right: 10 }} />
+        <LineChart width={300} height={100} data={data}>
+          <XAxis dataKey="name" />
           <YAxis />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#8884d8"
+            strokeWidth={2}
+          />
           <Tooltip />
-        </BarChart>
+        </LineChart>
       </ResponsiveContainer>
-      
-    );
-  }
+    </div>
+  );
+};
