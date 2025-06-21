@@ -13,7 +13,10 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       isAuthenticated: false,
       token: null,
-      setToken: (token) => set({ token }),
+      setToken: (token) => {
+        set({ token });
+        localStorage.clear();
+      },
       setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
     }),
     {

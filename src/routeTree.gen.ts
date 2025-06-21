@@ -22,6 +22,7 @@ import { Route as InvestImport } from './routes/invest'
 import { Route as HomeImport } from './routes/home'
 import { Route as FinancesImport } from './routes/finances'
 import { Route as AdminsImport } from './routes/admins'
+import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersNewImport } from './routes/users.new'
 import { Route as UserReportImport } from './routes/user.report'
@@ -99,6 +100,12 @@ const AdminsRoute = AdminsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -156,6 +163,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
     '/admins': {
@@ -330,6 +344,7 @@ const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admins': typeof AdminsRouteWithChildren
   '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
@@ -352,6 +367,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admins': typeof AdminsRouteWithChildren
   '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
@@ -375,6 +391,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admins': typeof AdminsRouteWithChildren
   '/finances': typeof FinancesRouteWithChildren
   '/home': typeof HomeRoute
@@ -399,6 +416,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admins'
     | '/finances'
     | '/home'
@@ -420,6 +438,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/admins'
     | '/finances'
     | '/home'
@@ -441,6 +460,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/admins'
     | '/finances'
     | '/home'
@@ -464,6 +484,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdminsRoute: typeof AdminsRouteWithChildren
   FinancesRoute: typeof FinancesRouteWithChildren
   HomeRoute: typeof HomeRoute
@@ -480,6 +501,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdminsRoute: AdminsRouteWithChildren,
   FinancesRoute: FinancesRouteWithChildren,
   HomeRoute: HomeRoute,
@@ -505,6 +527,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/about",
         "/admins",
         "/finances",
         "/home",
@@ -521,6 +544,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/about": {
+      "filePath": "about.tsx"
     },
     "/admins": {
       "filePath": "admins.tsx",

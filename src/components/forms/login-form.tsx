@@ -19,7 +19,10 @@ export const LoginForm = () => {
     {
       mutationFn: authService.login,
       onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        queryClient.resetQueries();
+        queryClient.removeQueries({ queryKey: ["currentUser"] });
+        queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
         const { access_token: token } = data;
         setToken(token);
         localStorage.setItem("token", token);
@@ -38,8 +41,8 @@ export const LoginForm = () => {
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "refilwe.dev@gmail.com",
+      password: "R@101Two;",
     },
     validators: {
       onChange: LoginSchema,
